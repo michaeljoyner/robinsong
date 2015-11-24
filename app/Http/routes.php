@@ -24,6 +24,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
         Route::get('users/{id}/edit', 'UsersController@edit');
         Route::post('users/{id}/edit', 'UsersController@update');
         Route::delete('users/{id}', 'UsersController@delete');
+
+        Route::get('categories/create', 'CategoriesController@create');
     });
 
     Route::group(['middleware' => 'guest'], function() {
