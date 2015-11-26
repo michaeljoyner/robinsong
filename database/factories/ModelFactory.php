@@ -20,10 +20,26 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-
-$factory->define(App\Stock\Category::class, function (Faker\Generator $faker) {
+$factory->define(App\Stock\Collection::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
         'description' => $faker->paragraph(),
+    ];
+});
+
+$factory->define(App\Stock\Category::class, function (Faker\Generator $faker) {
+    return [
+        'collection_id' => factory(\App\Stock\Collection::class)->create()->id,
+        'name' => $faker->name,
+        'description' => $faker->paragraph(),
+    ];
+});
+
+$factory->define(App\Stock\Product::class, function (Faker\Generator $faker) {
+    return [
+        'category_id' => factory(\App\Stock\Category::class)->create()->id,
+        'name' => $faker->name,
+        'description' => $faker->paragraph(),
+        'price' => $faker->numberBetween(500, 5000)
     ];
 });

@@ -1,0 +1,13 @@
+.btn.rs-btn {
+  display: inline-block;
+  border-radius: 0;
+  min-width: 8em;
+  background: $primary_blue;
+  color: $white;
+}
+
+.rs-btn.btn-light {
+  border: 1px solid $primary_blue;
+  color: $primary_blue;
+  background: $white;
+}

@@ -1,2 +1,15 @@
+@import "variables/colours";
+$navbar-inverse-bg: $primary_red;
+$navbar-inverse-color: $primary_dark;
+$navbar-inverse-link-active-color: $primary_blue;
+$navbar-inverse-link-color: $primary_dark;
+$navbar-border-radius: 0;
+$font-family-sans-serif: 'Lato', "Helvetica Neue", Helvetica, Arial, sans-serif;
+
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "admin/navbar";
+@import "admin/forms";
+@import "admin/buttons";
+@import "admin/modals";
+@import "admin/pageheader";
 

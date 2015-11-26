@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Stock\Collection;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -11,6 +12,7 @@ class PagesController extends Controller
 {
     public function dashboard()
     {
-        return 'admin dashboard';
+        $collection = new Collection();
+        return view('admin.pages.dashboard')->with(compact('collection'));
     }
 }

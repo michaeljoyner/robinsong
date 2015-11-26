@@ -137,7 +137,8 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
-        'Cviebrock\EloquentSluggable\SluggableServiceProvider',
+        Cviebrock\EloquentSluggable\SluggableServiceProvider::class,
+        Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
 
         /*
          * Application Service Providers...

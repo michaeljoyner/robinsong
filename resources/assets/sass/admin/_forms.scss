@@ -1,0 +1,18 @@
+form.rs-form {
+  padding: 0 15px;
+
+  label {
+    color: $primary_red;
+    text-transform: uppercase;
+    font-size: small;
+  }
+
+  input[type=text], input[type=email], input[type=password], textarea {
+    border-radius: 0;
+  }
+
+  textarea {
+    resize: none;
+    max-height: 120px;
+  }
+}
