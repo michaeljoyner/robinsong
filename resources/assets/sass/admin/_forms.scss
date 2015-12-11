@@ -15,4 +15,10 @@ form.rs-form {
     resize: none;
     max-height: 120px;
   }
+
+  &.form-narrow {
+    display: block;
+    max-width: 400px;
+    margin: 0 auto;
+  }
 }

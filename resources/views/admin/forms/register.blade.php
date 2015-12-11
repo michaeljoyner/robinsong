@@ -1,4 +1,4 @@
-<form class="form-horizontal isomark-form" role="form" method="POST" action="/admin/users/register">
+<form class="form-horizontal rs-form" role="form" method="POST" action="/admin/users/register">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
     <div class="form-group">
@@ -31,7 +31,7 @@
 
     <div class="form-group">
         <div class="col-md-9 col-md-offset-3">
-            <button type="submit" class="btn prompt-button form-control">
+            <button type="submit" class="btn rs-btn form-control">
                 Register User
             </button>
         </div>

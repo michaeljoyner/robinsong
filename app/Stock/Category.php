@@ -13,6 +13,8 @@ class Category extends Model implements SluggableInterface, HasMediaConversions
 {
     use SluggableTrait, HasMediaTrait, HasModelImage;
 
+    public $defaultImageSrc = '/images/assets/default.png';
+
     protected $table = 'categories';
 
     protected $fillable = [
@@ -51,8 +53,8 @@ class Category extends Model implements SluggableInterface, HasMediaConversions
         return $this->products()->create($attributes);
     }
 
-    public function coverPic()
+    public function coverPic($conversion = null)
     {
-        return $this->modelImage()->getUrl();
+        return $this->modelImage() ? $this->modelImage()->getUrl($conversion ? $conversion : '') : $this->defaultImageSrc;
     }
 }

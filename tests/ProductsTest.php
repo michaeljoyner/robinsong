@@ -19,12 +19,14 @@ class ProductsTest extends TestCase
             ->submitForm('Add Product', [
                 'name'        => 'reception book',
                 'description' => 'a hand crafted book',
-                'price'       => 1500
+                'price'       => 1500,
+                'weight'      => 25
             ])->seeInDatabase('products', [
                 'name'        => 'reception book',
                 'category_id' => $category->id,
                 'description' => 'a hand crafted book',
-                'price'       => 1500
+                'price'       => 1500,
+                'weight'      => 25
             ]);
     }
 
@@ -56,7 +58,7 @@ class ProductsTest extends TestCase
         $product = factory(Product::class)->create();
         $this->withoutMiddleware();
 
-        $response = $this->call('DELETE', '/admin/products/'.$product->id);
+        $response = $this->call('DELETE', '/admin/products/' . $product->id);
         $this->assertEquals(302, $response->status(), 'successful deletion should result in redirect');
 
         $this->notSeeInDatabase('products', [
@@ -72,7 +74,7 @@ class ProductsTest extends TestCase
         $product = factory(Product::class)->create();
         $this->withoutMiddleware();
 
-        $response = $this->call('POST', '/admin/uploads/products/'.$product->id.'/cover', [], [], [
+        $response = $this->call('POST', '/admin/uploads/products/' . $product->id . '/cover', [], [], [
             'file' => $this->prepareFileUpload('tests/testpic1.png', 'testpic1.png')
         ]);
         $this->assertEquals(200, $response->status());
@@ -93,27 +95,4 @@ class ProductsTest extends TestCase
         $this->assertEquals(1, $product->galleries->count(), 'the product should have precisely one gallery');
     }
 
-    /**
-     * @test
-     */
-    public function images_can_be_uploaded_to_a_product_gallery()
-    {
-        $product = factory(Product::class)->create();
-        $this->withoutMiddleware();
-
-        $response = $this->call('POST', '/admin/uploads/products/'.$product->id.'/gallery', [], [], [
-            'file' => $this->prepareFileUpload('tests/testpic1.png', 'testpic1.png')
-        ]);
-        $this->assertEquals(200, $response->status());
-        $response = $this->call('POST', '/admin/uploads/products/'.$product->id.'/gallery', [], [], [
-            'file' => $this->prepareFileUpload('tests/testpic2.png', 'testpic2.png')
-        ]);
-        $this->assertEquals(200, $response->status());
-
-        $this->assertEquals(2, $product->galleryImages()->count(), 'gallery should have 2 images');
-        $this->assertContains('testpic1', $product->galleryImages()[0]->getUrl());
-        $this->assertContains('testpic2', $product->galleryImages()[1]->getUrl());
-
-        $product->galleries()->first()->clearMediaCollection();
-    }
 }

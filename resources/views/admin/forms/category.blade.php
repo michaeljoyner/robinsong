@@ -8,6 +8,6 @@
     {!! Form::textarea('description', null, ['class' => 'form-control']) !!}
 </div>
 <div class="form-group">
-    <button type="submit" class="btn">{{ $buttonText }}</button>
+    <button type="submit" class="btn rs-btn">{{ $buttonText }}</button>
 </div>
 {!! Form::close() !!}

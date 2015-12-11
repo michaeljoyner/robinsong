@@ -32,7 +32,7 @@
                        aria-expanded="false"
                     >{{ Auth::user()->email }} <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Reset Password</a></li>
+                        <li><a href="/admin/users/password/reset">Reset Password</a></li>
                         <li><a href="/admin/logout">Logout</a></li>
                     </ul>
                 </li>

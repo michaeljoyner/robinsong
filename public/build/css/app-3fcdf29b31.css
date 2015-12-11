@@ -8362,6 +8362,12 @@ form.rs-form textarea {
   max-height: 120px;
 }
 
+form.rs-form.form-narrow {
+  display: block;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
 .btn.rs-btn {
   display: inline-block;
   border-radius: 0;
@@ -8370,9 +8376,24 @@ form.rs-form textarea {
   color: #ffffff;
 }
 
+.btn.rs-btn.btn-wide {
+  width: 100%;
+}
+
+.rs-btn.btn-red {
+  background: #f48054;
+  color: #ffffff;
+}
+
 .rs-btn.btn-light {
   border: 1px solid #5fbfad;
   color: #5fbfad;
+  background: #ffffff;
+}
+
+.rs-btn.btn-clear-danger {
+  border: 1px solid #ff0000;
+  color: #ff0000;
   background: #ffffff;
 }
 
@@ -8387,4 +8408,386 @@ form.rs-form textarea {
 
 .rs-page-header hr {
   clear: both;
+}
+
+.rs-section-header .section-actions {
+  margin-top: 20px;
+}
+
+.rs-section-header h2 {
+  color: #5fbfad;
+}
+
+.rs-section-header hr {
+  clear: both;
+}
+
+.index-card {
+  display: inline-block;
+  vertical-align: top;
+  width: 48%;
+  margin: 10px;
+  border: 1px solid #443c41;
+  padding: 10px;
+}
+
+.index-card .index-card-name {
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  color: #5fbfad;
+}
+
+.index-card .index-card-description {
+  width: 70%;
+  margin: 0 auto;
+  color: #443c41;
+}
+
+.index-card hr {
+  width: 70%;
+  display: block;
+  margin: 10px auto;
+}
+
+.index-card img {
+  width: 80%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.index-card.smaller-index {
+  width: 28%;
+}
+
+.single-image-uploader-box .profile-image {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+  display: block;
+  border: 6px solid #5fbfad;
+}
+
+.single-image-uploader-box .profile-image.processing {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
+
+.single-image-uploader-box .profile-image.large {
+  width: 300px;
+  height: 300px;
+}
+
+.single-image-uploader-box .profile-image.full {
+  width: 100%;
+  height: auto;
+  min-height: 200px;
+}
+
+.single-image-uploader-box .profile-image.round {
+  border-radius: 50%;
+}
+
+.single-image-uploader-box .single-upload-label {
+  display: block;
+}
+
+.single-image-uploader-box input[type=file] {
+  display: none;
+  width: 100%;
+}
+
+.single-image-uploader-box .upload-message {
+  color: #443c41;
+  background: #a8dcd2;
+  padding: 4px 8px;
+  border-radius: 5px;
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.single-image-uploader-box .upload-message.error {
+  color: #ffffff;
+  background: #f48054;
+}
+
+.single-image-uploader-box .upload-progress-container {
+  width: 100%;
+  max-width: 250px;
+  height: 16px;
+  border: 1px solid #443c41;
+  position: relative;
+  display: block;
+  margin: 0 auto;
+}
+
+.single-image-uploader-box .upload-progress-container .upload-progress-bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background: #5fbfad;
+}
+
+.product-summary-section .product-details .product-price strong {
+  color: #f48054;
+}
+
+.product-options-vue .close-icon-btn {
+  color: #ff0000;
+  padding: 0 10px;
+  font-size: 160%;
+  cursor: pointer;
+  vertical-align: sub;
+}
+
+.product-options-vue .empty-list-state {
+  color: #bbbbbb;
+  padding: 10px;
+}
+
+.product-options-vue .product-options-heading {
+  color: #5fbfad;
+}
+
+.product-options-vue .product-options-list {
+  max-width: 300px;
+}
+
+.product-options-vue .add-option-form {
+  border-top: 3px solid #5fbfad;
+  padding-top: 10px;
+  max-width: 330px;
+}
+
+.product-options-vue .add-option-form input {
+  height: 34px;
+  border: 1px solid #5fbfad;
+  padding-left: 10px;
+  margin: 0;
+  width: 200px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.product-options-vue .add-option-form .btn.rs-btn {
+  width: 96px;
+}
+
+.option-values-wrapper {
+  display: inline-block;
+  transition: .5s;
+}
+
+.option-values-wrapper .option-name {
+  transition: .5s;
+  cursor: pointer;
+}
+
+.option-values-wrapper.active {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 100;
+}
+
+.option-values-wrapper.active .option-name {
+  display: inline-block;
+  width: 100%;
+  color: #ffffff;
+  background: #5fbfad;
+  text-align: center;
+  font-size: 120%;
+  padding: 10px;
+  cursor: default;
+}
+
+.option-values-wrapper.active .option-values-list-container {
+  height: 250px;
+  overflow-y: auto;
+}
+
+.option-values-wrapper.active .option-values-list .badge {
+  background: #ff0000;
+  cursor: pointer;
+}
+
+.option-values-wrapper.active .values-modal-footer {
+  text-align: right;
+}
+
+.option-values-wrapper.active .add-value-box {
+  border-top: 3px solid #5fbfad;
+  border-bottom: 3px solid #5fbfad;
+  padding: 10px 0;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.option-values-wrapper.active .add-value-box input {
+  height: 34px;
+  vertical-align: top;
+  padding-left: 10px;
+  border: 1px solid #5fbfad;
+  display: inline-block;
+  width: 200px;
+}
+
+.option-values-wrapper.active .inner-values-modal {
+  background: #ffffff;
+  display: block;
+  width: 400px;
+  margin: 100px auto 0;
+  z-index: 500;
+}
+
+.product-customisations-vue .product-customisations-heading {
+  color: #5fbfad;
+  margin-top: 50px;
+}
+
+.product-customisations-vue .empty-list-state {
+  color: #bbbbbb;
+  padding: 10px;
+}
+
+.product-customisations-vue .customisations-list {
+  max-width: 300px;
+}
+
+.product-customisations-vue .close-icon-btn {
+  color: #ff0000;
+  padding: 0 10px;
+  font-size: 160%;
+  cursor: pointer;
+  vertical-align: sub;
+}
+
+.product-customisations-vue .badge {
+  margin-top: 8px;
+  background: #5fbfad;
+}
+
+.product-customisations-vue .add-customisation-form {
+  max-width: 330px;
+  border-top: 3px solid #5fbfad;
+  padding-top: 10px;
+  margin-bottom: 40px;
+}
+
+.product-customisations-vue .add-customisation-form input[type=text] {
+  display: inline-block;
+  width: 200px;
+  height: 34px;
+  vertical-align: top;
+  border: 1px solid #5fbfad;
+  padding-left: 10px;
+}
+
+.product-customisations-vue .add-customisation-form label {
+  text-transform: uppercase;
+  font-size: 80%;
+  color: #5fbfad;
+}
+
+.drop-area {
+  border: 3px solid #5fbfad;
+  width: 100%;
+  min-height: 100px;
+  padding: 10px;
+}
+
+.drop-area .drag-prompt {
+  text-transform: uppercase;
+  color: #5fbfad;
+  width: 100%;
+  text-align: center;
+  padding-top: 36px;
+}
+
+.drop-area ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.drop-area label {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 100px;
+}
+
+.drop-area .image-upload-info {
+  width: 300px;
+  height: 32px;
+  line-height: 32px;
+  position: relative;
+  background: #5fbfad;
+  color: #ffffff;
+  padding-left: 10px;
+}
+
+.drop-area .image-upload-info.failed {
+  background: #f48054;
+}
+
+.drop-area .image-upload-info .upload-progress-bar {
+  background: #443c41;
+  position: absolute;
+  left: 0;
+  top: 90%;
+  bottom: 0;
+}
+
+.drop-area.hovering {
+  border-style: dashed;
+}
+
+.product-gallery-container {
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+.product-gallery-container .gallery-container {
+  position: relative;
+  display: inline-block;
+  min-height: 150px;
+}
+
+.product-gallery-container .gallery-container .empty-gallery-note {
+  color: #bbbbbb;
+}
+
+.product-gallery-container .gallery-container .gallery-item {
+  margin: 10px;
+  float: left;
+  width: 100px;
+  height: 100px;
+  position: relative;
+}
+
+.product-gallery-container .gallery-container .gallery-item .gallery-item-delete-btn {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  line-height: 20px;
+  border-radius: 50%;
+  color: #ffffff;
+  text-align: center;
+  background: #ff0000;
+  cursor: pointer;
+}
+
+.product-gallery-container .gallery-container .gallery-item img {
+  max-width: 100%;
 }

@@ -13,12 +13,15 @@ class Product extends Model implements SluggableInterface, HasMediaConversions
 {
     use SluggableTrait, HasMediaTrait, HasModelImage;
 
+    public $defaultImageSrc = '/images/assets/default.png';
+
     protected $table = 'products';
 
     protected $fillable = [
         'name',
         'description',
-        'price'
+        'price',
+        'weight'
     ];
 
     protected $sluggable = [
@@ -51,9 +54,9 @@ class Product extends Model implements SluggableInterface, HasMediaConversions
         return $this->belongsTo(Category::class, 'category_id');
     }
 
-    public function coverPic()
+    public function coverPic($conversion = null)
     {
-        return $this->modelImage()->getUrl();
+        return $this->modelImage() ? $this->modelImage()->getUrl($conversion ? $conversion : '') : $this->defaultImageSrc;
     }
 
     public function galleries()
@@ -74,5 +77,25 @@ class Product extends Model implements SluggableInterface, HasMediaConversions
     public function galleryImages()
     {
         return $this->getGallery()->getMedia();
+    }
+
+    public function options()
+    {
+        return $this->hasMany(ProductOption::class, 'product_id');
+    }
+
+    public function addOption($name)
+    {
+        return $this->options()->create(['name' => $name]);
+    }
+
+    public function customisations()
+    {
+        return $this->hasMany(Customisation::class, 'product_id');
+    }
+
+    public function addCustomisation($name, $isLongForm = false)
+    {
+        return $this->customisations()->create(['name' => $name, 'longform' => $isLongForm ? 1 : 0]);
     }
 }

@@ -11,6 +11,14 @@ use App\Http\Controllers\Controller;
 
 class ProductsController extends Controller
 {
+    public function show($productId)
+    {
+        $product = Product::findOrFail($productId);
+        $gallery = $product->getGallery();
+
+        return view('admin.products.show')->with(compact('product', 'gallery'));
+    }
+
     public function create($categoryId)
     {
         $product = new Product();
@@ -53,11 +61,4 @@ class ProductsController extends Controller
         return response()->json($uploadedImage);
     }
 
-    public function storeGalleryImage($productId, Request $request)
-    {
-        $gallery = Product::findOrFail($productId)->getGallery();
-        $image = $gallery->addImage($request->file('file'));
-
-        return response()->json($image);
-    }
 }

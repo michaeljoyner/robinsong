@@ -13,6 +13,8 @@ class Collection extends Model implements SluggableInterface, HasMediaConversion
 {
     use SluggableTrait, HasModelImage, HasMediaTrait;
 
+    public $defaultImageSrc = '/images/assets/default.png';
+
     protected $table = 'collections';
 
     protected $fillable = [
@@ -46,8 +48,8 @@ class Collection extends Model implements SluggableInterface, HasMediaConversion
         return $this->categories()->create($attributes);
     }
 
-    public function coverPic()
+    public function coverPic($conversion = null)
     {
-        return $this->modelImage()->getUrl();
+        return $this->modelImage() ? $this->modelImage()->getUrl($conversion ? $conversion : '') : $this->defaultImageSrc;
     }
 }

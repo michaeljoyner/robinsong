@@ -1,0 +1,16 @@
+{
+  "id": 1,
+  "name": "Wedding Book",
+  "price": 25,
+  "quantity": 2,
+  "options": {
+    "choice options": {
+      "ribbon colour": "silver",
+      "cover colour": "ivory"
+    },
+    "text options": {
+      "names": "Jane and Jack",
+      "wedding date": "20 December 2003"
+    }
+  }
+}

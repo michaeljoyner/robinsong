@@ -8,6 +8,6 @@
     {!! Form::email('email', null, ['class' => 'form-control']) !!}
 </div>
 <div class="form-group">
-    <button type="submit" class="btn">Save</button>
+    <button type="submit" class="btn rs-btn">Save</button>
 </div>
 {!! Form::close() !!}

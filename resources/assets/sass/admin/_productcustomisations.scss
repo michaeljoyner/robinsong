@@ -1,0 +1,51 @@
+.product-customisations-vue {
+
+  .product-customisations-heading {
+    color: $primary_blue;
+    margin-top: 50px;
+  }
+
+  .empty-list-state {
+    color: $mid_grey;
+    padding: 10px;
+  }
+
+  .customisations-list {
+    max-width: 300px;
+  }
+
+  .close-icon-btn {
+    color: $danger;
+    padding: 0 10px;
+    font-size: 160%;
+    cursor: pointer;
+    vertical-align: sub;
+  }
+
+  .badge {
+    margin-top: 8px;
+    background: $primary_blue;
+  }
+
+  .add-customisation-form {
+    max-width: 330px;
+    border-top: 3px solid $primary_blue;
+    padding-top: 10px;
+    margin-bottom: 40px;
+
+    input[type=text] {
+      display: inline-block;
+      width: 200px;
+      height: 34px;
+      vertical-align: top;
+      border: 1px solid $primary_blue;
+      padding-left: 10px;
+    }
+
+    label {
+      text-transform: uppercase;
+      font-size: 80%;
+      color: $primary_blue;
+    }
+  }
+}

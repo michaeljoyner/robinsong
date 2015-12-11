@@ -4,10 +4,25 @@
   min-width: 8em;
   background: $primary_blue;
   color: $white;
+
+  &.btn-wide {
+    width: 100%;
+  }
+}
+
+.rs-btn.btn-red {
+  background: $primary_red;
+  color: $white;
 }
 
 .rs-btn.btn-light {
   border: 1px solid $primary_blue;
   color: $primary_blue;
+  background: $white;
+}
+
+.rs-btn.btn-clear-danger {
+  border: 1px solid $danger;
+  color: $danger;
   background: $white;
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -102,5 +103,28 @@ class UsersTest extends TestCase {
         $this->call('DELETE', '/admin/users/'.$user1->id);
 
         $this->seeInDatabase('users', $user1->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function a_user_can_reset_their_password()
+    {
+        $user = factory(User::class)->create(['email' => 'joe@example.com', 'password' => 'password']);
+        $this->actingAs($user);
+
+        $this->visit('/admin/users/password/reset')
+            ->type('password', 'current_password')
+            ->type('morris23', 'password')
+            ->type('morris23', 'password_confirmation')
+            ->press('Reset Password');
+
+        $this->visit('/admin/logout');
+
+        $this->visit('/admin/login')
+            ->type('joe@example.com', 'email')
+            ->type('morris23', 'password')
+            ->press('Login')
+            ->seePageIs('/admin');
     }
 }

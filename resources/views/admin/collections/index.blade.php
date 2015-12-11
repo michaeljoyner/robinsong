@@ -11,9 +11,12 @@
         <hr>
     </div>
     @foreach($collections as $collection)
-        <div class="collection-index-card">
-            <h3>{{ $collection->name }}</h3>
-        </div>
+        <a href="/admin/collections/{{ $collection->id }}"><div class="index-card">
+            <h3 class="index-card-name">{{ $collection->name }}</h3>
+            <img src="{{ $collection->coverPic('web') }}" alt="collection image">
+            <hr>
+            <p class="index-card-description">{{ $collection->description }}</p>
+        </div></a>
     @endforeach
     @include('admin.forms.collectionmodal', [
         'model' => $newCollection,

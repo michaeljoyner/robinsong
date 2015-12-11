@@ -40,6 +40,28 @@ $factory->define(App\Stock\Product::class, function (Faker\Generator $faker) {
         'category_id' => factory(\App\Stock\Category::class)->create()->id,
         'name' => $faker->name,
         'description' => $faker->paragraph(),
-        'price' => $faker->numberBetween(500, 5000)
+        'price' => $faker->numberBetween(500, 5000),
+        'weight' => $faker->numberBetween(20, 5000)
+    ];
+});
+
+$factory->define(App\Stock\ProductOption::class, function (Faker\Generator $faker) {
+    return [
+        'product_id' => factory(\App\Stock\Product::class)->create()->id,
+        'name' => $faker->words(2, true),
+    ];
+});
+
+$factory->define(App\Stock\OptionValue::class, function (Faker\Generator $faker) {
+    return [
+        'product_option_id' => factory(\App\Stock\ProductOption::class)->create()->id,
+        'name' => $faker->words(2, true),
+    ];
+});
+
+$factory->define(App\Stock\Customisation::class, function (Faker\Generator $faker) {
+    return [
+        'product_id' => factory(\App\Stock\Product::class)->create()->id,
+        'name' => $faker->words(2, true),
     ];
 });

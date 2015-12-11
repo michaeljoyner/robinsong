@@ -1,0 +1,38 @@
+.index-card {
+  display: inline-block;
+  vertical-align: top;
+  width: 48%;
+  margin: 10px;
+  border: 1px solid $primary_dark;
+  padding: 10px;
+
+  .index-card-name {
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    color: $primary_blue;
+  }
+
+  .index-card-description {
+    width: 70%;
+    margin: 0 auto;
+    color: $primary_dark;
+  }
+
+  hr {
+    width: 70%;
+    display: block;
+    margin: 10px auto;
+  }
+
+  img {
+    width: 80%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+}
+
+.index-card.smaller-index {
+  width: 28%;
+}
