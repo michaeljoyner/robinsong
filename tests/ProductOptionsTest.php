@@ -47,4 +47,25 @@ class ProductOptionsTest extends TestCase
         ]);
     }
 
+    /**
+     * @test
+     */
+    public function a_products_options_with_values_can_be_fetched_via_api_endpoint()
+    {
+        $product = factory(Product::class)->create();
+        $option = $product->addOption('Ribbon Colour');
+        $option->addValue('Blue');
+        $option->addValue('Red');
+        $option2 = $product->addOption('Cover Colour');
+        $option2->addValue('Pink');
+        $option2->addValue('Purple');
+
+        $response = $this->call('GET', '/api/products/'.$product->id.'/options');
+
+        $this->assertEquals(200, $response->status());
+        $this->assertJson($response->getContent());
+        $this->assertContains('Ribbon Colour', $response->getContent());
+        $this->assertContains('Cover Colour', $response->getContent());
+    }
+
 }

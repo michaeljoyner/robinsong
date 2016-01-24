@@ -1,0 +1,57 @@
+.tag-manager-container {
+  margin: 20px 0;
+  padding: 15px 0;
+  border-bottom: 2px solid $primary_blue;
+  border-top: 2px solid $primary_blue;
+
+  .tag-manager-heading {
+    text-transform: uppercase;
+    color: $primary_blue;
+  }
+  .product-tags {
+    margin-bottom: 15px;
+  }
+
+  .tag-choices {
+    margin-bottom: 15px;
+  }
+
+  .tag-choice-instruction {
+    color: $primary_dark;
+  }
+
+  .product-tag {
+    padding: 5px 8px;
+    margin: 0 10px;
+    background: $primary_red;
+    color: $white;
+    text-transform: uppercase;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px $mid_grey;
+
+    .delete-icon {
+      color: $danger;
+      margin-left: 10px;
+      cursor: pointer;
+      background: $primary_dark;
+      display: inline-block;
+      height: 16px;
+      width: 16px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 16px;
+    }
+  }
+
+  .tag-choice {
+    text-transform: uppercase;
+    margin: 5px 10px;
+    cursor: pointer;
+    color: $mid_grey;
+  }
+
+  .input-label {
+    color: $primary_blue;
+    text-transform: uppercase;
+  }
+}

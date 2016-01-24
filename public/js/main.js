@@ -10666,6 +10666,197 @@ var __vueify_style__ = require("vueify-insert-css").insert("\n\n")
 'use strict';
 
 module.exports = {
+    props: ['optionname', 'optionid'],
+
+    template: '#option-template',
+
+    data: function data() {
+        return {
+            values: [],
+            newvalue: '',
+            active: false
+        };
+    },
+
+    ready: function ready() {
+        this.fetchValues();
+    },
+
+    methods: {
+        addValue: function addValue() {
+            this.$http.post('/admin/productoptions/' + this.optionid + '/values', { 'name': this.newvalue }, function (res) {
+                this.values.push(res);
+            }).error(function (res) {});
+            this.newvalue = '';
+        },
+
+        fetchValues: function fetchValues() {
+            this.$http.get('/admin/productoptions/' + this.optionid + '/values', function (res) {
+                this.$set('values', res);
+            });
+        },
+
+        removeValue: function removeValue(value) {
+            this.$http['delete']('/admin/optionvalues/' + value.id, function (res) {
+                this.values.$remove(value);
+            });
+        }
+    }
+};
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"option-values-wrapper\" v-bind:class=\"{'active': active}\">\n        <div class=\"inner-values-modal\">\n            <span class=\"option-name\" v-on:click=\"active = ! active\">{{ optionname }}</span>\n\n            <div class=\"value-list\" v-show=\"active\">\n                <div class=\"option-values-list-container\">\n                    <p class=\"empty-list-state\" v-show=\"values.length === 0\">Add values for customers to select\n                        from. These will be the options they may select from the drop down menu.</p>\n                    <ul class=\"list-group option-values-list\">\n                        <li class=\"list-group-item\" v-for=\"value in values\">\n                            <span>{{ value.name }}</span>\n                            <span class=\"badge\" v-on:click=\"removeValue(value)\">×</span>\n                        </li>\n                    </ul>\n                </div>\n                <div class=\"add-value-box\">\n                    <input type=\"text\" v-model=\"newvalue\">\n                    <button class=\"btn btn-light rs-btn\" v-on:click=\"addValue\">Add</button>\n                </div>\n                <div class=\"values-modal-footer\">\n                    <button class=\"btn rs-btn\" v-on:click=\"active = ! active\">Done</button>\n                </div>\n            </div>\n        </div>\n    </div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/Users/mooz/work/robin-song/resources/assets/js/components/ProductOption.vue"
+  module.hot.dispose(function () {
+    require("vueify-insert-css").cache["\n\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, module.exports.template)
+  }
+})()}
+},{"vue":11,"vue-hot-reload-api":2,"vueify-insert-css":12}],16:[function(require,module,exports){
+var __vueify_style__ = require("vueify-insert-css").insert("\n\n")
+'use strict';
+
+module.exports = {
+    props: ['location-name', 'location-id'],
+
+    computed: {
+        editForm: function editForm() {
+            return !(this.editing || this.free_shipping_above == '' || this.free_shipping_above == null);
+        }
+    },
+
+    data: function data() {
+        return {
+            limits: [],
+            new_limit: '',
+            new_price: '',
+            free_shipping_above: '',
+            new_free_shipping_price: '',
+            editing: false
+        };
+    },
+
+    ready: function ready() {
+        this.fetchLimits();
+        this.fetchFreeShippingPrice();
+    },
+
+    methods: {
+        fetchLimits: function fetchLimits() {
+            console.log(this.locationId);
+            this.$http.get('/admin/shipping/locations/' + this.locationId + '/weightclasses', function (res) {
+                this.$set('limits', res);
+            });
+        },
+
+        fetchFreeShippingPrice: function fetchFreeShippingPrice() {
+            this.$http.get('/admin/shipping/locations/' + this.locationId + '/getfreeprice', function (res) {
+                this.$set('free_shipping_above', res.free_shipping_above);
+            });
+        },
+
+        getRange: function getRange(index) {
+            if (index === 0) {
+                return '0g - ' + this.limits[index].weight_limit + 'g';
+            }
+
+            return parseInt(this.limits[index - 1].weight_limit) + 1 + 'g - ' + this.limits[index].weight_limit + 'g';
+        },
+
+        addLimit: function addLimit() {
+            if (this.new_limit == "" || this.newPrice == "") {
+                return;
+            }
+
+            this.$http.post('/admin/shipping/locations/' + this.locationId + '/weightclasses', {
+                weight_limit: this.new_limit,
+                price: parseInt(this.new_price * 100)
+            }, function (res) {
+                this.limits.push(res);
+                this.sortLimits();
+            });
+            this.new_limit = '';
+            this.new_price = '';
+        },
+
+        removeLimit: function removeLimit(limit) {
+            this.$http['delete']('/admin/shipping/weightclasses/' + limit.id, function (res) {
+                this.limits.$remove(limit);
+            });
+        },
+
+        sortLimits: function sortLimits() {
+            var sortedLimits = this.limits.sort(function (a, b) {
+                if (a.weight_limit < b.weight_limit) {
+                    return -1;
+                } else if (a.weight_limit > b.weight_limit) {
+                    return 1;
+                }
+                return 0;
+            });
+
+            this.$set('limits', sortedLimits);
+        },
+
+        showEditView: function showEditView() {
+            this.editing = true;
+        },
+
+        setFreeShippingPrice: function setFreeShippingPrice() {
+            if (this.new_shipping_price == '') {
+                return;
+            }
+
+            if (this.new_shipping_price === this.free_shipping_above / 100) {
+                this.editing = false;
+                return;
+            }
+            this.$http.post('/admin/shipping/locations/' + this.locationId + '/setfreeprice', {
+                free_shipping_above: this.new_free_shipping_price * 100
+            }, function (res) {
+                this.$set('free_shipping_above', res.free_shipping_above);
+                this.editing = false;
+            });
+        },
+
+        removeFreeShippingPrice: function removeFreeShippingPrice() {
+            this.$http['delete']('/admin/shipping/locations/' + this.locationId + '/removefreeprice', function (res) {
+                if (res.success) {
+                    this.$set('free_shipping_above', '');
+                    console.log(this.free_shipping_above);
+                }
+            });
+        }
+    }
+};
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"location-box\">\n        <header>\n            <h2>{{ locationName }}</h2>\n            <hr>\n        </header>\n        <div class=\"location-classes\">\n            <table class=\"table\">\n                <thead>\n                <tr>\n                    <td>Weight range</td>\n                    <td>Shipping Price</td>\n                    <td>Actions</td>\n                </tr>\n                </thead>\n                <tbody>\n                <tr v-for=\"limit in limits\">\n                    <td>{{ getRange($index) }}</td>\n                    <td>£{{ limit.price / 100}}</td>\n                    <td><button class=\"btn rs-btn btn-tiny btn-clear-danger\" v-on:click=\"removeLimit(limit)\">delete</button></td>\n                </tr>\n                </tbody>\n            </table>\n        </div>\n        <p class=\"add-weight-class-instruction\">Add a new weight limit and price</p>\n        <form class=\"add-class-form rs-form\">\n            <label for=\"weight-limit\">Upper Weight Limit (grams): </label>\n            <input type=\"number\" id=\"weight-limit\" v-model=\"new_limit\">\n            <label for=\"weight-price\">Shipping Price (£): </label>\n            <input type=\"number\" id=\"weight-price\" v-model=\"new_price\">\n            <button class=\"btn rs-btn btn-light btn-tiny\" v-on:click.prevent=\"addLimit\">Add\n            </button>\n        </form>\n        <p class=\"add-weight-class-instruction\">You can have free shipping above a cretain amount</p>\n        <div class=\"free-shipping-price-form\">\n            <div v-show=\"editForm\">\n                <p class=\"free-shipping-price-notice\">Shipping is free for orders above\n                    <span class=\"free-shipping-price\">£{{ free_shipping_above / 100 }}</span>\n                </p>\n                <button class=\"btn rs-btn btn-light btn-light btn-tiny\" v-on:click=\"showEditView\">edit</button>\n                <button class=\"btn rs-btn btn-clear-danger btn-tiny\" v-on:click=\"removeFreeShippingPrice\">No free shipping</button>\n            </div>\n            <div v-else=\"\">\n                <p>Make shipping free for orders above this price</p>\n                <input type=\"number\" v-model=\"new_free_shipping_price\">\n                <button class=\"btn rs-btn btn-light btn-tiny\" v-on:click=\"setFreeShippingPrice\">Set Price</button>\n            </div>\n        </div>\n    </div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/Users/mooz/work/robin-song/resources/assets/js/components/ShippingLocation.vue"
+  module.hot.dispose(function () {
+    require("vueify-insert-css").cache["\n\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, module.exports.template)
+  }
+})()}
+},{"vue":11,"vue-hot-reload-api":2,"vueify-insert-css":12}],17:[function(require,module,exports){
+var __vueify_style__ = require("vueify-insert-css").insert("\n\n")
+'use strict';
+
+module.exports = {
     props: ['default', 'url', 'shape', 'size'],
 
     data: function data() {
@@ -10758,7 +10949,266 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"vue":11,"vue-hot-reload-api":2,"vueify-insert-css":12}],16:[function(require,module,exports){
+},{"vue":11,"vue-hot-reload-api":2,"vueify-insert-css":12}],18:[function(require,module,exports){
+var __vueify_style__ = require("vueify-insert-css").insert("\n\n")
+'use strict';
+
+module.exports = {
+    props: ['productid', 'taglist'],
+
+    template: '#tag-manager-template',
+
+    data: function data() {
+        return {
+            alltags: [],
+            producttags: [],
+            newtag: ''
+        };
+    },
+
+    computed: {
+        tagchoices: function tagchoices() {
+            var self = this;
+            return this.alltags.filter(function (tag) {
+                return self.producttags.indexOf(tag) === -1;
+            });
+        }
+    },
+
+    ready: function ready() {
+        var tagArray = this.taglist.split(',');
+        if (tagArray.length === 1 && tagArray[0] === '') {
+            tagArray = [];
+        }
+        this.$set('producttags', tagArray);
+        this.fetchAllTags();
+    },
+
+    methods: {
+        fetchAllTags: function fetchAllTags() {
+            this.$http.get('/admin/tags', function (res) {
+                this.$set('alltags', res.tags);
+            });
+        },
+
+        syncTags: function syncTags() {
+            this.$http.post('/admin/products/' + this.productid + '/tags', { tags: this.producttags }, function (res) {
+                this.$set('producttags', res.tags);
+            });
+        },
+
+        addTagToProduct: function addTagToProduct(tag) {
+            this.producttags.push(tag);
+            this.syncTags();
+        },
+
+        addTag: function addTag() {
+            if (this.newtag === '') {
+                return;
+            }
+
+            this.alltags.push(this.newtag);
+            this.addTagToProduct(this.newtag);
+            this.newtag = '';
+        },
+
+        forgetTag: function forgetTag(tag) {
+            this.producttags.$remove(tag);
+            this.syncTags();
+        }
+    }
+};
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"tag-manager-container\">\n        <h4 class=\"tag-manager-heading\">Product Tags:</h4>\n        <div class=\"product-tags\">\n                <span class=\"product-tag\" v-for=\"tag in producttags\">\n                    {{ tag }}\n                    <span class=\"delete-icon\" v-on:click=\"forgetTag(tag)\">×</span>\n                </span>\n        </div>\n        <div class=\"tag-choices\">\n            <p class=\"tag-choice-instruction\">Click on a tag below select for product</p>\n                <span class=\"tag-choice\" v-for=\"choice in tagchoices\" v-on:click=\"addTagToProduct(choice)\">{{ choice }}</span>\n        </div>\n        <div class=\"add-tag-box\">\n            <label class=\"input-label\">Add a tag: </label>\n            <input type=\"text\" class=\"new-tag-input\" v-model=\"newtag\" v-on:keypress.enter=\"addTag\">\n        </div>\n    </div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/Users/mooz/work/robin-song/resources/assets/js/components/TagManager.vue"
+  module.hot.dispose(function () {
+    require("vueify-insert-css").cache["\n\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, module.exports.template)
+  }
+})()}
+},{"vue":11,"vue-hot-reload-api":2,"vueify-insert-css":12}],19:[function(require,module,exports){
+var __vueify_style__ = require("vueify-insert-css").insert("\n\n")
+'use strict';
+
+module.exports = {
+    props: ['url', 'initial', 'ontext', 'offtext', 'onclass', 'offclass', 'toggleprop'],
+
+    template: '#toggle-btn-template',
+
+    data: function data() {
+        return {
+            state: 0,
+            syncing: false
+        };
+    },
+
+    computed: {
+        buttonText: function buttonText() {
+            if (this.syncing) {
+                return 'Wait...';
+            }
+
+            return this.state === 1 ? this.ontext : this.offtext;
+        }
+    },
+
+    ready: function ready() {
+        this.$set('state', parseInt(this.initial));
+    },
+
+    methods: {
+        toggleState: function toggleState() {
+            var messageObj = {};
+            if (this.syncing) {
+                return;
+            }
+            this.syncing = true;
+            messageObj[this.toggleprop] = !this.state;
+            this.$http.post(this.url, messageObj, function (res) {
+                this.$set('state', res.new_state ? 1 : 0);
+                this.syncing = false;
+            });
+        }
+    }
+};
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"btn rs-btn btn-light\" v-bind:class=\"{ 'btn-clear-danger': state, 'btn-light': !state}\" v-on:click=\"toggleState\">\n        {{ buttonText }}\n    </div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/Users/mooz/work/robin-song/resources/assets/js/components/Togglebutton.vue"
+  module.hot.dispose(function () {
+    require("vueify-insert-css").cache["\n\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, module.exports.template)
+  }
+})()}
+},{"vue":11,"vue-hot-reload-api":2,"vueify-insert-css":12}],20:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+
+    productImageVue: {
+        el: '#product-image-vue'
+    },
+
+    productOptionsVue: {
+        el: '#product-options-vue',
+
+        data: {
+            options: [],
+            newoption: '',
+            product: ''
+        },
+
+        ready: function ready() {
+            var id = document.querySelector('#product-options-vue').getAttribute('data-product');
+            this.$set('product', id);
+            this.fetchOptions();
+        },
+
+        methods: {
+            addOption: function addOption() {
+                this.$http.post('/admin/products/' + this.product + '/options', { 'name': this.newoption }, function (res) {
+                    this.options.push(res);
+                }).error(function (res) {
+                    console.log(res);
+                });
+                this.newoption = '';
+            },
+
+            fetchOptions: function fetchOptions() {
+                this.$http.get('/admin/products/' + this.product + '/options', function (res) {
+                    this.$set('options', res);
+                });
+            },
+
+            removeOption: function removeOption(option) {
+                this.$http['delete']('/admin/productoptions/' + option.id, function (res) {
+                    this.options.$remove(option);
+                });
+            }
+        }
+    },
+
+    productCustomisationVue: {
+        el: '#product-customisations-vue',
+
+        data: {
+            customisations: [],
+            newcustomisation: {
+                name: '',
+                longform: false
+            },
+            product: ''
+
+        },
+
+        ready: function ready() {
+            var id = document.querySelector('#product-customisations-vue').getAttribute('data-product');
+            this.$set('product', id);
+            this.fetchCustomisations();
+        },
+
+        methods: {
+            fetchCustomisations: function fetchCustomisations() {
+                this.$http.get('/admin/products/' + this.product + '/customisations', function (res) {
+                    this.$set('customisations', res);
+                });
+            },
+
+            addCustomisation: function addCustomisation() {
+                this.$http.post('/admin/products/' + this.product + '/customisations', {
+                    'name': this.newcustomisation.name,
+                    'longform': this.newcustomisation.longform
+                }, function (res) {
+                    this.customisations.push(res);
+                });
+                this.newcustomisation.name = '';
+                this.newcustomisation.longform = false;
+            },
+
+            removeCustomisation: function removeCustomisation(customisation) {
+                this.$http['delete']('/admin/customisations/' + customisation.id, function (res) {
+                    this.customisations.$remove(customisation);
+                });
+            }
+        }
+    },
+
+    tagApp: {
+        el: '#tag-app'
+    },
+
+    galleryApp: {
+        el: '#gallery-app',
+
+        events: {
+            'image-added': function imageAdded(image) {
+                this.$broadcast('add-image', image);
+            }
+        }
+    },
+
+    toggleBtnVue: {
+        el: '#toggle-available-app'
+    }
+
+};
+
+},{}],21:[function(require,module,exports){
 'use strict';
 
 var Vue = require('vue');
@@ -10768,12 +11218,19 @@ if (document.querySelector('#x-token')) {
     Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#x-token').getAttribute('content');
 }
 
+var app = app || {};
+app.vueConstructorObjects = require('./components/vueconstructorobjects.js');
+window.app = app;
+
 Vue.component('gallery-show', require('./components/Galleryshow.vue'));
 Vue.component('singleupload', require('./components/Singleupload.vue'));
 Vue.component('dropzone', require('./components/Dropzone.vue'));
-
+Vue.component('shipping-location', require('./components/ShippingLocation.vue'));
+Vue.component('toggle-button', require('./components/Togglebutton.vue'));
+Vue.component('tag-manager', require('./components/TagManager.vue'));
+Vue.component('product-option', require('./components/ProductOption.vue'));
 window.Vue = Vue;
 
-},{"./components/Dropzone.vue":13,"./components/Galleryshow.vue":14,"./components/Singleupload.vue":15,"vue":11,"vue-resource":4}]},{},[16]);
+},{"./components/Dropzone.vue":13,"./components/Galleryshow.vue":14,"./components/ProductOption.vue":15,"./components/ShippingLocation.vue":16,"./components/Singleupload.vue":17,"./components/TagManager.vue":18,"./components/Togglebutton.vue":19,"./components/vueconstructorobjects.js":20,"vue":11,"vue-resource":4}]},{},[21]);
 
 //# sourceMappingURL=main.js.map

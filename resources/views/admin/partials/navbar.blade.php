@@ -16,9 +16,10 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a href="/admin/products">Products</a></li>
+                <li><a href="/admin/products/index">Products</a></li>
                 <li><a href="/admin/collections">Collections</a></li>
-                <li><a href="/admin/blog">Blog</a></li>
+                <li><a href="/admin/shipping">Shipping Rules</a></li>
+                <li><a href="/admin/orders">Orders</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">

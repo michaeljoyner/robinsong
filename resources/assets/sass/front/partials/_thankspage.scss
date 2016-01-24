@@ -1,0 +1,19 @@
+.thanks-banner {
+  min-height: 500px;
+  background-image: url(../../images/assets/thanks.jpeg);
+  background-size: cover;
+  margin-bottom: 150px;
+  margin-top: 60px;
+
+  p {
+    padding-top: 220px;
+    font-family: $crafty;
+    color: $primary_red;
+    font-size: 8em;
+    text-align: center;
+  }
+}
+
+.thank-you-section {
+  padding: 50px 0;
+}

@@ -3,15 +3,17 @@
 namespace App\Stock;
 
 use App\HasModelImage;
+use App\Services\BreadcrumbableInterface;
+use App\Services\BreadcrumbsTrait;
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
 
-class Category extends Model implements SluggableInterface, HasMediaConversions
+class Category extends Model implements SluggableInterface, HasMediaConversions, BreadcrumbableInterface
 {
-    use SluggableTrait, HasMediaTrait, HasModelImage;
+    use SluggableTrait, HasMediaTrait, HasModelImage, BreadcrumbsTrait;
 
     public $defaultImageSrc = '/images/assets/default.png';
 
@@ -22,15 +24,22 @@ class Category extends Model implements SluggableInterface, HasMediaConversions
         'description'
     ];
 
+    protected $breadcrumblings = [
+        'build_name_from' => 'name',
+        'url_unique'      => 'slug',
+        'url_base'        => 'categories',
+        'parent'          => 'collection'
+    ];
+
     protected $sluggable = [
         'build_from' => 'name',
-        'save_to' => 'slug'
+        'save_to'    => 'slug'
     ];
 
     public function registerMediaConversions()
     {
         $this->addMediaConversion('thumb')
-            ->setManipulations(['w' => 200, 'h' => 200, 'fit' => 'crop'])
+            ->setManipulations(['w' => 300, 'h' => 300, 'fit' => 'crop'])
             ->performOnCollections('default');
 
         $this->addMediaConversion('web')

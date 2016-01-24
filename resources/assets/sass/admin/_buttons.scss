@@ -10,6 +10,13 @@
   }
 }
 
+.rs-btn.btn-tiny {
+  font-size: 70%;
+  padding: 5px 3px;
+  min-width: 0;
+  text-transform: uppercase;
+}
+
 .rs-btn.btn-red {
   background: $primary_red;
   color: $white;

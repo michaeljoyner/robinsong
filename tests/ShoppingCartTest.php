@@ -1,5 +1,9 @@
 <?php
+use App\Shipping\ShippingLocation;
+use App\Shipping\WeightClass;
+use App\Stock\Product;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 /**
  * Created by PhpStorm.
@@ -10,20 +14,25 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 class ShoppingCartTest extends TestCase
 {
 
+    use DatabaseMigrations;
+
     /**
      * @test
      */
     public function an_item_can_be_added_to_the_cart_via_ajax_endpoint()
     {
-        $payload = file_get_contents('tests/additemdata.json');
+        $product = factory(Product::class)->create();
         $this->withoutMiddleware();
 
-        $response = $this->call('POST', '/api/cart', json_decode($payload, true));
-        $this->assertEquals(200, $response->status());
+        $response = $this->call('POST', '/api/cart', [
+            'id' => $product->id,
+            'quantity' => 2,
+            'options' => []
+        ]);
 
-        $this->assertEquals(2, Cart::count(), 'Cart should have two items');
+        $this->assertEquals(200, $response->status());
         $this->assertEquals(1, Cart::count(false), 'Cart should have one row');
-        $this->assertEquals(50, Cart::total(), 'The price of the cart item should match price given');
+        $this->assertEquals(2, Cart::count(), 'Cart should have two items');
     }
 
     /**
@@ -82,8 +91,90 @@ class ShoppingCartTest extends TestCase
         $this->assertFalse(Cart::content()->contains('rowid', $rowid), 'item should not be in collection anymore');
     }
 
+    /**
+     * @test
+     */
+    public function a_summary_of_the_cart_info_can_be_retrieved_as_json()
+    {
+        $this->fillCartWithTwoItems();
+        $this->setUpShippingLocationsandWeights();
+
+        $response = $this->call('GET', '/api/cart/summary');
+        $this->assertEquals(200, $response->status());
+        $this->assertJson($response->getContent());
+
+        $result = json_decode($response->getContent(), true);
+        $this->assertContains('"item_count":2', $response->getContent(), 'should have summary of number of items');
+        $this->assertContains('"product_count":2', $response->getContent(), 'should have summary of number of products');
+        $this->assertEquals(55, $result['total_price'], 'should have correct total price');
+    }
+
+    /**
+     * @test
+     */
+    public function shipping_prices_for_the_carts_content_can_be_fetched_via_api_endpoint()
+    {
+        $this->fillCartWithTwoItems();
+        $this->setUpShippingLocationsandWeights();
+
+        $response = $this->call('GET', '/api/cart/shipping');
+        $this->assertEquals(200, $response->status());
+        $this->assertJson($response->getContent());
+
+        $expected = [
+            ['name' => 'United Kingdom', 'price' => 700, 'location_id' => 1],
+            ['name' => 'International', 'price' => 1100, 'location_id' => 2]
+        ];
+        $this->assertEquals($expected, json_decode($response->getContent(), true));
+    }
+
+    /**
+     * @test
+     */
+    public function it_calculates_by_the_correct_weight_when_there_is_multilpe_quantities_of_a_product()
+    {
+        $this->fillCartWithTwoItems();
+        foreach(range(1,3) as $index) {
+            Cart::add(1, 'Wedding Book', 1, 25, [
+                'choice options' => [
+                    'ribbon colour' => 'silver',
+                    'cover colour' => 'ivory'
+                ],
+                'text options' => [
+                    'names' => 'Jane and Jack',
+                    'wedding date' => '20 December 2003'
+                ]
+            ]);
+        }
+
+        $this->setUpShippingLocationsandWeights();
+
+        $expectedShippingInfo = [
+            ['name' => 'United Kingdom', 'price' => 1000, 'location_id' => 1],
+            ['name' => 'International', 'price' => 1500, 'location_id' => 2]
+        ];
+
+        $response = $this->call('GET', '/api/cart/shipping');
+        $this->assertEquals(200, $response->status());
+
+        $this->assertEquals($expectedShippingInfo, json_decode($response->getContent(), true));
+    }
+
+    /**
+     * @test
+     */
+    public function the_cart_can_be_emptied_via_api_endpoint()
+    {
+        $this->fillCartWithTwoItems();
+
+        $response = $this->call('GET', '/api/cart/empty');
+        $this->assertEquals(200, $response->status());
+        $this->assertEquals(0, Cart::count());
+    }
+
     private function fillCartWithTwoItems()
     {
+        factory(Product::class, 2)->create(['weight' => 25]);
         Cart::add(1, 'Wedding Book', 1, 25, [
             'choice options' => [
                 'ribbon colour' => 'silver',
@@ -104,6 +195,24 @@ class ShoppingCartTest extends TestCase
                 'birth date' => '20 December 2003'
             ]
         ]);
+    }
+
+    private function setUpShippingLocationsandWeights()
+    {
+        $location = factory(ShippingLocation::class)->create(['name' => 'United Kingdom']);
+        $location2 = factory(ShippingLocation::class)->create(['name' => 'International']);
+
+        factory(WeightClass::class)->create(['weight_limit' => 100, 'price' => 700, 'shipping_location_id' => $location->id]);
+        factory(WeightClass::class)->create(['weight_limit' => 200, 'price' => 1000, 'shipping_location_id' => $location->id]);
+
+        factory(WeightClass::class)->create(['weight_limit' => 100, 'price' => 1100, 'shipping_location_id' => $location2->id]);
+        factory(WeightClass::class)->create(['weight_limit' => 200, 'price' => 1500, 'shipping_location_id' => $location2->id]);
+
+        ShippingLocation::all()->each(function($item) {
+            if($item->id > 2) {
+                $item->delete();
+            }
+        });
     }
 
 }

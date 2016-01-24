@@ -33,6 +33,32 @@ class ProductsTest extends TestCase
     /**
      * @test
      */
+    public function a_product_is_unavailable_by_default()
+    {
+        $product = factory(Product::class)->create();
+
+        $this->assertFalse($product->available);
+    }
+
+    /**
+     * @test
+     */
+    public function a_product_availability_can_be_set_by_posting_to_api_endpoint()
+    {
+        $product = factory(Product::class)->create();
+        $this->assertFalse($product->available);
+
+        $this->withoutMiddleware();
+        $response = $this->call('POST', '/admin/api/products/'.$product->id.'/availability', ['available' => true]);
+        $this->assertEquals(200, $response->status());
+
+        $product = Product::findOrFail($product->id);
+        $this->assertTrue($product->available);
+    }
+
+    /**
+     * @test
+     */
     public function a_product_name_description_and_price_can_be_edited()
     {
         $product = factory(Product::class)->create();
@@ -93,6 +119,24 @@ class ProductsTest extends TestCase
         $product = factory(Product::class)->create();
 
         $this->assertEquals(1, $product->galleries->count(), 'the product should have precisely one gallery');
+    }
+
+    /**
+     * @test
+     */
+    public function products_can_searched_for_by_name_with_a_like_term()
+    {
+        factory(Product::class)->create(['name' => 'foobar']);
+        factory(Product::class)->create(['name' => 'foobaz']);
+        factory(Product::class)->create(['name' => 'bazbar']);
+
+        $this->withoutMiddleware();
+        $response = $this->call('GET', '/admin/api/products/search/foo');
+        $this->assertEquals(200, $response->status());
+        $this->assertCount(2, json_decode($response->getContent(), true), 'result should have 2 items');
+        $this->assertContains('foobar', $response->getContent());
+        $this->assertContains('foobaz', $response->getContent());
+        $this->assertNotContains('bazbar', $response->getContent());
     }
 
 }

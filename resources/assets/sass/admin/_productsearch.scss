@@ -1,0 +1,31 @@
+.product-search-results-section {
+
+  .results-list {
+    list-style-type: none;
+    padding: 0;
+
+    li {
+      padding: 10px;
+      margin: 10px;
+
+      img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: 3px solid $primary_red;
+      }
+
+      a {
+        color: $text_grey;
+        font-size: 1.3em;
+        padding: 0 30px;
+      }
+
+      .result-price {
+        color: $primary_blue;
+        font-size: 1.3em;
+        padding: 0 20px;
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+#product-gallery-app {
+
+  .main-product-image-container {
+    min-height: 300px;
+    position: relative;
+
+    .main-product-image {
+      cursor: crosshair;
+    }
+
+    #magnifier {
+      position: absolute;
+      z-index: 1000;
+      background: $secondary_orange;
+      pointer-events: none;
+      border: 1px solid $white;
+    }
+  }
+
+  .thumbnail-container {
+
+    img {
+      width: 60px;
+      height: 60px;
+      margin: 10px;
+    }
+  }
+}

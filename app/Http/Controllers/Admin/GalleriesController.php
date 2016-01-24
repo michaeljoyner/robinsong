@@ -17,6 +17,7 @@ class GalleriesController extends Controller
             return [
                 'image_id' => $image->id,
                 'src' => $image->getUrl(),
+                'web_src' => $image->getUrl('web'),
                 'thumb_src' => $image->getUrl('thumb')
             ];
         });

@@ -12,11 +12,26 @@
 */
 
 Route::get('/', 'PagesController@home');
+Route::get('thanks', 'PagesController@thanks');
+Route::get('collections', 'PagesController@collections');
+Route::get('collections/{slug}', 'PagesController@categories');
+Route::get('categories/{slug}', 'PagesController@products');
+Route::get('product/{slug}', 'PagesController@product');
+Route::get('cart', 'PagesController@showCart');
+Route::get('checkout', 'CheckoutController@showCheckout');
+Route::post('checkout', 'CheckoutController@doCheckout');
+
+Route::get('api/products/{id}/options', 'Admin\ProductOptionsController@getOptionsAndValuesForProduct');
 
 Route::get('api/cart', 'CartController@getCartItems');
+Route::get('api/cart/summary', 'CartController@getCartSummary');
+Route::get('api/cart/empty', 'CartController@emptyCart');
+Route::get('api/cart/shipping', 'CartController@shippingPricesForWeight');
 Route::post('api/cart', 'CartController@addItem');
 Route::post('api/cart/{rowid}', 'CartController@updateItemQuantity');
 Route::delete('api/cart/{rowid}', 'CartController@deleteItem');
+
+Route::get('admin/uploads/galleries/{galleryId}/images', 'Admin\GalleriesController@index');
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
 
@@ -46,12 +61,19 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
         Route::post('categories/{categoryId}', 'CategoriesController@update');
         Route::delete('categories/{categoryId}', 'CategoriesController@delete');
 
+        Route::get('products/index', 'ProductsSearchController@showSearchPage');
         Route::get('products/{productId}', 'ProductsController@show');
         Route::get('categories/{categoryId}/products/create', 'ProductsController@create');
         Route::post('categories/{categoryId}/products', 'ProductsController@store');
         Route::get('products/{productId}/edit', 'ProductsController@edit');
         Route::post('products/{productId}', 'ProductsController@update');
         Route::delete('products/{productId}', 'ProductsController@delete');
+        Route::post('api/products/{productId}/availability', 'ProductsController@setAvailability');
+
+        Route::post('products/{productId}/tags', 'ProductTagsController@syncTags');
+        Route::get('products/{productId}/tags', 'ProductTagsController@getProductTags');
+
+        Route::get('tags', 'TagsController@index');
 
         Route::get('products/{productId}/options', 'ProductOptionsController@index');
         Route::post('products/{productId}/options', 'ProductOptionsController@store');
@@ -65,21 +87,44 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
         Route::post('products/{productId}/customisations', 'CustomisationsController@store');
         Route::delete('customisations/{customisationId}', 'CustomisationsController@delete');
 
+        Route::get('api/products/search/{term}', 'ProductsSearchController@search');
+
         Route::post('uploads/collections/{collectionId}/cover', 'CollectionsController@storeCoverPic');
         Route::post('uploads/categories/{categoryId}/cover', 'CategoriesController@storeCoverPic');
         Route::post('uploads/products/{productId}/cover', 'ProductsController@storeCoverPic');
 
         Route::post('uploads/products/{productId}/gallery', 'ProductsController@storeGalleryImage');
 
-        Route::get('uploads/galleries/{galleryId}/images', 'GalleriesController@index');
+
         Route::post('uploads/galleries/{galleryId}/images', 'GalleriesController@storeImage');
         Route::delete('uploads/galleries/{galleryId}/images/{imageId}', 'GalleriesController@deleteImage');
 
+        Route::get('shipping/locations', 'ShippingRulesController@getLocations');
+        Route::post('shipping/locations', 'ShippingRulesController@addRuleLocation');
+        Route::post('shipping/locations/{id}', 'ShippingRulesController@updateRuleLocation');
+        Route::delete('shipping/locations/{id}', 'ShippingRulesController@deleteRuleLocation');
+        Route::get('shipping/locations/{locationId}/getfreeprice', 'ShippingRulesController@getFreeShippingPrice');
+        Route::post('shipping/locations/{locationId}/setfreeprice', 'ShippingRulesController@setFreeShippingPrice');
+        Route::delete('shipping/locations/{locationId}/removefreeprice', 'ShippingRulesController@removeFreeShippingPrice');
+
+        Route::get('shipping/locations/{locationId}/weightclasses', 'ShippingRulesController@getLocationWeightClasses');
+        Route::post('shipping/locations/{locationId}/weightclasses', 'ShippingRulesController@createWeightClass');
+        Route::post('shipping/weightclasses/{classId}', 'ShippingRulesController@updateWeightClass');
+        Route::delete('shipping/weightclasses/{classId}', 'ShippingRulesController@deleteWeightClass');
+        Route::get('shipping', 'ShippingRulesController@show');
+
+        Route::get('orders/{status?}', 'OrdersController@index');
+        Route::get('orders/show/{orderId}', 'OrdersController@show');
+
+        Route::post('api/orders/{orderId}/fulfill', 'OrdersController@setFulfilledStatus');
+        Route::post('api/orders/{orderId}/cancel', 'OrdersController@setCancelledStatus');
     });
 
     Route::group(['middleware' => 'guest'], function() {
         Route::get('login', 'AuthController@showLogin');
         Route::post('login', 'AuthController@doLogin');
+
+
     });
 
 });

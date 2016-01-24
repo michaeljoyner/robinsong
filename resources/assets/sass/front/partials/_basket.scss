@@ -1,0 +1,36 @@
+#basket {
+  position: relative;
+}
+
+.basket-popout {
+  background: $primary_dark;
+  padding: 15px;
+  position: absolute;
+  top: 150%;
+  right: 0;
+  width: 300px;
+  transition: .7s;
+  transform: translate3d(0, -150%, 0);
+  z-index: -10;
+
+  &.show {
+    transform: translate3d(0,0,0);
+  }
+
+  .basket-counts {
+    float: left;
+  }
+
+  .basket-stat {
+    color: $white;
+    text-transform: uppercase;
+    font-size: 80%;
+    font-weight: 300;
+    text-align: left;
+  }
+
+  .basket-price {
+    color: $primary_red;
+    font-size: 150%;
+  }
+}

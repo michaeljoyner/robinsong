@@ -1,0 +1,21 @@
+.rs-product-item {
+
+  .product-item-heading {
+    font-family: 'Amatic SC', Helvetica Neue, Helvetica, Arial;
+    color: $primary_red;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 26px;
+  }
+
+  .product-item-price {
+    width: 8em;
+    background: $primary_blue;
+    color: $white;
+    font-size: 120%;
+    font-weight: 700;
+    text-align: center;
+    margin: 15px auto;
+    padding: .5em;
+  }
+}

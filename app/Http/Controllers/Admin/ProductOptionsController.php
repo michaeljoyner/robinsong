@@ -36,4 +36,25 @@ class ProductOptionsController extends Controller
 
         return response()->json('ok');
     }
+
+    public function getOptionsAndValuesForProduct($id)
+    {
+        $options = Product::findOrFail($id)->options;
+        $result = [];
+        foreach($options as $option) {
+            $result[] = [
+                'name' => $option->name,
+                'id' => $option->id,
+                'selected' => '',
+                'values' => $option->values->map(function($value) {
+                return [
+                    'id' => $value->id,
+                    'name' => $value->name
+                ];
+            })->toArray()
+                ];
+        }
+
+        return response()->json($result);
+    }
 }

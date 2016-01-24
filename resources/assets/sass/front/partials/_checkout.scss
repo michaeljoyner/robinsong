@@ -1,0 +1,61 @@
+.checkout-form {
+
+  section {
+    margin: 30px auto;
+  }
+
+  .form-section-header {
+    color: $primary_red;
+  }
+
+  .shipping-selections {
+
+    label {
+      color: $primary_dark;
+      font-size: 120%;
+      padding: 20px;
+    }
+  }
+
+  label {
+    color: $primary_blue;
+    display: inline-block;
+  }
+
+  .form-input-row {
+    label {
+      font-size: 90%;
+    }
+    input[type=text], input[type=email], input[type=password] {
+      height: 32px;
+      width: 100%;
+      padding-left: 8px;
+    }
+  }
+
+  .order-table {
+    width: 100%;
+
+    tbody tr {
+      border-bottom: 1px solid $primary_dark;
+    }
+
+    td.price {
+      text-align: right;
+    }
+
+    tfoot {
+      text-align: right;
+    }
+  }
+
+  .pay-btn {
+    display: block;
+    width: 90%;
+    max-width: 250px;
+    padding: 10px;
+    background: $primary_red;
+    color: $white;
+    margin: 20px auto;
+  }
+}

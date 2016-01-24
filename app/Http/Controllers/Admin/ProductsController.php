@@ -42,9 +42,10 @@ class ProductsController extends Controller
 
     public function update($productId, Request $request)
     {
-        $product = Product::findOrFail($productId)->update($request->all());
+        $product = Product::findOrFail($productId);
+        $product->update($request->all());
 
-        return redirect('admin');
+        return redirect('admin/products/'.$product->id);
     }
 
     public function delete($productId)
@@ -59,6 +60,14 @@ class ProductsController extends Controller
         $uploadedImage = Product::findOrFail($productId)->setModelImage($request->file('file'));
 
         return response()->json($uploadedImage);
+    }
+
+    public function setAvailability($productId, Request $request)
+    {
+        $product = Product::findOrFail($productId);
+        $originalStatus = $product->available;
+        $set = $product->setAvailability($request->available);
+        return response()->json(['new_state' => $set ? $request->available : $originalStatus]);
     }
 
 }

@@ -3,15 +3,17 @@
 namespace App\Stock;
 
 use App\HasModelImage;
+use App\Services\BreadcrumbableInterface;
+use App\Services\BreadcrumbsTrait;
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
 
-class Product extends Model implements SluggableInterface, HasMediaConversions
+class Product extends Model implements SluggableInterface, HasMediaConversions, BreadcrumbableInterface
 {
-    use SluggableTrait, HasMediaTrait, HasModelImage;
+    use SluggableTrait, HasMediaTrait, HasModelImage, BreadcrumbsTrait;
 
     public $defaultImageSrc = '/images/assets/default.png';
 
@@ -21,19 +23,31 @@ class Product extends Model implements SluggableInterface, HasMediaConversions
         'name',
         'description',
         'price',
-        'weight'
+        'weight',
+        'available'
     ];
 
     protected $sluggable = [
         'build_from' => 'name',
-        'save_to' => 'slug'
+        'save_to'    => 'slug'
+    ];
+
+    protected $breadcrumblings = [
+        'build_name_from' => 'name',
+        'url_unique'      => 'slug',
+        'url_base'        => 'product',
+        'parent'          => 'category'
+    ];
+
+    protected $casts = [
+        'available' => 'boolean'
     ];
 
     public static function boot()
     {
         parent::boot();
 
-        static::created(function($product) {
+        static::created(function ($product) {
             $product->addGallery('product images');
         });
     }
@@ -52,6 +66,27 @@ class Product extends Model implements SluggableInterface, HasMediaConversions
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
+    public function setTags($tags)
+    {
+        $tagIds = collect($tags)->map(function ($tagName) {
+            return Tag::makeTag(['name' => $tagName])->id;
+        })->toArray();
+
+        return $this->tags()->sync($tagIds);
+    }
+
+    public function getTagsList()
+    {
+        return $this->tags->map(function ($tag) {
+            return $tag->name;
+        })->toArray();
     }
 
     public function coverPic($conversion = null)
@@ -98,4 +133,13 @@ class Product extends Model implements SluggableInterface, HasMediaConversions
     {
         return $this->customisations()->create(['name' => $name, 'longform' => $isLongForm ? 1 : 0]);
     }
+
+    public function setAvailability($available)
+    {
+        $this->available = $available;
+
+        return $this->save();
+    }
+
+
 }

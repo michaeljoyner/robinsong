@@ -1,0 +1,41 @@
+.location-box {
+  margin: 20px 0;
+  padding: 20px;
+  border-bottom: 2px solid $primary_red;
+}
+
+.shipping-location-container {
+  position: relative;
+
+  .location-delete-btn {
+    position: absolute;
+    right: 50px;
+    top: 40px
+  }
+}
+
+.add-location-input {
+  height: 34px;
+  padding-left: 6px;
+  line-height: 34px;
+  width: 230px;
+}
+
+.add-weight-class-instruction {
+  color: $primary_blue;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+form.rs-form.add-class-form {
+  border-top: 2px solid $primary_blue;
+  padding-top: 10px;
+  max-width: 700px;
+  margin-bottom: 20px;
+}
+
+.free-shipping-price-form {
+  border-top: 2px solid $primary_blue;
+  padding-top: 10px;
+  max-width: 700;
+}
