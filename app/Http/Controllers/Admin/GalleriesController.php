@@ -27,6 +27,7 @@ class GalleriesController extends Controller
 
     public function storeImage($galleryId, Request $request)
     {
+        $this->validate($request, ['file' => 'required|image']);
         $image = ProductGallery::findOrFail($galleryId)->addImage($request->file('file'));
 
         return response()->json([

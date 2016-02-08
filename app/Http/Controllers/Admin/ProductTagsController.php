@@ -12,6 +12,7 @@ class ProductTagsController extends Controller
 {
     public function syncTags($productId, Request $request)
     {
+        $this->validate($request, ['tags' => 'required|array']);
         $product = Product::findOrFail($productId);
         $product->setTags($request->tags);
 

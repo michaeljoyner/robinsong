@@ -11229,6 +11229,7 @@ Vue.component('shipping-location', require('./components/ShippingLocation.vue'))
 Vue.component('toggle-button', require('./components/Togglebutton.vue'));
 Vue.component('tag-manager', require('./components/TagManager.vue'));
 Vue.component('product-option', require('./components/ProductOption.vue'));
+
 window.Vue = Vue;
 
 },{"./components/Dropzone.vue":13,"./components/Galleryshow.vue":14,"./components/ProductOption.vue":15,"./components/ShippingLocation.vue":16,"./components/Singleupload.vue":17,"./components/TagManager.vue":18,"./components/Togglebutton.vue":19,"./components/vueconstructorobjects.js":20,"vue":11,"vue-resource":4}]},{},[21]);

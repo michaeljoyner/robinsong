@@ -25,7 +25,7 @@
     <div class="product-summary-section row">
         <div class="col-md-6 product-details">
             <p class="lead">{{ $product->description }}</p>
-            <p class="lead product-price"><strong>Price: </strong>&pound;{{ $product->price / 100 }}</p>
+            <p class="lead product-price"><strong>Price: </strong>&pound;{{ $product->priceInPounds() }}</p>
             <p class="lead product-price"><strong>Weight: </strong>{{ $product->weight }}g</p>
             <div id="tag-app">
                 <tag-manager productid="{{ $product->id }}"

@@ -6,14 +6,13 @@
     @include('front.partials.navbar')
     <div class="w-section section slide-section">
         <div class="w-container wider slider-container">
-            <div data-animation="slide" data-duration="500" data-infinite="1" class="w-slider slider">
+            <div data-animation="slide" data-duration="1000" data-infinite="1" data-autoplay="1" data-delay="3000" class="w-slider slider">
                 <div class="w-slider-mask slide-mask">
-                    <div class="w-slide slide slide-1"></div>
-                    <div class="w-slide slide slide-2"></div>
-                    <div class="w-slide slide slide-3"></div>
-                    <div class="w-slide slide slide-4">
-                        <img src="{{ asset('images/assets/marriage.jpg') }}" alt="image">
-                    </div>
+                    @foreach($sliderImages as $image)
+                        <div class="w-slide slide">
+                            <img src="{{ $image->getUrl('wide') }}" alt="image">
+                        </div>
+                    @endforeach
                 </div>
                 <div class="w-slider-arrow-left slide-arrow">
                     <div class="w-icon-slider-left slider-icon"></div>
@@ -26,21 +25,26 @@
         </div>
     </div>
     <div class="home-intro-section w-section section w-container">
-        <p class="p1 large-lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias commodi dignissimos dolorem dolorum error, esse ipsam ipsum minus neque nobis nulla perspiciatis placeat quaerat quia, ratione repellat sapiente soluta veniam?</p>
+        <p class="p1 large-lead">{{ $intro }}</p>
     </div>
     <div class="w-section section categories-section">
         <div class="w-container categories-container">
-            <h1 class="h2">Collections</h1>
-            <div class="w-row categories-row">
-                @foreach($collections as $collection)
-                    <div class="w-col w-col-6 categories-column">
-                        <img src="{{ $collection->coverPic('web') }}" class="category-image">
-                        <h1 class="h2 categories-heading">{{ $collection->name }}</h1>
-                        <a href="/collections/{{ $collection->slug }}" class="w-button button">EXPLORE NOW</a>
+            <h1 class="h2">Hot Prods</h1>
+        </div>
+        <section class="product-grid-view">
+            @foreach(range(1,4) as $index)
+                @foreach($products->shuffle() as $product)
+                    <div class="hot-product">
+                        <a href="/product/{{ $product->slug }}"><img src="{{ $product->coverPic('thumb') }}" alt=""></a>
+                        <div class="product-info">
+                            <h5 class="product-title">{{ $product->name }}</h5>
+                            <p class="price">&pound;{{ $product->priceInPounds() }}</p>
+                        </div>
                     </div>
                 @endforeach
-            </div>
-        </div>
+            @endforeach
+        </section>
     </div>
+
     @include('front.partials.footer')
 @endsection

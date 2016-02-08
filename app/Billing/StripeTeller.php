@@ -14,7 +14,7 @@ class StripeTeller
 
     public function __construct()
     {
-        Stripe::setApiKey('sk_test_o0emXGebfKr5etUIRODDL8u6');
+        Stripe::setApiKey(config('services.stripe.secret'));
     }
 
     public function charge($source, $price, $metadata = [])
@@ -29,13 +29,12 @@ class StripeTeller
 
         try {
              $response = Charge::create($payload);
-
-            return new ChargeResponse(true, 'charge successful', $response);
+            return new ChargeResponse('stripe', true, 'charge successful', $response->amount, $response->id);
 
         } catch(Card $cardError) {
-            return new ChargeResponse(false, $cardError->getMessage());
+            return new ChargeResponse('stripe', false, $cardError->getMessage(), null, null);
         } catch(\Exception $e) {
-            return new ChargeResponse(false, $e->getMessage());
+            return new ChargeResponse('stripe', false, $e->getMessage(), null, null);
         }
     }
 }

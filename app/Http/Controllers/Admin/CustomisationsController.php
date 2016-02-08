@@ -27,6 +27,8 @@ class CustomisationsController extends Controller
 
     public function store($productId, Request $request)
     {
+        $this->validate($request, ['name' => 'required|max:255', 'longform' => 'boolean']);
+
         $customisation = Product::findOrFail($productId)->addCustomisation($request->name, $request->longform);
 
         return response()->json([

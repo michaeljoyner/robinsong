@@ -16,6 +16,7 @@ Vue.component('shipping-location', require('./components/ShippingLocation.vue'))
 Vue.component('toggle-button', require('./components/Togglebutton.vue'));
 Vue.component('tag-manager', require('./components/TagManager.vue'));
 Vue.component('product-option', require('./components/ProductOption.vue'));
+
 window.Vue = Vue;
 
 

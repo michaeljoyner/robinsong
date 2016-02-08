@@ -19,7 +19,7 @@ class ProductsTest extends TestCase
             ->submitForm('Add Product', [
                 'name'        => 'reception book',
                 'description' => 'a hand crafted book',
-                'price'       => 1500,
+                'price'       => 15,
                 'weight'      => 25
             ])->seeInDatabase('products', [
                 'name'        => 'reception book',
@@ -66,7 +66,7 @@ class ProductsTest extends TestCase
         $this->visit('/admin/products/' . $product->id . '/edit')
             ->type('book of mooz', 'name')
             ->type('a revered tome', 'description')
-            ->type('1200', 'price')
+            ->type('12', 'price')
             ->press('Save Changes')
             ->seeInDatabase('products', [
                 'id'          => $product->id,

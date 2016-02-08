@@ -22,3 +22,12 @@ $font-family-sans-serif: 'Lato', "Helvetica Neue", Helvetica, Arial, sans-serif;
 @import "admin/shippingrules";
 @import "admin/tagmanager";
 @import "admin/productsearch";
+@import "admin/edibles";
+@import "admin/users";
+@import "admin/blogedit";
+@import "admin/blogindex";
+
+a, a:hover, a:focus, a:visited {
+  color: inherit;
+  text-decoration: none;
+}

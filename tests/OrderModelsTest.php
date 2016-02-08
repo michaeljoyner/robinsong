@@ -25,7 +25,7 @@ class OrderModelsTest extends TestCase
             'order_number' => 'mkidl89wes5',
             'address_line1' => '5 les de jager rd',
             'address_line2' => 'lincoln meade',
-            'address_city' => 'puetermaritzburg',
+            'address_city' => 'pietermaritzburg',
             'address_state' => 'kzn',
             'address_zip' => '3201',
             'address_country' => 'South Africa'
@@ -46,6 +46,26 @@ class OrderModelsTest extends TestCase
         $order->addItem($products[1]->id, 1);
 
         $this->assertCount(2, $order->items, 'Order should have two order items');
+    }
+
+    /**
+     *@test
+     */
+    public function an_order_can_be_set_as_paid_by_passing_a_charge_response_to_the_pay_via_method()
+    {
+        $order = factory(Order::class)->create();
+        $charge = new \App\Billing\ChargeResponse('stripe', true, 'success', 1000, '1234567');
+
+        $order->setChargeResult($charge);
+
+        $order = Order::findOrFail($order->id);
+
+        $this->seeInDatabase('orders', [
+            'id' => $order->id,
+            'paid' => 1,
+            'amount' => 1000,
+            'charge_id' => '1234567'
+        ]);
     }
 
     /**

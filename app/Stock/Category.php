@@ -15,7 +15,7 @@ class Category extends Model implements SluggableInterface, HasMediaConversions,
 {
     use SluggableTrait, HasMediaTrait, HasModelImage, BreadcrumbsTrait;
 
-    public $defaultImageSrc = '/images/assets/default.png';
+    public $defaultImageSrc = '/images/assets/default.jpg';
 
     protected $table = 'categories';
 

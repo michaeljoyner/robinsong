@@ -24,6 +24,8 @@ class CreateOrdersTable extends Migration
             $table->string('address_state');
             $table->string('address_zip');
             $table->string('address_country');
+            $table->boolean('paid')->default(0);
+            $table->string('gateway')->nullable();
             $table->integer('amount')->unsigned()->nullable();
             $table->string('charge_id')->nullable();
             $table->integer('shipping_amount')->unsigned()->nullable();

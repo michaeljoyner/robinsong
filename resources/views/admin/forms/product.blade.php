@@ -14,7 +14,13 @@
             <label for="price">Price: </label>
             <div class="input-group">
                 <span class="input-group-addon">&pound;</span>
-                {!! Form::text('price', null, ['class' => "form-control", 'required' => 'true']) !!}
+{{--                {!! Form::text('price', null, ['class' => "form-control", 'required' => 'true']) !!}--}}
+                <input type="text"
+                       name="price"
+                       value="@if(old('price')){{ old('price') }} @elseif($model) {{ $model->priceInPounds() }} @else @endif"
+                       class="form-control"
+                       required
+                >
             </div>
         </div>
     </div>

@@ -119,4 +119,15 @@ $factory->define(App\Orders\OrderItemCustomisation::class, function (Faker\Gener
     ];
 });
 
+$factory->define(App\Blog\Post::class, function (Faker\Generator $faker) {
+    return [
+        'user_id' => 1,
+        'title' => $faker->sentence,
+        'description' => $faker->paragraph,
+        'content' => $faker->paragraphs(8, true)
+    ];
+});
+
+
+
 

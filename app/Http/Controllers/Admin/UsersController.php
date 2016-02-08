@@ -14,6 +14,13 @@ use Illuminate\Support\Facades\Input;
 
 class UsersController extends Controller
 {
+
+    public function index()
+    {
+        $users = User::all();
+        return view('admin.users.index')->with(compact('users'));
+    }
+
     public function showRegister()
     {
         return view('admin.users.register');
@@ -38,7 +45,7 @@ class UsersController extends Controller
         $user = User::findOrFail($id);
         $user->update($request->all());
 
-        return redirect()->to('/');
+        return redirect('admin/users');
     }
 
     public function delete($id)
@@ -51,7 +58,7 @@ class UsersController extends Controller
 
         $user->delete();
 
-        return redirect()->to('/admin');
+        return redirect('admin/users');
     }
 
     public function showPasswordReset()
@@ -61,6 +68,11 @@ class UsersController extends Controller
 
     public function resetPassword(Request $request)
     {
+        $this->validate($request, [
+            'password' => 'required|min:8|confirmed',
+            'current_password' => 'required'
+        ]);
+
         if(! Hash::check($request->current_password, $request->user()->password)) {
             return redirect()->back()->withErrors(['currentPassword' => 'Your current password is not correct.']);
         }

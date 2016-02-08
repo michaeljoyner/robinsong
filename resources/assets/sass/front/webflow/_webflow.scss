@@ -126,7 +126,7 @@ a, a:visited, a:hover, a:focus {
 }
 
 .slide-mask {
-  height: 500px;
+  //height: 500px;
 }
 
 .slide-opaque-cover {
@@ -162,6 +162,10 @@ a, a:visited, a:hover, a:focus {
   }
 }
 
+.slide img {
+  width: 100%;
+}
+
 .body {
   background-image: none;
   background-position: 0px 0px;
@@ -169,7 +173,7 @@ a, a:visited, a:hover, a:focus {
 }
 
 .slider-container {
-  height: 500px;
+  //height: 500px;
   margin-top: 50px;
   margin-bottom: 50px;
 }
@@ -260,9 +264,9 @@ a, a:visited, a:hover, a:focus {
   padding-top: 50px;
   padding-bottom: 50px;
   background-color: #443c41;
-  background-image: url(../../images/assets/pattern.png);
+  background-image: url(../../images/assets/pattern10.png);
   background-repeat: repeat;
-  background-blend-mode: overlay;
+  //background-blend-mode: overlay;
 }
 
 .footer-heading {
@@ -404,7 +408,7 @@ html.w-mod-js *[data-ix="logo-fade-in"] {
     width: 40%;
   }
   .slide-mask {
-    height: 300px;
+    //height: 300px;
   }
 }
 

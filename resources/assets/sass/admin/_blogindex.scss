@@ -1,0 +1,32 @@
+.blog-post-card {
+  width: 95%;
+  max-width: 800px;
+  margin: 2em 1em;
+  border: 1px solid $text_grey;
+  padding: 10px;
+
+  .blog-post-card-header {
+    border-bottom: 1px solid $text_grey;
+    h3 {
+      color: $primary_dark;
+      text-transform: uppercase;
+      float: left;
+      width: 80%;
+    }
+
+    .post-date {
+      float: right;
+      width: 20%;
+      text-align: right;
+      color: $secondary_orange;
+      font-size: 1.5em;
+      margin-top: 20px;
+    }
+  }
+
+  .blog-post-card-body {
+    padding: 20px 0;
+    line-height: 1.6;
+    color: $primary_dark;
+  }
+}

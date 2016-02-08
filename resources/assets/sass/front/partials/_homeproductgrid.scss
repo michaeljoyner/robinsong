@@ -1,0 +1,44 @@
+.product-grid-view {
+  width: 1000px;
+  margin: 50px auto 200px;
+  font-size: 0;
+
+  .hot-product {
+    position: relative;
+    width: 250px;
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+
+    &:hover img {
+      opacity: 1;
+    }
+
+    img {
+      width: 100%;
+      opacity: .6;
+    }
+
+    .product-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      font-size: 16px;
+      padding-left: 10px;
+      padding-bottom: 10px;
+    }
+
+    .product-title {
+      font-family: $serif_heading;
+      color: $primary_dark;
+      text-transform: uppercase;
+      margin: 3px 0;
+    }
+
+    .price {
+      color: $secondary_orange;
+      margin-bottom: 0;
+      font-family: $serif_heading;
+    }
+  }
+}

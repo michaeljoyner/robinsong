@@ -51,7 +51,7 @@ class OrdersServiceTest extends TestCase
         $formData = factory(Order::class)->make()->toArray();
         $orderService = new OrdersService($formData);
         $this->fillCartWithTwoItems();
-        $chargeResult = new \App\Billing\ChargeResponse(true, 'success');
+        $chargeResult = new \App\Billing\ChargeResponse('stripe', true, 'success', 1000, 123);
         $shippingInfo = ['location' => 'International', 'price' => 900];
 
         $orderService->commitOrder(Cart::content(), $chargeResult, $shippingInfo);

@@ -1,11 +1,15 @@
 window.Shuffle = require('shufflejs');
 var rsApp = rsApp || {};
+rsApp.frontConstructorObjects = require('./components/frontvueobjects');
 var Vue = require('vue');
 Vue.use(require('vue-resource'));
 
 if(document.querySelector('#x-token')) {
     Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#x-token').getAttribute('content');
 }
+
+Vue.component('cart-list-item', require('./components/CartListItem.vue'));
+Vue.component('modal', require('./components/Modal.vue'));
 
 if(document.querySelector('#basket')) {
     rsApp.basket = new Vue({

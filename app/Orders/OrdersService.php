@@ -37,10 +37,19 @@ class OrdersService
             $this->makeOrder();
         }
 
-        $this->setOrderChargeResults($chargeResult);
         $this->setOrderShippingInfo($shippingInfo);
+        if($chargeResult) {
+            $this->setOrderChargeResults($chargeResult);
+        }
 
         $this->addCartItemsToOrder($cartContents);
+
+        return $this;
+    }
+
+    public function getOrderModel()
+    {
+        return $this->orderModel;
     }
 
     public function orderNumber()

@@ -1835,7 +1835,6 @@ textarea.w-select {
 
 .w-slider {
   position: relative;
-  height: 500px;
   text-align: center;
   background: #dddddd;
   clear: both;
@@ -2948,10 +2947,6 @@ a:focus {
   background-size: cover;
 }
 
-.slide-mask {
-  height: 500px;
-}
-
 .slide-opaque-cover {
   position: static;
   display: block;
@@ -2982,6 +2977,10 @@ a:focus {
   width: 100%;
 }
 
+.slide img {
+  width: 100%;
+}
+
 .body {
   background-image: none;
   background-position: 0px 0px;
@@ -2989,7 +2988,6 @@ a:focus {
 }
 
 .slider-container {
-  height: 500px;
   margin-top: 50px;
   margin-bottom: 50px;
 }
@@ -3079,9 +3077,8 @@ a:focus {
   padding-top: 50px;
   padding-bottom: 50px;
   background-color: #443c41;
-  background-image: url(../../images/assets/pattern.png);
+  background-image: url(../../images/assets/pattern10.png);
   background-repeat: repeat;
-  background-blend-mode: overlay;
 }
 
 .footer-heading {
@@ -3217,10 +3214,6 @@ html.w-mod-js *[data-ix="logo-fade-in"] {
 @media (max-width: 991px) {
   .logoimage {
     width: 40%;
-  }
-
-  .slide-mask {
-    height: 300px;
   }
 }
 
@@ -3756,6 +3749,8 @@ html.w-mod-js *[data-ix="logo-fade-in"] {
 .home-intro-section .p1.large-lead {
   font-size: xx-large;
   line-height: 1.6;
+  padding-bottom: 60px;
+  padding-top: 60px;
 }
 
 .thanks-banner {
@@ -3776,4 +3771,174 @@ html.w-mod-js *[data-ix="logo-fade-in"] {
 
 .thank-you-section {
   padding: 50px 0;
+}
+
+.blog-post-index-card {
+  margin-bottom: 50px;
+}
+
+.blog-post-index-card .blog-post-index-card-header h3 {
+  font-family: "Bitter", "Times New Roman", Georgia, serif;
+  color: #f48054;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.blog-post-index-card .blog-post-index-card-header h3:hover {
+  color: #f9a870;
+}
+
+.blog-post-index-card .blog-post-index-card-header .post-date {
+  color: #5fbfad;
+  font-family: "Bitter", "Times New Roman", Georgia, serif;
+  font-weight: 700;
+  text-align: center;
+}
+
+.blog-post-index-card .blog-post-index-card-body p {
+  max-width: 750px;
+  font-size: 1.2em;
+  line-height: 1.4;
+  font-family: 'Bitter', serif;
+  margin: 1em auto;
+  font-weight: 300;
+  color: #6d6d6d;
+}
+
+.blog-post-index-card:after {
+  content: '';
+  display: block;
+  margin: 60px auto;
+  width: 200px;
+  height: 40px;
+  background-image: url(../../images/assets/blog_flourish.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position-x: 50%;
+}
+
+.blog-title-section {
+  padding-top: 50px;
+}
+
+.blog-title-section .p1.large-lead {
+  max-width: 800px;
+  margin: 1.5em auto;
+  font-size: xx-large;
+  line-height: 1.6;
+}
+
+.w-button.button.read-more-btn {
+  width: 90%;
+  max-width: 300px;
+  border-color: #5fbfad;
+  color: #5fbfad;
+}
+
+.w-button.button.read-more-btn:hover {
+  color: #ffffff;
+  background: #5fbfad;
+}
+
+.full-blog-post {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 10px;
+}
+
+.full-blog-post .full-blog-post-header h1 {
+  font-family: "Bitter", "Times New Roman", Georgia, serif;
+  color: #f48054;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.full-blog-post .full-blog-post-header .post-date {
+  color: #5fbfad;
+  font-family: "Bitter", "Times New Roman", Georgia, serif;
+  font-weight: 700;
+  text-align: center;
+}
+
+.full-blog-post .full-blog-post-body {
+  padding: 50px 0;
+  font-family: 'Bitter', serif;
+  line-height: 1.6;
+  color: #6d6d6d;
+  font-size: 1.3em;
+}
+
+.full-blog-post .full-blog-post-footer .social-sharing {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.full-blog-post .full-blog-post-footer .social-sharing .social-share-link {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin: 10px;
+}
+
+.full-blog-post .full-blog-post-footer .social-sharing .social-share-link img {
+  width: 100%;
+}
+
+.full-blog-post .full-blog-post-footer .social-sharing .social-share-link:hover {
+  opacity: .7;
+}
+
+.product-grid-view {
+  width: 1000px;
+  margin: 50px auto 200px;
+  font-size: 0;
+}
+
+.product-grid-view .hot-product {
+  position: relative;
+  width: 250px;
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.product-grid-view .hot-product:hover img {
+  opacity: 1;
+}
+
+.product-grid-view .hot-product img {
+  width: 100%;
+  opacity: .6;
+}
+
+.product-grid-view .hot-product .product-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  font-size: 16px;
+  padding-left: 10px;
+  padding-bottom: 10px;
+}
+
+.product-grid-view .hot-product .product-title {
+  font-family: "Bitter", "Times New Roman", Georgia, serif;
+  color: #443c41;
+  text-transform: uppercase;
+  margin: 3px 0;
+}
+
+.product-grid-view .hot-product .price {
+  color: #f9a870;
+  margin-bottom: 0;
+  font-family: "Bitter", "Times New Roman", Georgia, serif;
+}
+
+.social-nav-link {
+  padding: 25px 5px;
+  display: inline-block;
+}
+
+.social-nav-link img {
+  width: 20px;
+  height: 20px;
 }

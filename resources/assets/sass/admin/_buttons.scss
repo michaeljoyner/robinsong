@@ -33,3 +33,9 @@
   color: $danger;
   background: $white;
 }
+
+.rs-btn.btn-solid-danger {
+  border: 1px solid $danger;
+  color: $white;
+  background: $danger;
+}

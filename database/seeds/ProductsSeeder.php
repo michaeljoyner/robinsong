@@ -24,7 +24,7 @@ class ProductsSeeder extends Seeder
         $babProd1 = $babyBooks->addProduct([
             'name' => 'It is Crowning',
             'description' => 'A humourous tale of a crowning baby',
-            'price' => 1200,
+            'price' => 12,
             'weight' => 24,
             'available' => 0
         ]);
@@ -32,7 +32,7 @@ class ProductsSeeder extends Seeder
         $babProd2 = $babyBooks->addProduct([
             'name' => 'My First Newborn',
             'description' => 'A tragic comedy',
-            'price' => 1200,
+            'price' => 12,
             'weight' => 24,
             'available' => 0
         ]);
@@ -45,7 +45,7 @@ class ProductsSeeder extends Seeder
         $frame1 = $frames->addProduct([
             'name' => 'Standard Wrought Iron Frame',
             'description' => 'Pure Greyjoy',
-            'price' => 1600,
+            'price' => 16,
             'weight' => 54,
             'available' => 0
         ]);
@@ -53,7 +53,7 @@ class ProductsSeeder extends Seeder
         $frame2 = $frames->addProduct([
             'name' => 'Gold Leaf Sparkly Frame',
             'description' => 'Because your baby is straight up Indian',
-            'price' => 8800,
+            'price' => 88,
             'weight' => 74,
             'available' => 0
         ]);
@@ -70,7 +70,7 @@ class ProductsSeeder extends Seeder
         $prod1 = $cat1->addProduct([
             'name' => 'Lace-lined Ivory Tome',
             'description' => 'A book of true beauty and class, this is bound to leave your guests speechless and aghast',
-            'price' => 2100,
+            'price' => 21,
             'weight' => 36,
             'available' => 0
         ]);
@@ -78,14 +78,14 @@ class ProductsSeeder extends Seeder
         $prod2 = $cat1->addProduct([
             'name' => 'Fun in the Sun Book',
             'description' => 'A lighthearted book with spiders and surfers having a raucous wedding.',
-            'price' => 3100,
+            'price' => 31,
             'weight' => 26,
             'available' => 0
         ]);
         $prod3 = $cat2->addProduct([
             'name' => 'Classy Candlesticks',
             'description' => 'The silver shines so, so bright, you will never forget your wedding night',
-            'price' => 8900,
+            'price' => 89,
             'weight' => 460,
             'available' => 0
         ]);
@@ -93,7 +93,7 @@ class ProductsSeeder extends Seeder
         $prod4 = $cat2->addProduct([
             'name' => 'Naughty Napkins',
             'description' => 'Joke napkins for those who like fun without thought. They are not actually naughty, just very sad.',
-            'price' => 700,
+            'price' => 7,
             'weight' => 12,
             'available' => 0
         ]);

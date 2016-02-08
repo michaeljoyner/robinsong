@@ -15,12 +15,17 @@ class ChargeResponse
     private $message;
 
     private $chargeResponse;
+    public $gateway;
+    private $amount;
+    private $id;
 
-    public function __construct($success, $message, $chargeResponse = null)
+    public function __construct($gateway, $success, $message, $amount, $id)
     {
         $this->success = $success;
         $this->message = $message;
-        $this->chargeResponse = $chargeResponse;
+        $this->gateway = $gateway;
+        $this->amount = $amount;
+        $this->id = $id;
     }
 
     public function success()
@@ -35,11 +40,11 @@ class ChargeResponse
 
     public function amount()
     {
-        return $this->chargeResponse ? $this->chargeResponse->amount : null;
+        return $this->amount;
     }
 
     public function chargeId()
     {
-        return $this->chargeResponse ? $this->chargeResponse->id : null;
+        return $this->id;
     }
 }

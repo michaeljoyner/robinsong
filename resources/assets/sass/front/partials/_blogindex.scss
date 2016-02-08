@@ -1,0 +1,77 @@
+.blog-post-index-card {
+  margin-bottom: 50px;
+
+  .blog-post-index-card-header {
+    h3 {
+      font-family: $serif_heading;
+      color: $primary_red;
+      text-align: center;
+      text-transform: uppercase;
+
+      &:hover {
+        color: $secondary_orange;
+      }
+    }
+
+    .post-date {
+      color: $primary_blue;
+      font-family: $serif_heading;
+      font-weight: 700;
+      text-align: center;
+    }
+  }
+
+  .blog-post-index-card-body {
+
+    p {
+      max-width: 750px;
+      font-size: 1.2em;
+      line-height: 1.4;
+      font-family: 'Bitter', serif;
+      margin: 1em auto;
+      font-weight: 300;
+      color: $text_grey;
+    }
+  }
+
+  .blog-post-index-card-footer {
+
+  }
+
+  &:after {
+    content: '';
+    display: block;
+    margin: 60px auto;
+    width: 200px;
+    height: 40px;
+    background-image: url(../../images/assets/blog_flourish.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position-x: 50%;
+  }
+}
+
+.blog-title-section {
+  padding-top: 50px;
+
+  .p1.large-lead {
+    max-width: 800px;
+    margin: 1.5em auto;
+    font-size: xx-large;
+    line-height: 1.6;
+  }
+
+
+}
+
+.w-button.button.read-more-btn {
+  width: 90%;
+  max-width: 300px;
+  border-color: $primary_blue;
+  color: $primary_blue;
+
+  &:hover {
+    color: $white;
+    background: $primary_blue;
+  }
+}

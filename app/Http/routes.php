@@ -11,6 +11,9 @@
 |
 */
 
+use App\Orders\Order;
+use Omnipay\Omnipay;
+
 Route::get('/', 'PagesController@home');
 Route::get('thanks', 'PagesController@thanks');
 Route::get('collections', 'PagesController@collections');
@@ -20,6 +23,20 @@ Route::get('product/{slug}', 'PagesController@product');
 Route::get('cart', 'PagesController@showCart');
 Route::get('checkout', 'CheckoutController@showCheckout');
 Route::post('checkout', 'CheckoutController@doCheckout');
+
+Route::get('blog', 'BlogController@index');
+Route::get('blog/{slug}', 'BlogController@show');
+
+//Route::get('cancel_paypal', function() {
+//    dd(\Illuminate\Support\Facades\Input::all());
+//});
+
+//Route::get('process_paypal/{orderNumber}', function($orderNumber, \App\Billing\PaypalTeller $paypalTeller) {
+//    return $paypalTeller->completePurchase($orderNumber);
+//});
+
+Route::get('process_paypal/{orderNumber}', 'PaypalController@processPaypalPayment');
+Route::get('cancel_paypal', 'PaypalController@handleCanceledPayment');
 
 Route::get('api/products/{id}/options', 'Admin\ProductOptionsController@getOptionsAndValuesForProduct');
 
@@ -39,6 +56,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
         Route::get('/', 'PagesController@dashboard');
         Route::get('logout', 'AuthController@doLogout');
         Route::get('register', 'UsersController@showRegister');
+        Route::get('users', 'UsersController@index');
         Route::post('users/register', 'UsersController@postRegistration');
         Route::get('users/{id}/edit', 'UsersController@edit');
         Route::post('users/{id}/edit', 'UsersController@update');
@@ -118,6 +136,20 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
 
         Route::post('api/orders/{orderId}/fulfill', 'OrdersController@setFulfilledStatus');
         Route::post('api/orders/{orderId}/cancel', 'OrdersController@setCancelledStatus');
+
+        Route::get('site-content/pages/{pageId}', 'EdiblesController@showPage');
+        Route::get('site-content/pages/{pageId}/textblocks/{textblockId}/edit', 'EdiblesController@editTextblock');
+        Route::get('site-content/pages/{pageId}/galleries/{galleryId}/edit', 'EdiblesController@editGallery');
+        Route::post('site-content/textblocks/{textblockId}', 'EdiblesController@updateTextblock');
+        Route::post('site-content/galleries/{galleryId}/uploads', 'EdiblesController@storeUploadedImage');
+        Route::get('site-content/galleries/{galleryId}/uploads', 'EdiblesController@getGalleryImages');
+
+        Route::get('blog/posts', 'BlogController@index');
+        Route::post('blog/posts', 'BlogController@store');
+        Route::get('blog/posts/{postId}/edit', 'BlogController@edit');
+        Route::post('blog/posts/{postId}', 'BlogController@update');
+        Route::post('blog/posts/{postId}/images/uploads', 'BlogController@storeImageUpload');
+        Route::post('blog/posts/{postId}/publish', 'BlogController@setPublishedState');
     });
 
     Route::group(['middleware' => 'guest'], function() {

@@ -15,7 +15,7 @@ class Product extends Model implements SluggableInterface, HasMediaConversions, 
 {
     use SluggableTrait, HasMediaTrait, HasModelImage, BreadcrumbsTrait;
 
-    public $defaultImageSrc = '/images/assets/default.png';
+    public $defaultImageSrc = '/images/assets/default.jpg';
 
     protected $table = 'products';
 
@@ -55,12 +55,22 @@ class Product extends Model implements SluggableInterface, HasMediaConversions, 
     public function registerMediaConversions()
     {
         $this->addMediaConversion('thumb')
-            ->setManipulations(['w' => 200, 'h' => 200, 'fit' => 'crop'])
+            ->setManipulations(['w' => 250, 'h' => 250, 'fit' => 'crop'])
             ->performOnCollections('default');
 
         $this->addMediaConversion('web')
             ->setManipulations(['w' => 500, 'h' => 600])
             ->performOnCollections('default');
+    }
+
+    public function setPriceAttribute($price)
+    {
+        $this->attributes['price'] = $price * 100;
+    }
+
+    public function priceInPounds()
+    {
+        return number_format($this->price / 100, 2);
     }
 
     public function category()

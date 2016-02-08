@@ -15,7 +15,7 @@ class Collection extends Model implements SluggableInterface, HasMediaConversion
 {
     use SluggableTrait, HasModelImage, HasMediaTrait, BreadcrumbsTrait;
 
-    public $defaultImageSrc = '/images/assets/default.png';
+    public $defaultImageSrc = '/images/assets/default.jpg';
 
     protected $table = 'collections';
 

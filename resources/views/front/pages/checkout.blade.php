@@ -49,7 +49,7 @@
                     <h4 class="form-section-header">Your deliver address:</h4>
                     <div class="form-input-row">
                         <label for="address_line1">Line 1: </label>
-                        <input type="text" name="address_line1"  value="{{ old('address_line1') }}">
+                        <input type="text" name="address_line1"  value="{{ old('address_line1') }}" required>
                     </div>
                     <div class="form-input-row">
                         <label for="address_line2">Line 2: </label>
@@ -57,61 +57,35 @@
                     </div>
                     <div class="form-input-row">
                         <label for="address_city">City: </label>
-                        <input type="text" name="address_city"  value="{{ old('address_city') }}">
+                        <input type="text" name="address_city"  value="{{ old('address_city') }}" required>
                     </div>
                     <div class="w-row">
                         <div class="w-col w-col-6 form-input-row">
                             <label for="address_state">State/Province/County: </label>
-                            <input type="text" name="address_state" value="{{ old('address_state') }}">
+                            <input type="text" name="address_state" value="{{ old('address_state') }}" required>
                         </div>
                         <div class="w-col w-col-6 form-input-row">
                             <label for="address_zip">Zip Code: </label>
-                            <input type="text" name="address_zip" value="{{ old('address_zip') }}">
+                            <input type="text" name="address_zip" value="{{ old('address_zip') }}" required>
                         </div>
                     </div>
                     <div class="form-input-row">
                         <label for="address_country">Country: </label>
-                        <input type="text" name="address_country" value="{{ old('address_country') }}">
+                        <input type="text" name="address_country" value="{{ old('address_country') }}" required>
                     </div>
                 </div>
-                {{--<div class="w-col w-col-6">--}}
-                    {{--<h4 class="form-section-header">Your billing address:</h4>--}}
-                    {{--<div class="form-input-row">--}}
-                        {{--<label for="ba_line1">Line 1: </label>--}}
-                        {{--<input type="text" name="ba_line1">--}}
-                    {{--</div>--}}
-                    {{--<div class="form-input-row">--}}
-                        {{--<label for="ba_line2">Line 2: </label>--}}
-                        {{--<input type="text" name="ba_line2">--}}
-                    {{--</div>--}}
-                    {{--<div class="form-input-row">--}}
-                        {{--<label for="ba_city">City: </label>--}}
-                        {{--<input type="text" name="ba_city">--}}
-                    {{--</div>--}}
-                    {{--<div class="w-row">--}}
-                        {{--<div class="w-col w-col-6 form-input-row">--}}
-                            {{--<label for="ba_state">State/Province/County: </label>--}}
-                            {{--<input type="text" name="ba_state">--}}
-                        {{--</div>--}}
-                        {{--<div class="w-col w-col-6 form-input-row">--}}
-                            {{--<label for="ba_zip">Zip Code: </label>--}}
-                            {{--<input type="text" name="ba_zip">--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
-                    {{--<div class="form-input-row">--}}
-                        {{--<label for="ba_country">Country: </label>--}}
-                        {{--<input type="text" name="ba_country">--}}
-                    {{--</div>--}}
-                {{--</div>--}}
             </div>
 
+        </section>
+        <section class="paypal-section">
+            <button id="paypal-submit-btn" type="submit" name="gateway" value="paypal">Pay with Paypal</button>
         </section>
         <section>
             <h4 class="form-section-header">Payment Info</h4>
             <div class="w-row">
                 <div class="w-col w-col-6 form-input-row">
                     <label>Credit Card Number:</label>
-                    <input type="text" size="4" pattern="[0-9]{13,16}" data-stripe="number">
+                    <input type="text" size="4" pattern="[0-9]{13,16}" data-stripe="number" id="cc-number">
                 </div>
                 <div class="w-col w-col-3 form-input-row">
                     <label for="">CCV Number: </label>
@@ -152,7 +126,7 @@
             </div>
         </section>
         <section>
-            <button id="form-submit" class="pay-btn" type="submit">Pay Now</button>
+            <button id="form-submit" class="pay-btn" name="gateway" type="submit">Pay Now</button>
         </section>
     </form>
     @include('front.partials.footer')
@@ -200,14 +174,16 @@
         $(function($) {
             $('#payment-form').submit(function(event) {
                 var $form = $(this);
+                if($form.find('#cc-number').val() !== '') {
+                    // Disable the submit button to prevent repeated clicks
+                    $form.find('#form-submit').text('Please wait').prop('disabled', true);
 
-                // Disable the submit button to prevent repeated clicks
-                $form.find('#form-submit').text('Please wait').prop('disabled', true);
+                    Stripe.card.createToken($form, stripeResponseHandler);
 
-                Stripe.card.createToken($form, stripeResponseHandler);
+                    // Prevent the form from submitting with the default action
+                    return false;
+                }
 
-                // Prevent the form from submitting with the default action
-                return false;
             });
         });
     </script>

@@ -10993,6 +10993,247 @@ return Shuffle;
 });
 
 },{"jquery":1}],4:[function(require,module,exports){
+var Vue // late bind
+var map = Object.create(null)
+var shimmed = false
+var isBrowserify = false
+
+/**
+ * Determine compatibility and apply patch.
+ *
+ * @param {Function} vue
+ * @param {Boolean} browserify
+ */
+
+exports.install = function (vue, browserify) {
+  if (shimmed) return
+  shimmed = true
+
+  Vue = vue
+  isBrowserify = browserify
+
+  exports.compatible = !!Vue.internalDirectives
+  if (!exports.compatible) {
+    console.warn(
+      '[HMR] vue-loader hot reload is only compatible with ' +
+      'Vue.js 1.0.0+.'
+    )
+    return
+  }
+
+  // patch view directive
+  patchView(Vue.internalDirectives.component)
+  console.log('[HMR] Vue component hot reload shim applied.')
+  // shim router-view if present
+  var routerView = Vue.elementDirective('router-view')
+  if (routerView) {
+    patchView(routerView)
+    console.log('[HMR] vue-router <router-view> hot reload shim applied.')
+  }
+}
+
+/**
+ * Shim the view directive (component or router-view).
+ *
+ * @param {Object} View
+ */
+
+function patchView (View) {
+  var unbuild = View.unbuild
+  View.unbuild = function (defer) {
+    if (!this.hotUpdating) {
+      var prevComponent = this.childVM && this.childVM.constructor
+      removeView(prevComponent, this)
+      // defer = true means we are transitioning to a new
+      // Component. Register this new component to the list.
+      if (defer) {
+        addView(this.Component, this)
+      }
+    }
+    // call original
+    return unbuild.call(this, defer)
+  }
+}
+
+/**
+ * Add a component view to a Component's hot list
+ *
+ * @param {Function} Component
+ * @param {Directive} view - view directive instance
+ */
+
+function addView (Component, view) {
+  var id = Component && Component.options.hotID
+  if (id) {
+    if (!map[id]) {
+      map[id] = {
+        Component: Component,
+        views: [],
+        instances: []
+      }
+    }
+    map[id].views.push(view)
+  }
+}
+
+/**
+ * Remove a component view from a Component's hot list
+ *
+ * @param {Function} Component
+ * @param {Directive} view - view directive instance
+ */
+
+function removeView (Component, view) {
+  var id = Component && Component.options.hotID
+  if (id) {
+    map[id].views.$remove(view)
+  }
+}
+
+/**
+ * Create a record for a hot module, which keeps track of its construcotr,
+ * instnaces and views (component directives or router-views).
+ *
+ * @param {String} id
+ * @param {Object} options
+ */
+
+exports.createRecord = function (id, options) {
+  if (typeof options === 'function') {
+    options = options.options
+  }
+  if (typeof options.el !== 'string' && typeof options.data !== 'object') {
+    makeOptionsHot(id, options)
+    map[id] = {
+      Component: null,
+      views: [],
+      instances: []
+    }
+  }
+}
+
+/**
+ * Make a Component options object hot.
+ *
+ * @param {String} id
+ * @param {Object} options
+ */
+
+function makeOptionsHot (id, options) {
+  options.hotID = id
+  injectHook(options, 'created', function () {
+    var record = map[id]
+    if (!record.Component) {
+      record.Component = this.constructor
+    }
+    record.instances.push(this)
+  })
+  injectHook(options, 'beforeDestroy', function () {
+    map[id].instances.$remove(this)
+  })
+}
+
+/**
+ * Inject a hook to a hot reloadable component so that
+ * we can keep track of it.
+ *
+ * @param {Object} options
+ * @param {String} name
+ * @param {Function} hook
+ */
+
+function injectHook (options, name, hook) {
+  var existing = options[name]
+  options[name] = existing
+    ? Array.isArray(existing)
+      ? existing.concat(hook)
+      : [existing, hook]
+    : [hook]
+}
+
+/**
+ * Update a hot component.
+ *
+ * @param {String} id
+ * @param {Object|null} newOptions
+ * @param {String|null} newTemplate
+ */
+
+exports.update = function (id, newOptions, newTemplate) {
+  var record = map[id]
+  // force full-reload if an instance of the component is active but is not
+  // managed by a view
+  if (!record || (record.instances.length && !record.views.length)) {
+    console.log('[HMR] Root or manually-mounted instance modified. Full reload may be required.')
+    if (!isBrowserify) {
+      window.location.reload()
+    } else {
+      // browserify-hmr somehow sends incomplete bundle if we reload here
+      return
+    }
+  }
+  if (!isBrowserify) {
+    // browserify-hmr already logs this
+    console.log('[HMR] Updating component: ' + format(id))
+  }
+  var Component = record.Component
+  // update constructor
+  if (newOptions) {
+    // in case the user exports a constructor
+    Component = record.Component = typeof newOptions === 'function'
+      ? newOptions
+      : Vue.extend(newOptions)
+    makeOptionsHot(id, Component.options)
+  }
+  if (newTemplate) {
+    Component.options.template = newTemplate
+  }
+  // handle recursive lookup
+  if (Component.options.name) {
+    Component.options.components[Component.options.name] = Component
+  }
+  // reset constructor cached linker
+  Component.linker = null
+  // reload all views
+  record.views.forEach(function (view) {
+    updateView(view, Component)
+  })
+}
+
+/**
+ * Update a component view instance
+ *
+ * @param {Directive} view
+ * @param {Function} Component
+ */
+
+function updateView (view, Component) {
+  if (!view._bound) {
+    return
+  }
+  view.Component = Component
+  view.hotUpdating = true
+  // disable transitions
+  view.vm._isCompiled = false
+  // save state
+  var state = view.childVM.$data
+  // remount, make sure to disable keep-alive
+  var keepAlive = view.keepAlive
+  view.keepAlive = false
+  view.mountComponent()
+  view.keepAlive = keepAlive
+  // restore state
+  view.childVM.$data = state
+  // re-eanble transitions
+  view.vm._isCompiled = true
+  view.hotUpdating = false
+}
+
+function format (id) {
+  return id.match(/[^\/]+\.vue$/)[0]
+}
+
+},{}],5:[function(require,module,exports){
 /**
  * Service for sending network requests.
  */
@@ -11154,7 +11395,7 @@ module.exports = function (_) {
     return _.http = Http;
 };
 
-},{"./lib/jsonp":6,"./lib/promise":7,"./lib/xhr":9}],5:[function(require,module,exports){
+},{"./lib/jsonp":7,"./lib/promise":8,"./lib/xhr":10}],6:[function(require,module,exports){
 /**
  * Install plugin.
  */
@@ -11195,7 +11436,7 @@ if (window.Vue) {
 }
 
 module.exports = install;
-},{"./http":4,"./lib/util":8,"./resource":10,"./url":11}],6:[function(require,module,exports){
+},{"./http":5,"./lib/util":9,"./resource":11,"./url":12}],7:[function(require,module,exports){
 /**
  * JSONP request.
  */
@@ -11247,7 +11488,7 @@ module.exports = function (_, options) {
 
 };
 
-},{"./promise":7}],7:[function(require,module,exports){
+},{"./promise":8}],8:[function(require,module,exports){
 /**
  * Promises/A+ polyfill v1.1.0 (https://github.com/bramstein/promis)
  */
@@ -11459,7 +11700,7 @@ if (window.MutationObserver) {
 
 module.exports = window.Promise || Promise;
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 /**
  * Utility functions.
  */
@@ -11541,7 +11782,7 @@ module.exports = function (Vue) {
     return _;
 };
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /**
  * XMLHttp request.
  */
@@ -11594,7 +11835,7 @@ module.exports = function (_, options) {
     return promise;
 };
 
-},{"./promise":7}],10:[function(require,module,exports){
+},{"./promise":8}],11:[function(require,module,exports){
 /**
  * Service for interacting with RESTful services.
  */
@@ -11707,7 +11948,7 @@ module.exports = function (_) {
     return _.resource = Resource;
 };
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /**
  * Service for URL templating.
  */
@@ -11866,7 +12107,7 @@ module.exports = function (_) {
     return _.url = Url;
 };
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 (function (process){
 /*!
  * Vue.js v1.0.10
@@ -21171,17 +21412,215 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = Vue;
 }).call(this,require('_process'))
-},{"_process":2}],13:[function(require,module,exports){
+},{"_process":2}],14:[function(require,module,exports){
+var inserted = exports.cache = {}
+
+exports.insert = function (css) {
+  if (inserted[css]) return
+  inserted[css] = true
+
+  var elem = document.createElement('style')
+  elem.setAttribute('type', 'text/css')
+
+  if ('textContent' in elem) {
+    elem.textContent = css
+  } else {
+    elem.styleSheet.cssText = css
+  }
+
+  document.getElementsByTagName('head')[0].appendChild(elem)
+  return elem
+}
+
+},{}],15:[function(require,module,exports){
+var __vueify_style__ = require("vueify-insert-css").insert("\n\n")
+'use strict';
+
+module.exports = {
+
+    props: ['itemname', 'quantity', 'price', 'rowid', 'thumbnail', 'options'],
+
+    data: function data() {
+        return {
+            editing: false,
+            waiting: false,
+            showModal: false
+        };
+    },
+
+    computed: {
+        buttonTxt: function buttonTxt() {
+            if (this.waiting) {
+                return 'wait';
+            }
+            return this.editing ? 'Save' : 'Edit';
+        },
+
+        canEdit: function canEdit() {
+            return this.editing && !this.waiting;
+        },
+
+        hasCustomisations: function hasCustomisations() {
+            return this.options.options.length > 0 || this.options.customisations.length > 0;
+        }
+    },
+
+    methods: {
+        handleEditButtonClick: function handleEditButtonClick() {
+            if (this.editing) {
+                this.updateQuantity();
+            } else {
+                this.editing = true;
+            }
+        },
+
+        updateQuantity: function updateQuantity() {
+            this.waiting = true;
+            this.$http.post('/api/cart/' + this.rowid, { qty: this.quantity }, function (res) {
+                this.editing = false;
+                this.waiting = false;
+                this.$dispatch('quantity.updated');
+            });
+        },
+
+        showOptions: function showOptions(option) {
+            var res = [];
+            for (var key in option) {
+                if (option.hasOwnProperty(key)) {
+                    res.push(key);
+                }
+            }
+
+            return res[0] + ': ' + option[res[0]];
+        },
+
+        showCustomisations: function showCustomisations(customisation) {
+            var res = [];
+            for (var key in customisation) {
+                if (customisation.hasOwnProperty(key)) {
+                    res.push(key);
+                }
+            }
+
+            return res[0] + ': ' + customisation[res[0]];
+        }
+    }
+};
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"cart-list-item\">\n        <div class=\"item-container item-image-container\">\n            <img v-bind:src=\"thumbnail\" alt=\"image thumbnail\">\n        </div>\n        <div class=\"item-container item-name-container\">\n            <h3 class=\"item-name\">{{ itemname }}</h3>\n                <span v-if=\"hasCustomisations\" v-on:click=\"showModal = true\">\n                    <img src=\"/images/assets/info_icon.png\" alt=\"tap to review your info\" width=\"20px\" height=\"20px\"></span>\n            <modal :show.sync=\"showModal\">\n                <h3 slot=\"header\">Your Choices and Customisations</h3>\n                <div slot=\"body\">\n                    <h4>Choices</h4>\n                    <p v-for=\"option in options.options\">{{ this.showOptions(option) }}</p>\n                    <h4>Customisations</h4>\n                    <p v-for=\"customisation in options.customisations\">{{ this.showCustomisations(customisation) }}</p>\n                </div>\n            </modal>\n        </div>\n        <div class=\"item-container item-details-container\">\n\n        </div>\n        <div class=\"item-container item-qty-container\">\n            <input type=\"number\" v-model=\"quantity\" v-if=\"canEdit\" class=\"item-quantity\">\n            <p v-else=\"\" class=\"item-quantity\">{{ quantity }}</p>\n            <button v-on:click=\"handleEditButtonClick\">\n                {{ buttonTxt }}\n            </button>\n        </div>\n        <div class=\"item-container item-price-container\">\n            <p class=\"item-price\">£{{ (price * quantity) / 100}}</p>\n        </div>\n    </div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/Users/mooz/work/robin-song/resources/assets/js/components/CartListItem.vue"
+  module.hot.dispose(function () {
+    require("vueify-insert-css").cache["\n\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, module.exports.template)
+  }
+})()}
+},{"vue":13,"vue-hot-reload-api":4,"vueify-insert-css":14}],16:[function(require,module,exports){
+var __vueify_style__ = require("vueify-insert-css").insert("\n\n")
+"use strict";
+
+module.exports = {
+    props: {
+        show: {
+            type: Boolean,
+            required: true,
+            twoWay: true
+        }
+    }
+};
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"modal-mask\" v-show=\"show\" transition=\"modal\">\n        <div class=\"modal-wrapper\">\n            <div class=\"modal-container\">\n\n                <div class=\"modal-header\">\n                    <slot name=\"header\">\n                        default header\n                    </slot>\n                </div>\n\n                <div class=\"modal-body\">\n                    <slot name=\"body\">\n                        default body\n                    </slot>\n                </div>\n\n                <div class=\"modal-footer\">\n                    <slot name=\"footer\">\n                        <button class=\"modal-default-button\" @click=\"show = false\">\n                            OK\n                        </button>\n                    </slot>\n                </div>\n            </div>\n        </div>\n    </div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/Users/mooz/work/robin-song/resources/assets/js/components/Modal.vue"
+  module.hot.dispose(function () {
+    require("vueify-insert-css").cache["\n\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, module.exports.template)
+  }
+})()}
+},{"vue":13,"vue-hot-reload-api":4,"vueify-insert-css":14}],17:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+
+    cartPageVue: {
+        el: '#cart-list',
+
+        data: {
+            items: [],
+            shipping: []
+        },
+
+        computed: {
+            total: function total() {
+                return this.items.reduce(function (sum, item) {
+                    return sum + item.price * item.qty;
+                }, 0);
+            }
+        },
+
+        ready: function ready() {
+            this.fetchItems();
+            this.fetchShippingPrices();
+        },
+
+        events: {
+            'quantity.updated': function quantityUpdated() {
+                this.fetchShippingPrices();
+            }
+        },
+
+        methods: {
+            fetchItems: function fetchItems() {
+                this.$http.get('/api/cart', function (res) {
+                    this.$set('items', res);
+                });
+            },
+
+            fetchShippingPrices: function fetchShippingPrices() {
+                this.$http.get('/api/cart/shipping', function (res) {
+                    this.$set('shipping', res);
+                });
+            },
+
+            removeItem: function removeItem(item) {
+                this.$http['delete']('/api/cart/' + item.rowid, {}, function (res) {
+                    this.items.$remove(item);
+                    this.fetchShippingPrices();
+                });
+            }
+        }
+    }
+};
+
+},{}],18:[function(require,module,exports){
 'use strict';
 
 window.Shuffle = require('shufflejs');
 var rsApp = rsApp || {};
+rsApp.frontConstructorObjects = require('./components/frontvueobjects');
 var Vue = require('vue');
 Vue.use(require('vue-resource'));
 
 if (document.querySelector('#x-token')) {
     Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#x-token').getAttribute('content');
 }
+
+Vue.component('cart-list-item', require('./components/CartListItem.vue'));
+Vue.component('modal', require('./components/Modal.vue'));
 
 if (document.querySelector('#basket')) {
     rsApp.basket = new Vue({
@@ -21223,6 +21662,6 @@ if (document.querySelector('#basket')) {
 window.Vue = Vue;
 window.rsApp = rsApp;
 
-},{"shufflejs":3,"vue":12,"vue-resource":5}]},{},[13]);
+},{"./components/CartListItem.vue":15,"./components/Modal.vue":16,"./components/frontvueobjects":17,"shufflejs":3,"vue":13,"vue-resource":6}]},{},[18]);
 
 //# sourceMappingURL=front.js.map

@@ -24,7 +24,7 @@ class TellerTest extends TestCase
     /**
      * @test
      */
-    public function a_successfull_charge_has_an_amount_charged_and_a_charge_id()
+    public function a_successful_charge_has_an_amount_charged_and_a_charge_id()
     {
         $teller = new \App\Billing\StripeTeller();
         $result = $teller->charge($this->makeTestCardFor('success'), 1000);

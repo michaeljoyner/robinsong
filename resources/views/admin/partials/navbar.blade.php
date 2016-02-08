@@ -20,6 +20,23 @@
                 <li><a href="/admin/collections">Collections</a></li>
                 <li><a href="/admin/shipping">Shipping Rules</a></li>
                 <li><a href="/admin/orders">Orders</a></li>
+                @if($ediblePages->count())
+                <li class="dropdown">
+                    <a href="#"
+                       class="dropdown-toggle"
+                       data-toggle="dropdown"
+                       role="button"
+                       aria-haspopup="true"
+                       aria-expanded="false"
+                    >Site Content <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        @foreach($ediblePages as $page)
+                            <li><a href="{{ $page['url'] }}">{{ ucwords($page['name']) }}</a></li>
+                        @endforeach
+                    </ul>
+                </li>
+                @endif
+                <li><a href="/admin/blog/posts">Blog</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">

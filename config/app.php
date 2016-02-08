@@ -140,6 +140,7 @@ return [
         Cviebrock\EloquentSluggable\SluggableServiceProvider::class,
         Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
+//        App\Content\EdibleServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -147,6 +148,7 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\ViewComposerServiceProvider::class
 
     ],
 

@@ -41,7 +41,8 @@
             </div>
             <div class="col-md-6 order-detail">
                 <p class="lead"><strong>Amount charged: </strong>&pound;{{ $order->amount / 100 }}</p>
-                <p class="lead"><strong>Stripe Charge Id: </strong>{{ $order->charge_id }}</p>
+                <p class="lead"><strong>Gateway Used: </strong>{{ ucfirst($order->gateway) }}</p>
+                <p class="lead"><strong>Transaction Id: </strong>{{ $order->charge_id }}</p>
                 <p class="lead"><strong>Shipping fee paid: </strong>&pound;{{ $order->shipping_amount / 100 }}</p>
                 <p class="lead"><strong>Shipping Location: </strong>{{ $order->shipping_location }}</p>
             </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Content\ContentRepository;
 use App\Shipping\ShippingCalculatorFactory;
 use App\Stock\Category;
 use App\Stock\Collection;
@@ -14,10 +15,15 @@ use App\Http\Controllers\Controller;
 
 class PagesController extends Controller
 {
-    public function home()
+    public function home(ContentRepository $contentRepository)
     {
-        $collections = Collection::all()->random(2);
-        return view('front.pages.home')->with(compact('collections'));
+        $collections = Collection::all();
+        $collections->count() > 1 ? $collections->random(2) : $collections;
+        $page = $contentRepository->getPageByName('home');
+        $sliderImages = $page ? $page->imagesOf('slider') : collect([]);
+        $intro = $page ? $page->textFor('intro') : '';
+        $products = Product::limit(4)->get();
+        return view('front.pages.home')->with(compact('collections', 'sliderImages', 'intro', 'products'));
     }
 
     public function collections()

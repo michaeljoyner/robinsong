@@ -28,7 +28,13 @@ class ProductsController extends Controller
 
     public function store($categoryId, Request $request)
     {
-        $product = Category::findOrFail($categoryId)->addProduct($request->all());
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'description' => 'required',
+            'price' => 'required|numeric|min:0',
+            'weight' => 'required|integer|min:0'
+        ]);
+        Category::findOrFail($categoryId)->addProduct($request->only(['name', 'description', 'price', 'weight']));
 
         return redirect('admin/categories/'.$categoryId);
     }
@@ -42,6 +48,13 @@ class ProductsController extends Controller
 
     public function update($productId, Request $request)
     {
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'description' => 'required',
+            'price' => 'required|numeric|min:0',
+            'weight' => 'required|integer|min:0'
+        ]);
+
         $product = Product::findOrFail($productId);
         $product->update($request->all());
 
@@ -50,13 +63,16 @@ class ProductsController extends Controller
 
     public function delete($productId)
     {
-        Product::findOrFail($productId)->delete();
+        $product = Product::findOrFail($productId);
+        $categoryId = $product->category->id;
+        $product->delete();
 
-        return redirect('admin');
+        return redirect('admin/categories/'.$categoryId);
     }
 
     public function storeCoverPic($productId, Request $request)
     {
+        $this->validate($request, ['file' => 'required|image']);
         $uploadedImage = Product::findOrFail($productId)->setModelImage($request->file('file'));
 
         return response()->json($uploadedImage);
@@ -64,6 +80,7 @@ class ProductsController extends Controller
 
     public function setAvailability($productId, Request $request)
     {
+        $this->validate($request, ['available' => 'required|boolean']);
         $product = Product::findOrFail($productId);
         $originalStatus = $product->available;
         $set = $product->setAvailability($request->available);

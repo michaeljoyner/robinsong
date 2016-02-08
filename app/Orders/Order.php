@@ -2,6 +2,7 @@
 
 namespace App\Orders;
 
+use App\Billing\ChargeResponse;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
@@ -72,5 +73,14 @@ class Order extends Model
         }
 
         return $this->fulfilled === 1 ? 'fulfilled' : 'ongoing';
+    }
+
+    public function setChargeResult(ChargeResponse $charge)
+    {
+        $this->paid = $charge->success();
+        $this->gateway = $charge->gateway;
+        $this->amount = $charge->amount();
+        $this->charge_id = $charge->chargeId();
+        $this->save();
     }
 }

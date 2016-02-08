@@ -1,4 +1,4 @@
-{!! Form::model($user, ['url' => 'admin/users/'.$user->id.'/edit', 'class' => 'form-horizontal']) !!}
+{!! Form::model($user, ['url' => 'admin/users/'.$user->id.'/edit', 'class' => 'rs-form form-narrow form-horizontal']) !!}
 <div class="form-group">
     <label for="name">Name: </label>
     {!! Form::text('name', null, ['class' => 'form-control']) !!}

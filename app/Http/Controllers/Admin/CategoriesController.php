@@ -29,7 +29,12 @@ class CategoriesController extends Controller
 
     public function store($collectionId, Request $request)
     {
-        $collection = Collection::findOrFail($collectionId)->addcategory($request->all());
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'description' => 'required'
+        ]);
+
+        Collection::findOrFail($collectionId)->addCategory($request->only(['name', 'description']));
         return redirect('admin/collections/'.$collectionId);
     }
 
@@ -42,20 +47,30 @@ class CategoriesController extends Controller
 
     public function update($categoryId, Request $request)
     {
-        $category = Category::findOrFail($categoryId)->update($request->all());
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'description' => 'required'
+        ]);
 
-        return redirect('admin');
+        $category = Category::findOrFail($categoryId);
+        $category->update($request->only(['name', 'description']));
+
+        return redirect('admin/categories/'.$category->id);
     }
 
     public function delete($categoryId)
     {
-        $category = Category::findOrFail($categoryId)->delete();
+        $category = Category::findOrFail($categoryId);
+        $collectionId = $category->collection->id;
+        $category->delete();
 
-        return redirect('admin');
+        return redirect('admin/collections/'.$collectionId);
     }
 
     public function storeCoverPic($categoryId, Request $request)
     {
+        $this->validate($request, ['file' => 'required|image']);
+
         $uploadedImage = Category::findOrFail($categoryId)->setModelImage($request->file('file'));
 
         return response()->json($uploadedImage);

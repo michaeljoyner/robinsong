@@ -25,6 +25,8 @@ class ProductOptionsController extends Controller
 
     public function store($productId, Request $request)
     {
+        $this->validate($request, ['name' => 'required|max:255']);
+
         $option = Product::findOrFail($productId)->addOption($request->name);
 
         return response()->json($option);

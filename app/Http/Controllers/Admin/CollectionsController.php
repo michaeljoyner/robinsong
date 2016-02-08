@@ -35,7 +35,11 @@ class CollectionsController extends Controller
 
     public function store(Request $request)
     {
-        $collection = Collection::create($request->all());
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'description' => 'required'
+        ]);
+        $collection = Collection::create($request->only(['name', 'description']));
 
         return redirect('admin/collections/'.$collection->id);
     }
@@ -49,20 +53,28 @@ class CollectionsController extends Controller
 
     public function update($collectionId, Request $request)
     {
-        $collection = Collection::findOrFail($collectionId)->update($request->all());
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'description' => 'required'
+        ]);
 
-        return redirect('admin');
+        $collection = Collection::findOrFail($collectionId);
+        $collection->update($request->only(['name', 'description']));
+
+        return redirect('admin/collections/'.$collectionId);
     }
 
     public function delete($collectionId)
     {
-        $collection = Collection::findOrFail($collectionId)->delete();
+        Collection::findOrFail($collectionId)->delete();
 
-        return redirect('admin');
+        return redirect('admin/collections');
     }
 
     public function storeCoverPic($collectionId, Request $request)
     {
+        $this->validate($request, ['file' => 'required|image']);
+
         $uploadedImage = Collection::findOrFail($collectionId)->setModelImage($request->file('file'));
 
         return response()->json($uploadedImage);
