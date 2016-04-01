@@ -1,5 +1,13 @@
 @extends('front.base')
 
+@section('head')
+    @include('front.partials.ogmeta', [
+        'ogImage' => '/images/assets/logo_robinsong.png',
+        'ogTitle' => 'Robin Song | ' . $category->name,
+        'ogDescription' => $category->description
+    ])
+@endsection
+
 @section('content')
     @include('front.partials.basketbar')
     @include('front.partials.altheader')
@@ -34,6 +42,9 @@
                     </div>
                 @endforeach
             </div>
+            <a href="/collections/{{ $category->collection->slug }}">
+                <div class="purchase-btn narrow">Back to {{ $category->collection->slug }}</div>
+            </a>
         </div>
     </div>
     @include('front.partials.footer')

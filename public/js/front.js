@@ -21554,6 +21554,90 @@ if (module.hot) {(function () {  module.hot.accept()
 },{"vue":13,"vue-hot-reload-api":4,"vueify-insert-css":14}],17:[function(require,module,exports){
 'use strict';
 
+var AjaxContactForm = function AjaxContactForm(formEl) {
+    this.formEl = formEl;
+    this.errorBox = null;
+};
+
+AjaxContactForm.prototype = {
+
+    init: function init() {
+        var reset = document.getElementById('cf-reset');
+        reset.addEventListener('click', this.formReset.bind(this), false);
+        this.formEl.onsubmit = this.handleSubmit.bind(this);
+        this.setupErrorBox();
+    },
+
+    sendForm: function sendForm() {
+        var fd = new window.FormData(this.formEl);
+        var req = new window.XMLHttpRequest();
+        var self = this;
+        self.clearErrors();
+        req.open('POST', this.formEl.getAttribute('action'), true);
+        req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        req.onreadystatechange = function (ev) {
+            if (req.readyState == 4) {
+                if (req.status == 200) {
+                    self.showSuccess();
+                } else {
+                    self.failResponse(req.status);
+                }
+            }
+        };
+        req.send(fd);
+        return false;
+    },
+
+    handleSubmit: function handleSubmit(ev) {
+        if (!window.FormData) return true;
+        ev.preventDefault();
+        this.sendForm();
+        return false;
+    },
+
+    showSuccess: function showSuccess() {
+        this.formEl.className += ' closed';
+    },
+
+    failResponse: function failResponse(status) {
+        if (status >= 500) {
+            this.showErrorMessage('Sorry! There was a problem on our side. Please try again later');
+            return;
+        }
+
+        if (status === 422) {
+            this.showErrorMessage('There was a problem with your input. Please check and try again. All fields are required');
+            return;
+        }
+
+        this.showErrorMessage('Oops! Something went wrong. Sorry. Please try again.');
+    },
+
+    formReset: function formReset() {
+        this.formEl.reset();
+        this.formEl.className = 'gdb-form';
+    },
+
+    setupErrorBox: function setupErrorBox() {
+        var box = document.createElement('div');
+        box.setAttribute('class', 'cf-error-box');
+        this.errorBox = this.formEl.insertBefore(box, this.formEl.firstChild);
+    },
+
+    showErrorMessage: function showErrorMessage(message) {
+        this.errorBox.innerHTML += "<p>" + message + "</p>";
+    },
+
+    clearErrors: function clearErrors() {
+        this.errorBox.innerHTML = '';
+    }
+};
+
+module.exports = AjaxContactForm;
+
+},{}],18:[function(require,module,exports){
+'use strict';
+
 module.exports = {
 
     cartPageVue: {
@@ -21606,11 +21690,12 @@ module.exports = {
     }
 };
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 'use strict';
 
 window.Shuffle = require('shufflejs');
 var rsApp = rsApp || {};
+var ContactForm = require('./components/contactform.js');
 rsApp.frontConstructorObjects = require('./components/frontvueobjects');
 var Vue = require('vue');
 Vue.use(require('vue-resource'));
@@ -21662,6 +21747,32 @@ if (document.querySelector('#basket')) {
 window.Vue = Vue;
 window.rsApp = rsApp;
 
-},{"./components/CartListItem.vue":15,"./components/Modal.vue":16,"./components/frontvueobjects":17,"shufflejs":3,"vue":13,"vue-resource":6}]},{},[18]);
+if (document.querySelector('#rs-contact-form')) {
+    var contactForm = new ContactForm(document.querySelector('#rs-contact-form'));
+    contactForm.init();
+}
+
+var navTrigger = document.querySelector('#slide-nav-trigger');
+var navMenu = document.querySelector('.nav-bar-menu.front-main-nav');
+
+function toggleNav() {
+    if (navMenu.classList.contains('open')) {
+        navTrigger.innerHTML = 'menu';
+        navMenu.classList.remove('open');
+        navTrigger.classList.remove('close');
+        return;
+    }
+    navTrigger.innerHTML = '&times;';
+    navTrigger.classList.add('close');
+    navMenu.classList.add('open');
+}
+
+navTrigger.addEventListener('click', toggleNav, false);
+
+$('#back-to-top-container').click(function () {
+    $('body, html').animate({ 'scrollTop': 0 }, "slow");
+});
+
+},{"./components/CartListItem.vue":15,"./components/Modal.vue":16,"./components/contactform.js":17,"./components/frontvueobjects":18,"shufflejs":3,"vue":13,"vue-resource":6}]},{},[19]);
 
 //# sourceMappingURL=front.js.map

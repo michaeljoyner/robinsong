@@ -30,7 +30,7 @@ class UsersController extends Controller
     {
         User::create($request->all());
 
-        return redirect()->to('/');
+        return redirect()->to('/admin/users');
     }
 
     public function edit($id)

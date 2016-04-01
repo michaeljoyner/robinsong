@@ -2,6 +2,11 @@
 
 @section('head')
     <meta id="x-token" property="CSRF-token" content="{{ Session::token() }}"/>
+    @include('front.partials.ogmeta', [
+        'ogImage' => '/images/assets/logo_robinsong.png',
+        'ogTitle' => 'Robin Song | ' . $product->name,
+        'ogDescription' => $product->description
+    ])
 @endsection
 
 @section('content')

@@ -9,11 +9,11 @@
                 <p>Are you sure you want to delete <span class="object-name">this user</span>?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn exp-btn btn-pale" data-dismiss="modal">Cancel</button>
-                <form method="POST" action="" class="delete-form">
+                <button type="button" class="btn rs-btn" data-dismiss="modal">Cancel</button>
+                <form method="POST" action="" class="delete-form" style="display: inline-block;">
                     <input type="hidden" name="_method" value="DELETE"/>
                     <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
-                    <input type="submit" class="btn exp-btn btn-red" value="Delete"/>
+                    <input type="submit" class="btn rs-btn btn-solid-danger" value="Delete"/>
                 </form>
             </div>
         </div><!-- /.modal-content -->

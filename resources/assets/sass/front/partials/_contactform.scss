@@ -1,0 +1,75 @@
+#rs-contact-form {
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 50px;
+
+  .rs-form-group {
+    max-width: 500px;
+    display: block;
+    width: 90%;
+    margin: 10px auto;
+
+    label {
+      color: $primary_blue;
+      text-transform: uppercase;
+    }
+
+    input {
+      width: 100%;
+      padding-left: 10px;
+      height: 32px;
+      line-height: 32px;
+      border: 1px solid #e5e5e5;
+    }
+
+    textarea {
+      width: 100%;
+      height: 150px;
+      resize: none;
+      border: 1px solid #e5e5e5;
+      padding: 8px 10px;
+    }
+  }
+
+  .cf-send-btn {
+    //
+  }
+
+  .form-cover {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: $white;
+    transition: .75s;
+    transform: translateX(-110%);
+
+    p {
+      color: $primary_dark;
+      font-family: $serif_heading;
+      font-weight: 700;
+    }
+  }
+
+  &.closed .form-cover {
+    transform: translateX(0);
+
+    #cf-reset {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+
+    #cf-thanks {
+      width: 100%;
+      text-align: center;
+      padding-top: 150px;
+      font-size: 2.5em;
+
+    }
+  }
+}

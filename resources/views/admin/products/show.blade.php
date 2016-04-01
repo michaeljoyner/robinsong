@@ -19,6 +19,10 @@
             <a href="/admin/products/{{ $product->id }}/edit">
                 <div class="btn rs-btn">Edit</div>
             </a>
+            @include('admin.partials.deletebutton', [
+                'objectName' => $product->name,
+                'deleteFormAction' => '/admin/products/'.$product->id
+            ])
         </div>
         <hr>
     </div>
@@ -99,6 +103,7 @@
         </div>
     </div>
 @endsection
+@include('admin.partials.deletemodal')
 
 @section('bodyscripts')
     <script>
@@ -112,4 +117,5 @@
         new Vue(app.vueConstructorObjects.toggleBtnVue);
 
     </script>
+    @include('admin.partials.modalscript')
 @endsection

@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Content\ContentRepository;
 use Illuminate\Support\ServiceProvider;
+use Michaeljoyner\Edible\ContentRepository;
 
 class ViewComposerServiceProvider extends ServiceProvider
 {

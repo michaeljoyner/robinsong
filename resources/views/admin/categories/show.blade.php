@@ -11,9 +11,10 @@
             <a href="/admin/categories/{{ $category->id }}/edit">
                 <div class="btn rs-btn btn-light">Edit</div>
             </a>
-            <a href="#">
-                <div class="btn rs-btn btn-clear-danger">Delete</div>
-            </a>
+            @include('admin.partials.deletebutton', [
+                'objectName' => $category->name,
+                'deleteFormAction' => '/admin/categories/'.$category->id
+            ])
         </div>
         <hr>
     </div>
@@ -54,6 +55,7 @@
         'buttonText' => 'Add Product'
     ])
 @endsection
+@include('admin.partials.deletemodal')
 
 @section('bodyscripts')
     <script>
@@ -61,4 +63,5 @@
             el: '#cover-pic-vue'
         });
     </script>
+    @include('admin.partials.modalscript')
 @endsection

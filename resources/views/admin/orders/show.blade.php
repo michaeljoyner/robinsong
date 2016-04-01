@@ -7,7 +7,16 @@
 @section('content')
     <div class="rs-page-header clearfix">
         <h1 class="pull-left">Order #{{ $order->order_number }}</h1>
+        @if(! $order->trashed())
         <div class="rs-header-actions pull-right">
+            <button type="button"
+                    class="btn rs-btn btn-solid-danger"
+                    data-objectname="{{ $order->order_number }}"
+                    data-action="/admin/orders/{{ $order->id }}"
+                    data-toggle="modal" data-target="#confirm-delete-modal"
+            >
+                Archive
+            </button>
             <toggle-button url="/admin/api/orders/{{ $order->id }}/fulfill"
                            initial="{{ $order->isFulfilled() ? 1 : 0 }}"
                            toggleprop="fulfill"
@@ -23,6 +32,9 @@
                            offtext="Cancel"
                            ontext="Restore"></toggle-button>
         </div>
+        @else
+            <span class="pull-right text-danger lead">Archived</span>
+        @endif
         <hr>
     </div>
     <div class="order-detail">
@@ -67,9 +79,11 @@
         </div>
     </div>
 @endsection
+@include('admin.partials.deletemodal')
 
 @section('bodyscripts')
     <script>
         new Vue({el: 'body'});
     </script>
+    @include('admin.partials.modalscript')
 @endsection

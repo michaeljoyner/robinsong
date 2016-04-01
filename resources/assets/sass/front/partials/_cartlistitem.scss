@@ -2,12 +2,19 @@
   list-style-type: none;
   padding: 0;
 
+  li {
+    position: relative;
+  }
+
   .cart-item-delete-btn {
     display: inline-block;
     color: $danger;
     text-decoration: underline;
     cursor: pointer;
     width: 9%;
+
+    @include respond-to(phone) {position: absolute; right: 10px; bottom: 21px;}
+    @include respond-to(smalltablet) {position: absolute; right: 10px; bottom: 21px;}
   }
 }
 
@@ -15,6 +22,9 @@
   display: inline-block;
   width: 90%;
   margin: 20px 0;
+
+  @include respond-to(phone) {width: 100%;}
+  @include respond-to(smalltablet) {width: 100%;}
 
   .item-container {
     display: inline-block;
@@ -24,13 +34,22 @@
     width: 45%;
     padding-left: 20px;
 
+    @include  respond-to(phone) {width: 80%; padding-left: 20px;}
+    @include  respond-to(smalltablet) {width: 80%; padding-left: 20px;}
+
     .item-name {
       display: inline-block;
+
+      @include respond-to(phone) {font-size: 16px; font-weight: 400;}
+      @include respond-to(smalltablet) {font-size: 16px; font-weight: 400;}
     }
   }
 
   .item-qty-container {
     width: 15%;
+
+    @include respond-to(phone) {width: 33%; text-align: right;}
+    @include respond-to(smalltablet) {width: 33%; text-align: right;}
 
     .item-quantity {
       width: 46px;
@@ -47,21 +66,36 @@
   }
 
   .item-price-container {
+
+    @include respond-to(phone) {width: 33%; text-align: right;}
+    @include respond-to(smalltablet) {width: 33%; text-align: right;}
     .item-price {
       font-size: 170%;
       color: $primary_red;
       font-weight: 700;
+
+      @include respond-to(phone) {font-size: 100%;}
+      @include respond-to(smalltablet) {font-size: 100%;}
     }
   }
 
   .item-image-container {
     max-width: 70px;
 
+    @include respond-to(phone) {margin-left: 10px;}
+    @include respond-to(smalltablet) {margin-left: 10px;}
+
     img {
       width: 100%;
       height: auto;
       border-radius: 50%;
+
+      @include respond-to(phone) {border-radius: 0; vertical-align: text-top;}
+      @include respond-to(smalltablet) {border-radius: 0; vertical-align: text-top;}
     }
+
+    @include respond-to(phone) {max-width: 14%;}
+    @include respond-to(smalltablet) {max-width: 14%;}
   }
 }
 

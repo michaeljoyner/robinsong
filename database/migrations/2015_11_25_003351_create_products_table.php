@@ -21,6 +21,7 @@ class CreateProductsTable extends Migration
             $table->integer('price');
             $table->integer('weight');
             $table->boolean('available')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

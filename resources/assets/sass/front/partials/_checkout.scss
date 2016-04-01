@@ -9,22 +9,19 @@
   }
 
   .shipping-selections {
-
-    label {
-      color: $primary_dark;
-      font-size: 120%;
-      padding: 20px;
-    }
+    text-align: center;
   }
 
   label {
     color: $primary_blue;
     display: inline-block;
+
   }
 
   .form-input-row {
     label {
       font-size: 90%;
+      margin-top: 8px;
     }
     input[type=text], input[type=email], input[type=password] {
       height: 32px;
@@ -34,7 +31,9 @@
   }
 
   .order-table {
-    width: 100%;
+    width: 95%;
+    max-width: 700px;
+    margin: 2em auto;
 
     tbody tr {
       border-bottom: 1px solid $primary_dark;
@@ -58,4 +57,115 @@
     color: $white;
     margin: 20px auto;
   }
+
+  .credit-card-box {
+    padding: 10px;
+    border: 1px solid $primary_blue;
+    position: relative;
+
+    img {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 150px;
+      height: auto;
+      opacity: .7;
+
+      @include respond-to(phone) {width: 100px; padding: 5px 5px 0 0;}
+      @include respond-to(smalltablet) {width: 100px; padding: 5px 5px 0 0;}
+      @include respond-to(largetablet) {width: 100px; padding: 5px 5px 0 0;}
+    }
+
+    .form-section-header {
+      color: $primary_blue;
+      margin-top: 0;
+      border-bottom: 1px solid $primary_blue;
+
+      span {
+        font-size: 80%;
+      }
+    }
+  }
+
+  .checkout-instruction-number {
+    padding-right: 14px;
+    @include respond-to(phone) {display: block; width: 100%; text-align: center; padding-right: 0;}
+  }
+
+  .checkout-instruction-header {
+    text-align: center;
+    font-family: $crafty;
+    color: $primary_red;
+  }
+
+  .shipping-location-card {
+    display: inline-block;
+    position: relative;
+    width: 30%;
+    margin: 12px;
+    height: 80px;
+    border: 2px solid $primary_blue;
+    cursor: pointer;
+
+    @include respond-to(phone) {width: 95%; max-width: 450px; display: block; margin: 12px auto;}
+    @include respond-to(smalltablet) {width: 95%; max-width: 450px; display: block; margin: 12px auto;}
+
+    .shipping-location-radio {
+      display: none;
+    }
+
+    .shipping-location-card-inner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      color: $primary_blue;
+      transition: .5s;
+      padding-top: 20px;
+
+      span {
+        font-size: 1.1em;
+      }
+
+      .check-mark {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        opacity: 0;
+      }
+    }
+
+    .shipping-location-radio:checked + .shipping-location-card-inner {
+      color: $white;
+      background: $primary_blue;
+
+      span {
+        font-size: 1.2em;
+        font-family: $serif_heading;
+      }
+
+      .check-mark {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+#paypal-submit-btn {
+  background: $white;
+  padding: 8px 12px;
+  border: 1px solid #012169;
+  width: 15em;
+  display: block;
+  margin: 2em auto;
+}
+
+.to-checkout {
+  padding-bottom: 40px;
+}
+
+.checkout-form .w-col-offset-3 {
+  @include respond-to(phone) {margin-left: 0;}
+  @include respond-to(smalltablet) {margin-left: 0;}
 }

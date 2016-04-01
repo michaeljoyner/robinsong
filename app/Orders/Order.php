@@ -3,10 +3,17 @@
 namespace App\Orders;
 
 use App\Billing\ChargeResponse;
+use App\Events\OrderFulfilled;
+use App\Events\OrderPaidUp;
+use App\Stock\Product;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Order extends Model
 {
+
+    use SoftDeletes;
+
     protected $table = 'orders';
 
     protected $fillable = [
@@ -29,7 +36,13 @@ class Order extends Model
 
     public function addItem($productId, $quantity)
     {
-        return $this->items()->create(['product_id' => $productId, 'quantity' => $quantity]);
+        $product = Product::findOrFail($productId);
+        return $this->items()->create([
+            'description' => $product->name,
+            'price' => $product->price,
+            'product_id' => $productId,
+            'quantity' => $quantity
+        ]);
     }
 
     public function isFulfilled()
@@ -40,7 +53,13 @@ class Order extends Model
     public function fulfill()
     {
         $this->fulfilled = 1;
-        return $this->save();
+        $result = $this->save();
+
+        if($result) {
+            event(new OrderFulfilled($this));
+        }
+
+        return $result;
     }
 
     public function isCancelled()
@@ -68,6 +87,10 @@ class Order extends Model
 
     public function getStatus()
     {
+        if($this->trashed()) {
+            return 'archived';
+        }
+
         if($this->cancelled === 1) {
             return 'cancelled';
         }
@@ -82,5 +105,9 @@ class Order extends Model
         $this->amount = $charge->amount();
         $this->charge_id = $charge->chargeId();
         $this->save();
+
+        if($charge->success()) {
+            event(new OrderPaidUp($this));
+        }
     }
 }

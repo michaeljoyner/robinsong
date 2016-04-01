@@ -1,13 +1,18 @@
 @extends('front.base')
 
+@section('head')
+    @include('front.partials.ogmeta', [
+        'ogImage' => '/images/assets/logo_robinsong.png',
+        'ogTitle' => 'Robin Song Collections',
+        'ogDescription' => 'Browse through our collections of wonderfully hand-crafted goods, from wedding reception guest books to unique photo frames'
+    ])
+@endsection
+
 @section('content')
     @include('front.partials.basketbar')
     @include('front.partials.altheader')
     @include('front.partials.navbar')
-    <div class="breadcrumbs-section">
-        <div class="breadcrumbs-text p1"></div>
-    </div>
-    <div class="w-section">
+    <div class="w-section sans-breadcrumb-heading">
         <h1 class="h2 collections">Our Collections</h1>
     </div>
     <div class="w-section product-type-section">

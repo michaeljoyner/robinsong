@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\Inspire::class,
-        MapContentStructure::class
+//        MapContentStructure::class
     ];
 
     /**

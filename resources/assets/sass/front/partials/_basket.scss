@@ -13,8 +13,15 @@
   transform: translate3d(0, -150%, 0);
   z-index: -10;
 
+
+
   &.show {
     transform: translate3d(0,0,0);
+    z-index: 100;
+
+    @include respond-to(phone) {transform: translate3d(0, -5px, 0);}
+    @include respond-to(largetablet) {transform: translate3d(0, -5px, 0);}
+    @include respond-to(smalltablet) {transform: translate3d(0, -5px, 0);}
   }
 
   .basket-counts {

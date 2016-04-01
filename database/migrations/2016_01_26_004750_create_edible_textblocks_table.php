@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGalleriesTable extends Migration
+class CreateEdibleTextblocksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,15 +12,17 @@ class CreateGalleriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('ec_galleries', function (Blueprint $table) {
+        Schema::create('ec_textblocks', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('ec_page_id')->unsigned();
             $table->foreign('ec_page_id')->references('id')->on('ec_pages')->onDelete('cascade');
             $table->string('name');
             $table->text('description');
-            $table->integer('is_single')->default(0);
+            $table->text('content')->nullable();
+            $table->boolean('allows_html');
             $table->timestamps();
         });
+
     }
 
     /**
@@ -30,6 +32,6 @@ class CreateGalleriesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('ec_galleries');
+        Schema::drop('ec_textblocks');
     }
 }

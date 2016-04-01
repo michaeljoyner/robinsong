@@ -140,7 +140,7 @@ return [
         Cviebrock\EloquentSluggable\SluggableServiceProvider::class,
         Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
-//        App\Content\EdibleServiceProvider::class,
+        Michaeljoyner\Edible\EdibleServiceProvider::class,
 
         /*
          * Application Service Providers...

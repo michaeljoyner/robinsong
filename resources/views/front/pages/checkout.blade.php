@@ -1,5 +1,9 @@
 @extends('front.base')
 
+@section('head')
+    <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+@endsection
+
 @section('content')
     @include('front.partials.basketbar')
     @include('front.partials.altheader')
@@ -11,22 +15,33 @@
         {!! csrf_field() !!}
         <p class="payment-errors">{{ \Illuminate\Support\Facades\Session::get('payment.error', '') }}</p>
         <section class="order-summary">
-            <h4 class="form-section-header">Please select your shipping option and check your order</h4>
+            <h2 class="checkout-instruction-header"><span class="checkout-instruction-number">1.</span>Please select your shipping option and check your order</h2>
             <div class="shipping-selections">
                 @foreach($shippingInfo as $location)
-                    <label>
-                        {{ $location['name'] }} &pound;{{ $location['price'] / 100  }}
+                    <label class="shipping-location-card">
                         <input type="radio"
                                value="{{ $location['price'] }}"
                                name="shipping_price"
                                v-model="shipping"
-                               v-on:click="setLocation('{{ $location['name'] }}')">
+                               class="shipping-location-radio"
+                               v-on:click="setLocation('{{ $location['name'] }}')"
+                        >
+                        <div class="shipping-location-card-inner">
+                            <span>{{ $location['name'] }} &pound;{{ $location['price'] / 100  }}</span>
+                            <div class="check-mark">
+                                <svg fill="#FFFFFF" height="30" viewBox="0 0 30 30" width="30" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0 0h24v24H0z" fill="none"/>
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                </svg>
+                            </div>
+                        </div>
                     </label>
                 @endforeach
                     <input type="hidden" name="shipping_location" value="{{ $shippingInfo[0]['name'] }}" v-model="shipping_location">
             </div>
             @include('front.partials.ordertable')
         </section>
+        <h2 class="checkout-instruction-header"><span class="checkout-instruction-number">2.</span>Fill out your details</h2>
         <section class="customer w-row">
             <div class="w-col w-col-offset-3 w-col-6">
                 <div class="form-input-row">
@@ -46,13 +61,12 @@
         <section class="addresses">
             <div class="w-row">
                 <div class="w-col w-col-offset-3 w-col-6">
-                    <h4 class="form-section-header">Your deliver address:</h4>
                     <div class="form-input-row">
-                        <label for="address_line1">Line 1: </label>
+                        <label for="address_line1">Delivery address (line 1): </label>
                         <input type="text" name="address_line1"  value="{{ old('address_line1') }}" required>
                     </div>
                     <div class="form-input-row">
-                        <label for="address_line2">Line 2: </label>
+                        <label for="address_line2">Delivery address (line 2): </label>
                         <input type="text" name="address_line2" value="{{ old('address_line2') }}">
                     </div>
                     <div class="form-input-row">
@@ -77,56 +91,66 @@
             </div>
 
         </section>
+        <h2 class="checkout-instruction-header"><span class="checkout-instruction-number">3.</span>Choose a payment method</h2>
         <section class="paypal-section">
-            <button id="paypal-submit-btn" type="submit" name="gateway" value="paypal">Pay with Paypal</button>
+            <button id="paypal-submit-btn" type="submit" name="gateway" value="paypal">
+                <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_200x51.png" alt="PayPal" />
+            </button>
         </section>
         <section>
-            <h4 class="form-section-header">Payment Info</h4>
             <div class="w-row">
-                <div class="w-col w-col-6 form-input-row">
-                    <label>Credit Card Number:</label>
-                    <input type="text" size="4" pattern="[0-9]{13,16}" data-stripe="number" id="cc-number">
-                </div>
-                <div class="w-col w-col-3 form-input-row">
-                    <label for="">CCV Number: </label>
-                    <input type="text" size="4" data-stripe="cvc">
-                </div>
-                <div class="w-col w-col-3 form-input-row">
-                    <label for="">Expiry Date:</label>
-                    <div>
-                        <select class="w-select" data-stripe="exp-month">
-                            <option value="">MM</option>
-                            <option value="1">01</option>
-                            <option value="2">02</option>
-                            <option value="3">03</option>
-                            <option value="4">04</option>
-                            <option value="5">05</option>
-                            <option value="6">06</option>
-                            <option value="7">07</option>
-                            <option value="8">08</option>
-                            <option value="9">09</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="12">12</option>
-                        </select>
-                        <select class="w-select" data-stripe="exp-year">
-                            <option value="">YYYY</option>
-                            <option value="2015">2015</option>
-                            <option value="2016">2016</option>
-                            <option value="2017">2017</option>
-                            <option value="2018">2018</option>
-                            <option value="2019">2019</option>
-                            <option value="2020">2020</option>
-                            <option value="2021">2021</option>
-                            <option value="2022">2022</option>
-                            <option value="2023">2023</option>
-                        </select>
+                <div class="w-col w-col-offset-3 w-col-6 credit-card-box">
+                    <img src="/images/assets/credit_card_logos.png" alt="credit card logos">
+                    <h4 class="form-section-header">Credit Card <span>(Secured by Stripe)</span></h4>
+                    <div class="row">
+                        <div class="w-col form-input-row">
+                            <label>Credit Card Number:</label>
+                            <input type="text" size="4" pattern="[0-9]{13,16}" data-stripe="number" id="cc-number">
+                        </div>
+                    </div>
+                    <div class="w-row">
+                        <div class="w-col w-col-3 form-input-row">
+                            <label for="">CCV Number: </label>
+                            <input type="text" size="4" data-stripe="cvc">
+                        </div>
+                        <div class="w-col w-col-6 w-col-offset-3 form-input-row">
+                            <label for="">Expiry Date:</label>
+                            <div>
+                                <select class="w-select" data-stripe="exp-month">
+                                    <option value="">MM</option>
+                                    <option value="1">01</option>
+                                    <option value="2">02</option>
+                                    <option value="3">03</option>
+                                    <option value="4">04</option>
+                                    <option value="5">05</option>
+                                    <option value="6">06</option>
+                                    <option value="7">07</option>
+                                    <option value="8">08</option>
+                                    <option value="9">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                                <select class="w-select" data-stripe="exp-year">
+                                    <option value="">YYYY</option>
+                                    <option value="2015">2015</option>
+                                    <option value="2016">2016</option>
+                                    <option value="2017">2017</option>
+                                    <option value="2018">2018</option>
+                                    <option value="2019">2019</option>
+                                    <option value="2020">2020</option>
+                                    <option value="2021">2021</option>
+                                    <option value="2022">2022</option>
+                                    <option value="2023">2023</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
         <section>
-            <button id="form-submit" class="pay-btn" name="gateway" type="submit">Pay Now</button>
+            <button id="form-submit" class="purchase-btn narrow" name="gateway" type="submit">Pay Now</button>
         </section>
     </form>
     @include('front.partials.footer')

@@ -8,12 +8,13 @@ use App\Services\BreadcrumbsTrait;
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
 
 class Product extends Model implements SluggableInterface, HasMediaConversions, BreadcrumbableInterface
 {
-    use SluggableTrait, HasMediaTrait, HasModelImage, BreadcrumbsTrait;
+    use SluggableTrait, HasMediaTrait, HasModelImage, BreadcrumbsTrait, SoftDeletes;
 
     public $defaultImageSrc = '/images/assets/default.jpg';
 

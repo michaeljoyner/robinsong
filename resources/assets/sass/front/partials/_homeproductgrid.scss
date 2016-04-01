@@ -1,22 +1,30 @@
 .product-grid-view {
-  width: 1000px;
-  margin: 50px auto 200px;
+  max-width: 1000px;
+  width: 95%;
+  margin: 50px auto 50px;
   font-size: 0;
 
   .hot-product {
     position: relative;
-    width: 250px;
+    width: 29%;
     display: inline-block;
     padding: 0;
-    margin: 0;
+    margin: 20px;
+    overflow: hidden;
+
+    @include respond-to(phone) {width: 100%; margin: 0;}
+    @include respond-to(smalltablet) {width: 100%; margin: 0;}
+    @include respond-to(largetablet) {margin: 15px;}
 
     &:hover img {
       opacity: 1;
+      transform: scale(1.1);
     }
 
     img {
       width: 100%;
-      opacity: .6;
+      opacity: 1;
+      transition: .4s;
     }
 
     .product-info {
@@ -26,6 +34,10 @@
       font-size: 16px;
       padding-left: 10px;
       padding-bottom: 10px;
+      background: $primary_red;
+      opacity: .9;
+      width: 100%;
+      height: 75px;
     }
 
     .product-title {
@@ -36,9 +48,11 @@
     }
 
     .price {
-      color: $secondary_orange;
+      color: $white;
       margin-bottom: 0;
       font-family: $serif_heading;
+      position: absolute;
+      bottom: 10px;
     }
   }
 }

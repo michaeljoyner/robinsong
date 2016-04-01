@@ -12,13 +12,13 @@
         <img src="/images/assets/icon_twitter_w.png" alt="twitter link">
     </a>
     <div id="basket" class="p1 basket">
-        <a href="/cart">Basket: <span>@{{ number_items }}</span> Items</a>
+        <a href="/cart">Basket: <span v-cloak>@{{ number_items }}</span> Items</a>
         <div class="basket-popout" v-bind:class="{'show': open}">
             <div class="basket-counts">
-                <p class="basket-stat">@{{ product_count }} Products</p>
-                <p class="basket-stat">@{{ number_items }} Items</p>
+                <p class="basket-stat" v-cloak>@{{ product_count }} Products</p>
+                <p class="basket-stat" v-cloak>@{{ number_items }} Items</p>
             </div>
-            <p class="basket-price">&pound;@{{ total_price / 100 }}</p>
+            <p class="basket-price" v-cloak>&pound;@{{ total_price / 100 }}</p>
         </div>
     </div>
 </div>

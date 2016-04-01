@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="rs-page-header clearfix">
-        <h1 class="pull-left">Orders</h1>
+        <h1 class="pull-left">@if($status) {{ ucfirst($status) }} @endif  Orders</h1>
         <div class="rs-header-actions pull-right">
             <span class="filter-label">Filter: </span>
             <a href="/admin/orders/fulfilled">
@@ -18,6 +18,11 @@
             <a href="/admin/orders/ongoing">
                 <div class="btn rs-btn btn-light">
                     Ongoing
+                </div>
+            </a>
+            <a href="/admin/orders/archived">
+                <div class="btn rs-btn btn-clear-danger">
+                    Archived
                 </div>
             </a>
         </div>
@@ -37,7 +42,7 @@
             <tbody>
             @foreach($orders as $order)
                 <tr>
-                    <td><a href="/admin/orders/show/{{ $order->id }}">{{ $order->order_number }}</a></td>
+                    <td class="order-number"><a href="/admin/orders/show/{{ $order->id }}">{{ $order->order_number }}</a></td>
                     <td>{{ $order->created_at->toFormattedDateString() }}</td>
                     <td>{{ $order->customer_name }}</td>
                     <td>{{ $order->customer_email }}</td>

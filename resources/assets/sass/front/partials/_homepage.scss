@@ -5,6 +5,11 @@
     line-height: 1.6;
     padding-bottom: 60px;
     padding-top: 60px;
+
+    @include respond-to(phone) {font-size: large; padding-top: 30px;}
   }
 }
 
+.final-home-section {
+  padding-bottom: 50px;
+}

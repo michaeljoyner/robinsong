@@ -1,0 +1,21 @@
+#back-to-top-container {
+  width: 50px;
+  height: 50px;
+  margin: 0 auto;
+  border: 3px solid $primary_red;
+  border-radius: 50%;
+  text-align: center;
+  cursor: pointer;
+  transform: scale(.7);
+
+  svg {
+    transform: translateY(-50%);
+    top: 50%;
+    position: relative;
+    left: -3%;
+  }
+}
+
+.footer {
+  position: relative;
+}

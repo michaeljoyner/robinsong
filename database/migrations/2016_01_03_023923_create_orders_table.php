@@ -32,6 +32,7 @@ class CreateOrdersTable extends Migration
             $table->string('shipping_location')->nullable();
             $table->boolean('fulfilled')->default(0);
             $table->boolean('cancelled')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

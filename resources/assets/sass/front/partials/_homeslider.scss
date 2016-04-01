@@ -1,0 +1,17 @@
+.slider {
+  @include respond-to(phone) {height: auto;}
+  @include respond-to(smalltablet) {height: auto;}
+
+  .slide-mask {
+    @include respond-to(phone) {height: auto;}
+    @include respond-to(smalltablet) {height: auto;}
+  }
+
+  .slide-arrow {
+    @include respond-to(phone) {display: none;}
+  }
+
+  .slider-dots {
+    @include respond-to(phone) {display: none;}
+  }
+}

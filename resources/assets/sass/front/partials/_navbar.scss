@@ -1,0 +1,120 @@
+.nav-bar-menu.front-main-nav {
+  @include respond-to(phone) {
+    padding-top: 100px;
+    transition: .4s;
+    transform: translate3d(-105vw, 0, 0);
+    display: block;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: $primary_blue;
+    top: 50px;
+    z-index: 100;
+    background-image: url(../../images/assets/pattern.png);
+    background-repeat: repeat;
+    background-position-y: 37%;
+    background-position-x: 4%;
+    background-blend-mode: soft-light;
+  }
+
+  @include respond-to(smalltablet) {
+    padding-top: 100px;
+    transition: .4s;
+    transform: translate3d(-105vw, 0, 0);
+    display: block;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: $primary_blue;
+    top: 50px;
+    z-index: 100;
+    background-image: url(../../images/assets/pattern.png);
+    background-repeat: repeat;
+    background-position-y: 37%;
+    background-position-x: 4%;
+    background-blend-mode: soft-light;
+  }
+
+  .nav-link {
+    @include respond-to(phone) {
+      display: block;
+      color: $white;
+      margin: 15px;
+      padding: 5px;
+      width: 100%;
+      font-size: 2em;
+      color: $primary_dark;
+      line-height: .8;
+    }
+
+    @include respond-to(smalltablet) {
+      display: block;
+      color: $white;
+      margin: 15px;
+      padding: 5px;
+      width: 100%;
+      font-size: 2em;
+      color: $primary_dark;
+      line-height: .8;
+    }
+
+    &:after {
+      @include respond-to(phone) {
+        content: '';
+        display: block;
+        width: 100px;
+        height: 2px;
+        margin: 10px auto;
+        background: $white;
+      }
+
+      @include respond-to(smalltablet) {
+        content: '';
+        display: block;
+        width: 100px;
+        height: 2px;
+        margin: 10px auto;
+        background: $white;
+      }
+    }
+  }
+
+  &.open {
+    @include respond-to(phone) {
+      transform: translate3d(0,0,0);
+    }
+
+    @include respond-to(smalltablet) {
+      transform: translate3d(0,0,0);
+    }
+  }
+}
+
+#slide-nav-trigger {
+  position: absolute;
+  display: none;
+  width: 70px;
+  height: 30px;
+  background: $primary_blue;
+  color: $white;
+  right: 0;
+  top: 80px;
+  z-index: 9999;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  text-transform: uppercase;
+  text-align: center;
+  transition: .3s;
+  line-height: 30px;
+
+  &.close {
+    width: 30px;
+    right: 40px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    background: $primary_red;
+  }
+
+  @include respond-to(phone) {display: block;}
+  @include respond-to(smalltablet) {display: block;}
+}

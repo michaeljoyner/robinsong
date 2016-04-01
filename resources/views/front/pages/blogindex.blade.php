@@ -4,9 +4,9 @@
     @include('front.partials.basketbar')
     @include('front.partials.altheader')
     @include('front.partials.navbar')
-    <div class="w-section blog-title-section">
+    <div class="w-section blog-title-section sans-breadcrumb-heading">
         <h1 class="h2">Blog</h1>
-        <p class="p1 large-lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+        <p class="p1 large-lead">Songs of a Robin.</p>
     </div>
     <section class="w-section section w-container">
     @foreach($posts as $post)

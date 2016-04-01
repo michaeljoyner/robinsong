@@ -1,0 +1,16 @@
+.about-us-section, .faqs-section {
+
+  .user-text {
+    font-family: 'Bitter', serif;
+    color: $text_grey;
+    line-height: 1.4;
+    width: 95%;
+    max-width: 700px;
+    margin: 0 auto;
+    padding-bottom: 40px;
+
+    h1, h2, h3, h4, h5, h6 {
+      color: $primary_dark;
+    }
+  }
+}

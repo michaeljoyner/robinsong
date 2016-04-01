@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Content\ContentRepository;
 use App\Shipping\ShippingCalculatorFactory;
 use App\Stock\Category;
 use App\Stock\Collection;
@@ -12,17 +11,28 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Michaeljoyner\Edible\ContentRepository;
 
 class PagesController extends Controller
 {
-    public function home(ContentRepository $contentRepository)
+
+    /**
+     * @var ContentRepository
+     */
+    private $contentRepository;
+
+    public function __construct(ContentRepository $contentRepository)
+    {
+        $this->contentRepository = $contentRepository;
+    }
+    public function home()
     {
         $collections = Collection::all();
         $collections->count() > 1 ? $collections->random(2) : $collections;
-        $page = $contentRepository->getPageByName('home');
+        $page = $this->contentRepository->getPageByName('home');
         $sliderImages = $page ? $page->imagesOf('slider') : collect([]);
         $intro = $page ? $page->textFor('intro') : '';
-        $products = Product::limit(4)->get();
+        $products = $this->getHotProducts();
         return view('front.pages.home')->with(compact('collections', 'sliderImages', 'intro', 'products'));
     }
 
@@ -42,7 +52,7 @@ class PagesController extends Controller
     public function products($slug)
     {
         $category = Category::findBySlug($slug);
-        $products = $category->products;
+        $products = $category->products()->where('available', 1)->latest()->get();
         $tags = $this->getTagSetFromProducts($products);
 
         return view('front.pages.category')->with(compact('category', 'products', 'tags'));
@@ -65,6 +75,12 @@ class PagesController extends Controller
         return view('front.pages.thanks');
     }
 
+    public function about()
+    {
+        $page = $this->contentRepository->getPageByName('about');
+        return view('front.pages.about')->with(compact('page'));
+    }
+
     /**
      * @param $products
      * @return mixed
@@ -81,5 +97,13 @@ class PagesController extends Controller
 
             return $carry;
         }, []);
+    }
+
+    private function getHotProducts()
+    {
+        $products = Product::where('available', 1)->get();
+
+        return $products->shuffle()->take(9);
+
     }
 }

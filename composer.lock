@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b0a2437e2b0bb26fbf5c8521fd39da23",
-    "content-hash": "69ac1df42e8a7d2c10b5231985a9f489",
+    "hash": "7ed323c263b25ab421a3637d661f7dab",
+    "content-hash": "617eecca34c4e88def12f3497c8b1538",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -518,6 +518,119 @@
                 "web service"
             ],
             "time": "2015-03-18 18:23:50"
+        },
+        {
+            "name": "guzzlehttp/guzzle",
+            "version": "6.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/guzzle.git",
+                "reference": "c6851d6e48f63b69357cbfa55bca116448140e0c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/c6851d6e48f63b69357cbfa55bca116448140e0c",
+                "reference": "c6851d6e48f63b69357cbfa55bca116448140e0c",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/promises": "~1.0",
+                "guzzlehttp/psr7": "~1.1",
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "ext-curl": "*",
+                "phpunit/phpunit": "~4.0",
+                "psr/log": "~1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "6.1-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/functions_include.php"
+                ],
+                "psr-4": {
+                    "GuzzleHttp\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                }
+            ],
+            "description": "Guzzle is a PHP HTTP client library",
+            "homepage": "http://guzzlephp.org/",
+            "keywords": [
+                "client",
+                "curl",
+                "framework",
+                "http",
+                "http client",
+                "rest",
+                "web service"
+            ],
+            "time": "2015-11-23 00:47:50"
+        },
+        {
+            "name": "guzzlehttp/promises",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/promises.git",
+                "reference": "b1e1c0d55f8083c71eda2c28c12a228d708294ea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/b1e1c0d55f8083c71eda2c28c12a228d708294ea",
+                "reference": "b1e1c0d55f8083c71eda2c28c12a228d708294ea",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "GuzzleHttp\\Promise\\": "src/"
+                },
+                "files": [
+                    "src/functions_include.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                }
+            ],
+            "description": "Guzzle promises library",
+            "keywords": [
+                "promise"
+            ],
+            "time": "2015-10-15 22:28:00"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -1108,6 +1221,51 @@
                 "processing"
             ],
             "time": "2015-05-22 23:35:09"
+        },
+        {
+            "name": "michaeljoyner/edible",
+            "version": "v0.1.17",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/michaeljoyner/edible.git",
+                "reference": "f5b3c3e07843f184771090889b1119ee52037c30"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/michaeljoyner/edible/zipball/f5b3c3e07843f184771090889b1119ee52037c30",
+                "reference": "f5b3c3e07843f184771090889b1119ee52037c30",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^5.1",
+                "php": "^5.5|^7.0",
+                "spatie/laravel-medialibrary": "^3.16",
+                "symfony/yaml": "^2.6 || ^3.0"
+            },
+            "require-dev": {
+                "illuminate/container": "^5.2",
+                "illuminate/database": "^5.2",
+                "illuminate/routing": "^5.2",
+                "phpunit/phpunit": "^4.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Michaeljoyner\\Edible\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Joyner",
+                    "email": "joyner.michael@gmail.com"
+                }
+            ],
+            "description": "Very simple, very opinionated micro editable content management. Note that the end user cannot create new editable areas.",
+            "time": "2016-03-12 10:27:05"
         },
         {
             "name": "monolog/monolog",
@@ -1787,24 +1945,24 @@
         },
         {
             "name": "spatie/laravel-medialibrary",
-            "version": "3.10.2",
+            "version": "3.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-medialibrary.git",
-                "reference": "36bb3b6b1510305ebfdd192f10a52204d6319c91"
+                "reference": "ca91f113c525a5212eb0f3eadf9c719c6acac8e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/36bb3b6b1510305ebfdd192f10a52204d6319c91",
-                "reference": "36bb3b6b1510305ebfdd192f10a52204d6319c91",
+                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/ca91f113c525a5212eb0f3eadf9c719c6acac8e0",
+                "reference": "ca91f113c525a5212eb0f3eadf9c719c6acac8e0",
                 "shasum": ""
             },
             "require": {
-                "illuminate/bus": "^5.1",
-                "illuminate/console": "^5.1",
-                "illuminate/database": "^5.1",
-                "illuminate/support": "^5.1",
-                "php": ">=5.5.0",
+                "illuminate/bus": "^5.1|^5.2",
+                "illuminate/console": "^5.1|^5.2",
+                "illuminate/database": "^5.1|^5.2",
+                "illuminate/support": "^5.1|^5.2",
+                "php": "^5.5|^7.0",
                 "spatie/laravel-glide": "^2.2.4",
                 "spatie/pdf-to-image": "^1.0",
                 "spatie/string": "^2.0"
@@ -1843,7 +2001,7 @@
                 "media",
                 "spatie"
             ],
-            "time": "2015-11-16 13:50:23"
+            "time": "2016-02-25 20:16:39"
         },
         {
             "name": "spatie/pdf-to-image",
@@ -1947,6 +2105,58 @@
                 "string"
             ],
             "time": "2015-11-02 13:00:37"
+        },
+        {
+            "name": "spinen/laravel-mail-assertions",
+            "version": "0.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spinen/laravel-mail-assertions.git",
+                "reference": "8834f5611333ff043c395441008fadb853d2d69d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spinen/laravel-mail-assertions/zipball/8834f5611333ff043c395441008fadb853d2d69d",
+                "reference": "8834f5611333ff043c395441008fadb853d2d69d",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5.1.10|5.2.*",
+                "php": ">=5.5.0",
+                "swiftmailer/swiftmailer": "~5.1"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9.1",
+                "phpunit/phpunit": "~4.0",
+                "psy/psysh": "~0.5.1",
+                "satooshi/php-coveralls": "~0.6.1",
+                "symfony/var-dumper": "~2.7|3.0.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spinen\\MailAssertions\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jimmy Puckett",
+                    "email": "jimmy.puckett@spinen.com"
+                }
+            ],
+            "description": "PHPUnit mail assertions for testing email in Laravel.",
+            "keywords": [
+                "email",
+                "laravel",
+                "library",
+                "phpunit",
+                "spinen"
+            ],
+            "time": "2016-02-06 16:09:21"
         },
         {
             "name": "stripe/stripe-php",
@@ -2768,6 +2978,55 @@
                 "debug",
                 "dump"
             ],
+            "time": "2015-11-18 13:41:01"
+        },
+        {
+            "name": "symfony/yaml",
+            "version": "v2.7.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/yaml.git",
+                "reference": "4cfcd7a9fceba662b3c036b7d9a91f6197af046c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/4cfcd7a9fceba662b3c036b7d9a91f6197af046c",
+                "reference": "4cfcd7a9fceba662b3c036b7d9a91f6197af046c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.7-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Yaml\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Yaml Component",
+            "homepage": "https://symfony.com",
             "time": "2015-11-18 13:41:01"
         },
         {
@@ -3992,55 +4251,6 @@
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
             "time": "2015-06-21 13:59:46"
-        },
-        {
-            "name": "symfony/yaml",
-            "version": "v2.7.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/yaml.git",
-                "reference": "4cfcd7a9fceba662b3c036b7d9a91f6197af046c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/4cfcd7a9fceba662b3c036b7d9a91f6197af046c",
-                "reference": "4cfcd7a9fceba662b3c036b7d9a91f6197af046c",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.9"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.7-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Yaml\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony Yaml Component",
-            "homepage": "https://symfony.com",
-            "time": "2015-11-18 13:41:01"
         }
     ],
     "aliases": [],

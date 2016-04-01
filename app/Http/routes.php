@@ -16,6 +16,7 @@ use Omnipay\Omnipay;
 
 Route::get('/', 'PagesController@home');
 Route::get('thanks', 'PagesController@thanks');
+Route::get('about', 'PagesController@about');
 Route::get('collections', 'PagesController@collections');
 Route::get('collections/{slug}', 'PagesController@categories');
 Route::get('categories/{slug}', 'PagesController@products');
@@ -27,13 +28,9 @@ Route::post('checkout', 'CheckoutController@doCheckout');
 Route::get('blog', 'BlogController@index');
 Route::get('blog/{slug}', 'BlogController@show');
 
-//Route::get('cancel_paypal', function() {
-//    dd(\Illuminate\Support\Facades\Input::all());
-//});
+Route::get('contact', 'ContactFormController@showPage');
+Route::post('contact', 'ContactFormController@sendMessage');
 
-//Route::get('process_paypal/{orderNumber}', function($orderNumber, \App\Billing\PaypalTeller $paypalTeller) {
-//    return $paypalTeller->completePurchase($orderNumber);
-//});
 
 Route::get('process_paypal/{orderNumber}', 'PaypalController@processPaypalPayment');
 Route::get('cancel_paypal', 'PaypalController@handleCanceledPayment');
@@ -133,16 +130,11 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
 
         Route::get('orders/{status?}', 'OrdersController@index');
         Route::get('orders/show/{orderId}', 'OrdersController@show');
+        Route::delete('orders/{id}', 'OrdersController@archive');
 
         Route::post('api/orders/{orderId}/fulfill', 'OrdersController@setFulfilledStatus');
         Route::post('api/orders/{orderId}/cancel', 'OrdersController@setCancelledStatus');
 
-        Route::get('site-content/pages/{pageId}', 'EdiblesController@showPage');
-        Route::get('site-content/pages/{pageId}/textblocks/{textblockId}/edit', 'EdiblesController@editTextblock');
-        Route::get('site-content/pages/{pageId}/galleries/{galleryId}/edit', 'EdiblesController@editGallery');
-        Route::post('site-content/textblocks/{textblockId}', 'EdiblesController@updateTextblock');
-        Route::post('site-content/galleries/{galleryId}/uploads', 'EdiblesController@storeUploadedImage');
-        Route::get('site-content/galleries/{galleryId}/uploads', 'EdiblesController@getGalleryImages');
 
         Route::get('blog/posts', 'BlogController@index');
         Route::post('blog/posts', 'BlogController@store');

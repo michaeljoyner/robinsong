@@ -1,5 +1,6 @@
 window.Shuffle = require('shufflejs');
 var rsApp = rsApp || {};
+var ContactForm = require('./components/contactform.js');
 rsApp.frontConstructorObjects = require('./components/frontvueobjects');
 var Vue = require('vue');
 Vue.use(require('vue-resource'));
@@ -50,3 +51,29 @@ if(document.querySelector('#basket')) {
 }
 window.Vue = Vue;
 window.rsApp = rsApp;
+
+if(document.querySelector('#rs-contact-form')) {
+    var contactForm = new ContactForm(document.querySelector('#rs-contact-form'));
+    contactForm.init();
+}
+
+var navTrigger = document.querySelector('#slide-nav-trigger');
+var navMenu = document.querySelector('.nav-bar-menu.front-main-nav');
+
+function toggleNav() {
+    if(navMenu.classList.contains('open')) {
+        navTrigger.innerHTML = 'menu';
+        navMenu.classList.remove('open');
+        navTrigger.classList.remove('close');
+        return;
+    }
+    navTrigger.innerHTML = '&times;';
+    navTrigger.classList.add('close');
+    navMenu.classList.add('open');
+}
+
+navTrigger.addEventListener('click', toggleNav, false);
+
+$('#back-to-top-container').click(function() {
+    $('body, html').animate({'scrollTop': 0}, "slow");
+});

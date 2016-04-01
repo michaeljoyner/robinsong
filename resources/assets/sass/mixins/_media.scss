@@ -1,0 +1,23 @@
+@mixin respond-to($media) {
+  @if $media == phone {
+    @media only screen and (max-width: 425px) {@content;}
+  }
+  @else if $media == smalltablet {
+    @media only screen and (min-width: 426px) and (max-width: 767px) {@content;}
+  }
+  @else if $media == largetablet {
+    @media only screen and (min-width: 768px) and (max-width: 989px) {@content;}
+  }
+  @else if $media == desktop {
+    @media only screen and (min-width: 990px) and (max-width: 1199px) {@content;}
+  }
+  @else if $media == widedesktop {
+    @media only screen and (min-width: 1200px) and (max-width: 1399px) {@content;}
+  }
+  @else if $media == superwidedesktop {
+    @media only screen and (min-width: 1400px) {@content;}
+  }
+  @else if $media == short {
+    @media only screen and (max-height: 770px) and (min-width: 606px) {@content;}
+  }
+}

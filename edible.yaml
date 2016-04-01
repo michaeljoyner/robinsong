@@ -1,0 +1,20 @@
+pages:
+  home:
+      description: The homepage
+      textblocks:
+          intro:
+              description: The homepage intro
+              allows_html: false
+      galleries:
+          slider:
+              description: Homepage banner slide images - use 1200px by 500px for best results
+              is_single: false
+  about:
+      description: The about page and FAQ
+      textblocks:
+          about us:
+              description: About Robin Song and their products
+              allows_html: true
+          faqs:
+              description: Frequently asked questions
+              allows_html: true

@@ -1,5 +1,13 @@
 @extends('front.base')
 
+@section('head')
+    @include('front.partials.ogmeta', [
+        'ogImage' => '/images/assets/logo_robinsong.png',
+        'ogTitle' => 'Robin Song Occasions',
+        'ogDescription' => 'We create beautiful, hand-crafted good and decorations for your special occasions. Create lasting memories with our personally customised crafts.'
+    ])
+@endsection
+
 @section('content')
     @include('front.partials.basketbar')
     @include('front.partials.homeheader')
@@ -32,8 +40,7 @@
             <h1 class="h2">Hot Prods</h1>
         </div>
         <section class="product-grid-view">
-            @foreach(range(1,4) as $index)
-                @foreach($products->shuffle() as $product)
+                @foreach($products as $product)
                     <div class="hot-product">
                         <a href="/product/{{ $product->slug }}"><img src="{{ $product->coverPic('thumb') }}" alt=""></a>
                         <div class="product-info">
@@ -42,8 +49,12 @@
                         </div>
                     </div>
                 @endforeach
-            @endforeach
         </section>
+        <div class="final-home-section">
+            <a href="/collections">
+                <div class="purchase-btn narrow">SEE ALL COLLECTIONS</div>
+            </a>
+        </div>
     </div>
 
     @include('front.partials.footer')

@@ -110,6 +110,8 @@ a, a:visited, a:hover, a:focus {
   text-align: center;
   letter-spacing: 1.1px;
   text-transform: uppercase;
+
+  @include respond-to(largetablet) {padding-left: 2px; padding-right: 24px;}
 }
 
 .nav-link:hover {
@@ -208,6 +210,9 @@ a, a:visited, a:hover, a:focus {
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
+
+  @include respond-to(phone) {font-size: 75px;}
+  @include respond-to(smalltablet) {font-size: 75px;}
 }
 
 .h2.categories-heading {
@@ -225,6 +230,9 @@ a, a:visited, a:hover, a:focus {
   margin-bottom: 50px;
   color: #f48054;
   font-size: 90px;
+
+  @include respond-to(phone) {font-size: 75px;}
+  @include respond-to(smalltablet) {font-size: 75px;}
 }
 
 .h2.product-type-heading {
@@ -261,7 +269,7 @@ a, a:visited, a:hover, a:focus {
 }
 
 .footer {
-  padding-top: 50px;
+  padding-top: 20px;
   padding-bottom: 50px;
   background-color: #443c41;
   background-image: url(../../images/assets/pattern10.png);
@@ -346,6 +354,9 @@ a, a:visited, a:hover, a:focus {
   width: 90%;
   padding: 10px;
   border-radius: 21px;
+
+  @include respond-to(phone) {width: 100%;}
+  @include respond-to(smalltablet) {width: 100%;}
 }
 
 

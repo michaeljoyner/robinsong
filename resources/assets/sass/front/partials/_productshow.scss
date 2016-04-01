@@ -36,11 +36,13 @@
     .product-title {
       font-family: $serif_heading;
       color: $primary_red;
+      padding-right: 10px;
     }
 
     .product-description {
       text-align: left;
       width: 100%;
+      padding-right: 10px;
     }
 
     .product-price {
@@ -83,7 +85,8 @@
 
   .product-custom-text-input {
     border: 3px solid $primary_blue;
-    min-width: 400px;
+    max-width: 400px;
+    width: 100%;
     font-size: 16px;
     padding: 10px 15px;
     color: $text_grey;

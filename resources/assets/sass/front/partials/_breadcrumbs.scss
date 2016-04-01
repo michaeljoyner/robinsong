@@ -7,9 +7,17 @@
     padding: 0;
     font-weight: 700;
 
+    &:hover {
+      color: $primary_red;
+    }
+
     &:not(:last-child):after {
       content: '>';
       padding: 10px 5px 10px 10px;
     }
   }
+}
+
+.sans-breadcrumb-heading {
+  padding-top: 50px;
 }

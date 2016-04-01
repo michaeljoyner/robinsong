@@ -17,7 +17,7 @@
 {{--                {!! Form::text('price', null, ['class' => "form-control", 'required' => 'true']) !!}--}}
                 <input type="text"
                        name="price"
-                       value="@if(old('price')){{ old('price') }} @elseif($model) {{ $model->priceInPounds() }} @else @endif"
+                       value="@if(old('price')){{ old('price') }}@elseif($model){{ $model->priceInPounds() }}@else @endif"
                        class="form-control"
                        required
                 >

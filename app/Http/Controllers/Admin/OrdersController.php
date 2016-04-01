@@ -13,12 +13,12 @@ class OrdersController extends Controller
     public function index($status = null)
     {
         $orders = $this->getOrdersForStatus($status);
-        return view('admin.orders.index')->with(compact('orders'));
+        return view('admin.orders.index')->with(compact('orders', 'status'));
     }
 
     public function show($orderId)
     {
-        $order = Order::with('items.options', 'items.customisations')->findOrFail($orderId);
+        $order = Order::withTrashed()->with('items.options', 'items.customisations')->findOrFail($orderId);
 
         return view('admin.orders.show')->with(compact('order'));
     }
@@ -43,6 +43,15 @@ class OrdersController extends Controller
         return response()->json(['new_state' => $order->isCancelled()]);
     }
 
+
+    public function archive($id)
+    {
+        $order = Order::findOrFail($id);
+        $order->delete();
+
+        return redirect('admin/orders');
+    }
+
     private function getOrdersForStatus($status)
     {
         if($status === 'cancelled') {
@@ -55,6 +64,10 @@ class OrdersController extends Controller
 
         if($status === 'fulfilled') {
             return Order::with('items.options')->where('cancelled', 0)->where('fulfilled', 1)->latest()->paginate(10);
+        }
+
+        if($status === 'archived') {
+            return Order::onlyTrashed()->with('items.options')->latest()->paginate(10);
         }
 
         return Order::with('items.options')->latest()->paginate(10);
