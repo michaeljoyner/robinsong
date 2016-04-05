@@ -27,4 +27,27 @@ class OrderItemTest extends TestCase
             'price' => 1000
         ]);
     }
+
+    /**
+     *@test
+     */
+    public function an_order_item_can_be_checked_if_it_has_customisations()
+    {
+        $blank = factory(\App\Orders\OrderItem::class)->create();
+
+        $justOption = factory(\App\Orders\OrderItem::class)->create();
+        $justOption->addOption('colour', 'blue');
+
+        $justCustomisation = factory(\App\Orders\OrderItem::class)->create();
+        $justCustomisation->addCustomisation('names', 'Jack and Jill');
+
+        $both = factory(\App\Orders\OrderItem::class)->create();
+        $both->addOption('size', 'large');
+        $both->addCustomisation('intro', 'once upon a time');
+
+        $this->assertFalse($blank->isCustomised());
+        $this->assertTrue($justOption->isCustomised(), 'having at least one option is customised');
+        $this->assertTrue($justCustomisation->isCustomised(), 'having at least one customisation is customised');
+        $this->assertTrue($both->isCustomised(), 'both options and customisations is customised');
+    }
 }

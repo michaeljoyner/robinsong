@@ -4,27 +4,11 @@
     <div class="rs-page-header clearfix">
         <h1 class="pull-left">@if($status) {{ ucfirst($status) }} @endif  Orders</h1>
         <div class="rs-header-actions pull-right">
-            <span class="filter-label">Filter: </span>
-            <a href="/admin/orders/fulfilled">
-                <div class="btn rs-btn btn-orange">
-                    Fulfilled
-                </div>
-            </a>
-            <a href="/admin/orders/cancelled">
-                <div class="btn rs-btn btn-red">
-                    Cancelled
-                </div>
-            </a>
-            <a href="/admin/orders/ongoing">
-                <div class="btn rs-btn btn-light">
-                    Ongoing
-                </div>
-            </a>
-            <a href="/admin/orders/archived">
-                <div class="btn rs-btn btn-clear-danger">
-                    Archived
-                </div>
-            </a>
+            @if($status)
+                <a href="/admin/orders">
+                    <div class="btn rs-btn btn-light">Back to All Orders</div>
+                </a>
+            @endif
         </div>
         <hr>
     </div>

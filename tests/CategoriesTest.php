@@ -60,9 +60,9 @@ class CategoriesTest extends TestCase
         $response = $this->call('DELETE', '/admin/categories/'.$category->id);
         $this->assertEquals(302, $response->status(), 'should be a redirect response on success');
 
-        $this->notSeeInDatabase('categories', [
-            'id' => $category->id
-        ]);
+        $category = Category::withTrashed()->findOrFail($category->id);
+
+        $this->assertTrue($category->trashed());
     }
 
     /**

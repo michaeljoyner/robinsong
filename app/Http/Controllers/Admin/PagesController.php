@@ -12,7 +12,6 @@ class PagesController extends Controller
 {
     public function dashboard()
     {
-        $collection = new Collection();
-        return view('admin.pages.dashboard')->with(compact('collection'));
+        return redirect('admin/products/index');
     }
 }

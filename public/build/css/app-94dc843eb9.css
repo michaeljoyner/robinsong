@@ -9204,6 +9204,26 @@ form.rs-form.add-class-form {
   color: #5fbfad;
 }
 
+.order-item-customisations .item-description {
+  text-align: center;
+  color: #443c41;
+  text-decoration: underline;
+  padding-bottom: 50px;
+}
+
+.order-item-customisations .customisation-card .customisation-card-heading {
+  color: #5fbfad;
+  text-transform: uppercase;
+}
+
+.order-item-customisations .customisation-card p {
+  color: #443c41;
+  line-height: 1.5;
+  font-size: 1.2em;
+  padding-left: 20px;
+  padding-bottom: 40px;
+}
+
 html {
   height: 100%;
 }

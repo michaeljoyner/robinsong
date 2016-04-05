@@ -132,6 +132,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
         Route::get('orders/show/{orderId}', 'OrdersController@show');
         Route::delete('orders/{id}', 'OrdersController@archive');
 
+        Route::get('orders/items/{itemId}', 'OrderItemsController@show');
+
         Route::post('api/orders/{orderId}/fulfill', 'OrdersController@setFulfilledStatus');
         Route::post('api/orders/{orderId}/cancel', 'OrdersController@setCancelledStatus');
 

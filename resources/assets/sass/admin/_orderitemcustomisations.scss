@@ -1,0 +1,25 @@
+.order-item-customisations {
+
+  .item-description {
+    text-align: center;
+    color: $primary_dark;
+    text-decoration: underline;
+    padding-bottom: 50px;
+  }
+  .customisation-card {
+
+    .customisation-card-heading {
+      color: $primary_blue;
+      text-transform: uppercase;
+    }
+
+    p {
+      color: $primary_dark;
+      line-height: 1.5;
+      font-size: 1.2em;
+      padding-left: 20px;
+      padding-bottom: 40px;
+    }
+  }
+
+}

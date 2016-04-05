@@ -58,9 +58,9 @@ class CollectionsTest extends TestCase
         $response = $this->call('DELETE', '/admin/collections/'.$collection->id);
         $this->assertEquals(302, $response->status(), 'should redirect on successful deletion');
 
-        $this->notSeeInDatabase('collections', [
-            'id' => $collection->id
-        ]);
+        $collection = Collection::withTrashed()->findOrFail($collection->id);
+
+        $this->assertTrue($collection->trashed());
     }
 
     /**

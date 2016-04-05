@@ -19,7 +19,23 @@
                 <li><a href="/admin/products/index">Products</a></li>
                 <li><a href="/admin/collections">Collections</a></li>
                 <li><a href="/admin/shipping">Shipping Rules</a></li>
-                <li><a href="/admin/orders">Orders</a></li>
+                <li class="dropdown">
+                    <a href="#"
+                       class="dropdown-toggle"
+                       data-toggle="dropdown"
+                       role="button"
+                       aria-haspopup="true"
+                       aria-expanded="false"
+                    >Orders <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/admin/orders">Orders</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/admin/orders/ongoing">Open Orders</a></li>
+                        <li><a href="/admin/orders/fulfilled">Fulfilled Orders</a></li>
+                        <li><a href="/admin/orders/canceled">Canceled Orders</a></li>
+                        <li><a href="/admin/orders/archived">Archived Orders</a></li>
+                    </ul>
+                </li>
                 @if($ediblePages->count())
                 <li class="dropdown">
                     <a href="#"

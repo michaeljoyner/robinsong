@@ -26,7 +26,7 @@ class ProductsSeeder extends Seeder
             'description' => 'A humourous tale of a crowning baby',
             'price' => 12,
             'weight' => 24,
-            'available' => 0
+            'available' => 1
         ]);
 
         $babProd2 = $babyBooks->addProduct([
@@ -34,7 +34,7 @@ class ProductsSeeder extends Seeder
             'description' => 'A tragic comedy',
             'price' => 12,
             'weight' => 24,
-            'available' => 0
+            'available' => 1
         ]);
 
         $frames = $babies->addCategory([
@@ -47,7 +47,7 @@ class ProductsSeeder extends Seeder
             'description' => 'Pure Greyjoy',
             'price' => 16,
             'weight' => 54,
-            'available' => 0
+            'available' => 1
         ]);
 
         $frame2 = $frames->addProduct([
@@ -55,7 +55,7 @@ class ProductsSeeder extends Seeder
             'description' => 'Because your baby is straight up Indian',
             'price' => 88,
             'weight' => 74,
-            'available' => 0
+            'available' => 1
         ]);
 
         $cat1 = $collection->addCategory([
@@ -72,7 +72,7 @@ class ProductsSeeder extends Seeder
             'description' => 'A book of true beauty and class, this is bound to leave your guests speechless and aghast',
             'price' => 21,
             'weight' => 36,
-            'available' => 0
+            'available' => 1
         ]);
 
         $prod2 = $cat1->addProduct([
@@ -80,14 +80,14 @@ class ProductsSeeder extends Seeder
             'description' => 'A lighthearted book with spiders and surfers having a raucous wedding.',
             'price' => 31,
             'weight' => 26,
-            'available' => 0
+            'available' => 1
         ]);
         $prod3 = $cat2->addProduct([
             'name' => 'Classy Candlesticks',
             'description' => 'The silver shines so, so bright, you will never forget your wedding night',
             'price' => 89,
             'weight' => 460,
-            'available' => 0
+            'available' => 1
         ]);
 
         $prod4 = $cat2->addProduct([
@@ -95,7 +95,7 @@ class ProductsSeeder extends Seeder
             'description' => 'Joke napkins for those who like fun without thought. They are not actually naughty, just very sad.',
             'price' => 7,
             'weight' => 12,
-            'available' => 0
+            'available' => 1
         ]);
 
         $opt1 = $prod1->addOption('Ribbon Colour');

@@ -87,9 +87,9 @@ class ProductsTest extends TestCase
         $response = $this->call('DELETE', '/admin/products/' . $product->id);
         $this->assertEquals(302, $response->status(), 'successful deletion should result in redirect');
 
-        $this->notSeeInDatabase('products', [
-            'id' => $product->id
-        ]);
+        $product = Product::withTrashed()->findOrFail($product->id);
+
+        $this->assertTrue($product->trashed());
     }
 
     /**
