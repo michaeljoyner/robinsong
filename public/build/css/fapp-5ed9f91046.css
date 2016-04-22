@@ -3956,9 +3956,20 @@ html.w-mod-js *[data-ix="logo-fade-in"] {
 }
 
 .product-show-section .product-detail-col .product-description {
+  padding: 20px 5px;
+}
+
+.product-show-section .product-detail-col .product-description,
+.product-show-section .product-detail-col .product-description p {
   text-align: left;
   width: 100%;
   padding-right: 10px;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+  font-family: Bitter, serif;
+  color: #636363;
+  text-transform: none;
 }
 
 .product-show-section .product-detail-col .product-price {

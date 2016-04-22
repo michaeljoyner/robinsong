@@ -40,6 +40,7 @@ $factory->define(App\Stock\Product::class, function (Faker\Generator $faker) {
         'category_id' => factory(\App\Stock\Category::class)->create()->id,
         'name'        => $faker->name,
         'description' => $faker->paragraph(),
+        'writeup'     => $faker->paragraphs(3, true),
         'price'       => $faker->numberBetween(500, 5000),
         'weight'      => $faker->numberBetween(20, 5000),
         'available'   => 0

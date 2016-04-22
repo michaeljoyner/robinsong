@@ -40,9 +40,19 @@
     }
 
     .product-description {
+      padding: 20px 5px;
+    }
+
+    .product-description, .product-description p {
       text-align: left;
       width: 100%;
       padding-right: 10px;
+      display: block;
+      margin-right: auto;
+      margin-left: auto;
+      font-family: Bitter, serif;
+      color: #636363;
+      text-transform: none;
     }
 
     .product-price {

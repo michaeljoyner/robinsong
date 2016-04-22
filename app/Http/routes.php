@@ -84,6 +84,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
         Route::post('products/{productId}', 'ProductsController@update');
         Route::delete('products/{productId}', 'ProductsController@delete');
         Route::post('api/products/{productId}/availability', 'ProductsController@setAvailability');
+        
+        Route::post('products/{productId}/writeup', 'ProductWriteupController@setWriteup');
 
         Route::post('products/{productId}/tags', 'ProductTagsController@syncTags');
         Route::get('products/{productId}/tags', 'ProductTagsController@getProductTags');

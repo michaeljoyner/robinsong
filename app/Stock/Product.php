@@ -23,6 +23,7 @@ class Product extends Model implements SluggableInterface, HasMediaConversions, 
     protected $fillable = [
         'name',
         'description',
+        'writeup',
         'price',
         'weight',
         'available'
@@ -150,6 +151,17 @@ class Product extends Model implements SluggableInterface, HasMediaConversions, 
         $this->available = $available;
 
         return $this->save();
+    }
+
+    public function setWriteup($writeup)
+    {
+        $this->writeup = $writeup;
+        return $this->save();
+    }
+
+    public function hasWriteup()
+    {
+        return !! $this->writeup;
     }
 
 

@@ -9,6 +9,9 @@
         <h1 class="pull-left">{{ $product->name }}</h1>
 
         <div id="toggle-available-app" class="rs-header-actions pull-right">
+            <button type="button" class="btn rs-btn btn-clear" data-toggle="modal" data-target="#writeup-modal">
+                Write up
+            </button>
             <toggle-button url="/admin/api/products/{{ $product->id }}/availability"
                            initial="{{ $product->available ? 1 : 0 }}"
                            toggleprop="available"
@@ -103,9 +106,27 @@
         </div>
     </div>
 @endsection
+<div class="modal fade" id="writeup-modal" data-productid="{{ $product->id }}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Product Writeup</h4>
+            </div>
+            <div class="modal-body">
+                <textarea v-model="writeup" name="writeup" id="writeup-body">{!! $product->writeup !!}</textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn rs-btn btn-clear-danger" data-dismiss="modal">Cancel</button>
+                <button v-on:click="saveWriteup" class="btn rs-btn btn-light">Save</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 @include('admin.partials.deletemodal')
 
 @section('bodyscripts')
+    <script src="{{ asset('tinymce/tinymce.min.js') }}"></script>
     <script>
         Vue.config.debug = true;
 
@@ -116,6 +137,44 @@
         new Vue(app.vueConstructorObjects.galleryApp);
         new Vue(app.vueConstructorObjects.toggleBtnVue);
 
+        new Vue({
+            el: '#writeup-modal',
+
+            data: {
+                writeup: '',
+                productId: null
+            },
+
+            ready: function() {
+                var productId = document.querySelector('#writeup-modal').getAttribute('data-productid');
+                this.$set('productId', productId);
+            },
+
+            methods: {
+                saveWriteup: function() {
+                    var content = tinymce.activeEditor.getContent();
+
+                    this.$http.post('/admin/products/' + this.productId + '/writeup', {writeup: content}, function(res) {
+                        $('#writeup-modal').modal('hide');
+                    }).error(function(res) {
+                        alert('Oops, failed to save. Please try later.');
+                    });
+                }
+            }
+        });
+
     </script>
     @include('admin.partials.modalscript')
+    <script>
+        tinymce.init({
+            selector: '#writeup-body',
+            plugins: ['link', 'image', 'paste'],
+            menubar: false,
+            toolbar: 'undo redo | styleselect | bold italic | bullist numlist | link mybutton',
+            paste_data_images: true,
+            height: 500,
+            body_class: 'article-body-content',
+            content_style: "body {font-size: 16px; max-width: 800px; margin: 0 auto; padding: 10px;} * {font-size: 16px;} img {max-width: 100%; height: auto;}",
+        });
+    </script>
 @endsection

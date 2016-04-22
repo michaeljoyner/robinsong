@@ -46,7 +46,13 @@
             </div>
             <div id="product-purchase-app" class="product-detail-col w-col w-col-7">
                 <h1 class="product-title">{{ $product->name }}</h1>
-                <p class="product-description p1">{{ $product->description }}</p>
+                <div class="product-description p1">
+                    @if($product->hasWriteup())
+                    {!! $product->writeup !!}
+                    @else
+                    {!! nl2br($product->description) !!}
+                    @endif
+                </div>
                 <div class="price-and-button-box">
                     <span class="product-price">&pound;{{ $product->price / 100 }}</span>
                     <button class="purchase-button btn" v-on:click="addToCart">Add to basket</button>
