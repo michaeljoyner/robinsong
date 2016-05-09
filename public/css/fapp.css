@@ -4440,6 +4440,107 @@ html.w-mod-js *[data-ix="logo-fade-in"] {
   }
 }
 
+.social-nav-link:hover img {
+  -webkit-animation: .5s harlem;
+  animation: .5s harlem;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes harlem {
+  0% {
+    -webkit-transform: rotate(0deg) scale(1.25);
+    transform: rotate(0deg) scale(1.25);
+  }
+
+  12.5% {
+    -webkit-transform: rotate(10deg) scale(1.25);
+    transform: rotate(10deg) scale(1.25);
+  }
+
+  25% {
+    -webkit-transform: rotate(20deg) scale(1.25);
+    transform: rotate(20deg) scale(1.25);
+  }
+
+  37.5% {
+    -webkit-transform: rotate(10deg) scale(1.25);
+    transform: rotate(10deg) scale(1.25);
+  }
+
+  50% {
+    -webkit-transform: rotate(0deg) scale(1.25);
+    transform: rotate(0deg) scale(1.25);
+  }
+
+  62.5% {
+    -webkit-transform: rotate(-10deg) scale(1.25);
+    transform: rotate(-10deg) scale(1.25);
+  }
+
+  75% {
+    -webkit-transform: rotate(-20deg) scale(1.25);
+    transform: rotate(-20deg) scale(1.25);
+  }
+
+  87.5% {
+    -webkit-transform: rotate(-10deg) scale(1.25);
+    transform: rotate(-10deg) scale(1.25);
+  }
+
+  100% {
+    -webkit-transform: rotate(0deg) scale(1.25) scale(1.25);
+    transform: rotate(0deg) scale(1.25) scale(1.25);
+  }
+}
+
+@keyframes harlem {
+  0% {
+    -webkit-transform: rotate(0deg) scale(1.25);
+    transform: rotate(0deg) scale(1.25);
+  }
+
+  12.5% {
+    -webkit-transform: rotate(10deg) scale(1.25);
+    transform: rotate(10deg) scale(1.25);
+  }
+
+  25% {
+    -webkit-transform: rotate(20deg) scale(1.25);
+    transform: rotate(20deg) scale(1.25);
+  }
+
+  37.5% {
+    -webkit-transform: rotate(10deg) scale(1.25);
+    transform: rotate(10deg) scale(1.25);
+  }
+
+  50% {
+    -webkit-transform: rotate(0deg) scale(1.25);
+    transform: rotate(0deg) scale(1.25);
+  }
+
+  62.5% {
+    -webkit-transform: rotate(-10deg) scale(1.25);
+    transform: rotate(-10deg) scale(1.25);
+  }
+
+  75% {
+    -webkit-transform: rotate(-20deg) scale(1.25);
+    transform: rotate(-20deg) scale(1.25);
+  }
+
+  87.5% {
+    -webkit-transform: rotate(-10deg) scale(1.25);
+    transform: rotate(-10deg) scale(1.25);
+  }
+
+  100% {
+    -webkit-transform: rotate(0deg) scale(1.25) scale(1.25);
+    transform: rotate(0deg) scale(1.25) scale(1.25);
+  }
+}
+
 #rs-contact-form {
   position: relative;
   overflow: hidden;
