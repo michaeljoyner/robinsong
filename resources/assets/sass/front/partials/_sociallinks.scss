@@ -15,13 +15,13 @@
 }
 
 @keyframes harlem {
-  0% {transform: rotate(0deg) scale(1.25);}
-  12.5% {transform: rotate(10deg) scale(1.25);}
-25% {transform: rotate(20deg) scale(1.25);}
-  37.5% {transform: rotate(10deg) scale(1.25);}
-50% {transform: rotate(0deg) scale(1.25);}
-  62.5% {transform: rotate(-10deg) scale(1.25);}
-75% {transform: rotate(-20deg) scale(1.25);}
-  87.5% {transform: rotate(-10deg) scale(1.25);}
-100% {transform: rotate(0deg) scale(1.25) scale(1.25);}
+  0% {transform: rotate(0deg);}
+  12.5% {transform: rotate(10deg);}
+25% {transform: rotate(20deg);}
+  37.5% {transform: rotate(10deg);}
+50% {transform: rotate(0deg);}
+  62.5% {transform: rotate(-10deg);}
+75% {transform: rotate(-20deg);}
+  87.5% {transform: rotate(-10deg);}
+100% {transform: rotate(0deg);}
 }
