@@ -12,6 +12,9 @@
     @include('front.partials.basketbar')
     @include('front.partials.homeheader')
     @include('front.partials.navbar')
+    <div class="home-intro-section w-section section w-container">
+        <p class="p1 large-lead">{{ $intro }}</p>
+    </div>
     <div class="w-section section slide-section">
         <div class="w-container wider slider-container">
             <div data-animation="slide" data-duration="1000" data-infinite="1" data-autoplay="1" data-delay="3000" class="w-slider slider">
@@ -32,9 +35,7 @@
             </div>
         </div>
     </div>
-    <div class="home-intro-section w-section section w-container">
-        <p class="p1 large-lead">{{ $intro }}</p>
-    </div>
+
     <div class="w-section section categories-section">
         <div class="w-container categories-container">
             <h1 class="h2">Hot Prods</h1>

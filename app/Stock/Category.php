@@ -42,7 +42,7 @@ class Category extends Model implements SluggableInterface, HasMediaConversions,
     public static function boot()
     {
         parent::boot();
-        
+
         static::deleting(function($category) {
             $category->products->each(function($product) {
                 $product->delete();
