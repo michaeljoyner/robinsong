@@ -108,4 +108,21 @@ class CollectionsTest extends TestCase
         $collection->clearMediaCollection();
     }
 
+    /**
+     *@test
+     */
+    public function deleting_a_collection_also_deletes_its_categories()
+    {
+        $collection = factory(Collection::class)->create();
+        $categories = factory(\App\Stock\Category::class, 3)->create(['collection_id' => $collection->id]);
+
+        $collection->delete();
+        $this->assertNotNull($collection->deleted_at);
+
+        $categories->each(function($category) {
+            $category = \App\Stock\Category::findOrFail($category->id);
+            $this->assertTrue($category->trashed());
+        });
+    }
+
 }

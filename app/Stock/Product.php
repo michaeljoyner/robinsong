@@ -45,6 +45,8 @@ class Product extends Model implements SluggableInterface, HasMediaConversions, 
         'available' => 'boolean'
     ];
 
+    protected $dates = ['deleted_at'];
+
     public static function boot()
     {
         parent::boot();

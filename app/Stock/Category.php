@@ -14,11 +14,13 @@ use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
 
 class Category extends Model implements SluggableInterface, HasMediaConversions, BreadcrumbableInterface
 {
-    use SluggableTrait, HasMediaTrait, HasModelImage, BreadcrumbsTrait, SoftDeletes;
+    use SoftDeletes, SluggableTrait, HasMediaTrait, HasModelImage, BreadcrumbsTrait;
 
     public $defaultImageSrc = '/images/assets/default.jpg';
 
     protected $table = 'categories';
+
+    protected $dates = ['deleted_at'];
 
     protected $fillable = [
         'name',
@@ -36,6 +38,19 @@ class Category extends Model implements SluggableInterface, HasMediaConversions,
         'build_from' => 'name',
         'save_to'    => 'slug'
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+        
+        static::deleting(function($category) {
+            $category->products->each(function($product) {
+                $product->delete();
+            });
+        });
+
+        return true;
+    }
 
     public function registerMediaConversions()
     {

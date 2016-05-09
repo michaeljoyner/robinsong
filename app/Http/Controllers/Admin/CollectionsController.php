@@ -14,7 +14,7 @@ class CollectionsController extends Controller
     public function index()
     {
         $newCollection = new Collection();
-        $collections = Collection::all();
+        $collections = Collection::latest()->get();
 
         return view('admin.collections.index')->with(compact('collections', 'newCollection'));
     }

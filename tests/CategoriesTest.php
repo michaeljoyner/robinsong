@@ -83,5 +83,22 @@ class CategoriesTest extends TestCase
 
         $category->clearMediaCollection();
     }
+    
+    /**
+     *@test
+     */
+    public function deleting_a_category_also_deletes_its_products()
+    {
+        $category = factory(Category::class)->create();
+        $products = factory(\App\Stock\Product::class, 3)->create(['category_id' => $category->id]);
+
+        $category->delete();
+        $this->assertNotNull($category->deleted_at);
+
+        $products->each(function($product) {
+            $product = \App\Stock\Product::withTrashed()->findOrFail($product->id);
+            $this->assertTrue($product->trashed());
+        });
+    }
 
 }
