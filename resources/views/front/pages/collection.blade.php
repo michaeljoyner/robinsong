@@ -21,10 +21,12 @@
     </div>
     <div class="w-section product-type-section">
         <div class="w-container product-type-container">
+            @foreach($categories->chunk(2) as $row)
             <div class="w-row product-type-row">
-                @foreach($categories as $category)
-                    <a href="/categories/{{ $category->slug }}">
+                @foreach($row as $category)
+
                         <div class="w-col w-col-6 product-type-column">
+                            <a href="/categories/{{ $category->slug }}">
                             <div class="product-type-wrapper">
                                 <img src="{{ $category->coverPic('thumb') }}"
                                      class="product-type-image"
@@ -33,10 +35,12 @@
                                 <h1 class="h2 product-type-heading">{{ $category->name }}</h1>
                                 <div class="p1">{{ $category->description }}</div>
                             </div>
+                            </a>
                         </div>
-                    </a>
+
                 @endforeach
             </div>
+            @endforeach
         </div>
         <a href="/collections">
             <div class="purchase-btn narrow">Back to Shop</div>

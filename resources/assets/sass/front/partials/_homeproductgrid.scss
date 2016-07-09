@@ -12,7 +12,15 @@
     margin: 20px;
     overflow: hidden;
 
-    @include respond-to(phone) {width: 100%; margin: 0;}
+    @include respond-to(phone) {
+      width: 50%;
+      margin: 0;
+      padding: 5px;
+
+      .product-info {
+
+      }
+    }
     @include respond-to(smalltablet) {width: 100%; margin: 0;}
     @include respond-to(largetablet) {margin: 15px;}
 
@@ -38,6 +46,12 @@
       opacity: .9;
       width: 100%;
       height: 75px;
+
+      @include respond-to(phone) {
+        width: calc(100% - 10px);
+        left: 5px;
+        height: 50px;
+      }
     }
 
     .product-title {
@@ -45,6 +59,10 @@
       color: $primary_dark;
       text-transform: uppercase;
       margin: 3px 0;
+      width: 90%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .price {
@@ -52,7 +70,7 @@
       margin-bottom: 0;
       font-family: $serif_heading;
       position: absolute;
-      bottom: 10px;
+      bottom: 5px;
     }
   }
 }

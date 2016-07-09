@@ -74,13 +74,9 @@
                 // reshuffle grid
                 $grid.shuffle('shuffle', groupName);
             });
-//            window.setTimeout(function() {
-//                $('#all-tag').click();
-//                console.log('clicked');
-//            },200);
+
             $(window).bind("load", function() {
                 $('#all-tag').click();
-                console.log('clicked');
             });
 
 

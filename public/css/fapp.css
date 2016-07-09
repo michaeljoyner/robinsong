@@ -3240,6 +3240,7 @@ a:focus {
   letter-spacing: 1px;
   text-transform: uppercase;
   line-height: 60px;
+  white-space: nowrap;
 }
 
 .filter-tab-list-item:hover,
@@ -4361,8 +4362,9 @@ html.w-mod-js *[data-ix="logo-fade-in"] {
 
 @media only screen and (max-width: 425px) {
   .product-grid-view .hot-product {
-    width: 100%;
+    width: 50%;
     margin: 0;
+    padding: 5px;
   }
 }
 
@@ -4404,11 +4406,23 @@ html.w-mod-js *[data-ix="logo-fade-in"] {
   height: 75px;
 }
 
+@media only screen and (max-width: 425px) {
+  .product-grid-view .hot-product .product-info {
+    width: calc(100% - 10px);
+    left: 5px;
+    height: 50px;
+  }
+}
+
 .product-grid-view .hot-product .product-title {
   font-family: "Bitter", "Times New Roman", Georgia, serif;
   color: #443c41;
   text-transform: uppercase;
   margin: 3px 0;
+  width: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .product-grid-view .hot-product .price {
@@ -4416,7 +4430,7 @@ html.w-mod-js *[data-ix="logo-fade-in"] {
   margin-bottom: 0;
   font-family: "Bitter", "Times New Roman", Georgia, serif;
   position: absolute;
-  bottom: 10px;
+  bottom: 5px;
 }
 
 .social-nav-link {
