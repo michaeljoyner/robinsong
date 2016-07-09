@@ -20,7 +20,7 @@
     </div>
     <div class="w-container filter-tab-container">
         <ul class="w-list-unstyled filter-tab-ul">
-            <li class="filter-tab-list-item active" data-group="all">ALL</li>
+            <li id="all-tag" class="filter-tab-list-item active" data-group="all">ALL</li>
             @foreach($tags as $tag)
                 <li class="filter-tab-list-item" data-group="{{ $tag }}">{{ $tag }}</li>
             @endforeach
@@ -74,6 +74,11 @@
                 // reshuffle grid
                 $grid.shuffle('shuffle', groupName);
             });
+            window.setTimeout(function() {
+                $('#all-tag').click();
+                console.log('clicked');
+            },200);
+
 
         });
     </script>
