@@ -16,7 +16,20 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a href="/admin/products/index">Products</a></li>
+                <li class="dropdown">
+                    <a href="#"
+                       class="dropdown-toggle"
+                       data-toggle="dropdown"
+                       role="button"
+                       aria-haspopup="true"
+                       aria-expanded="false"
+                    >Products <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/admin/products/index">All Products</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/admin/standard-options/app">Standard Options</a></li>
+                    </ul>
+                </li>
                 <li><a href="/admin/collections">Collections</a></li>
                 <li><a href="/admin/shipping">Shipping Rules</a></li>
                 <li class="dropdown">

@@ -138,6 +138,19 @@ class Product extends Model implements SluggableInterface, HasMediaConversions, 
         return $this->options()->create(['name' => $name]);
     }
 
+    public function useStandardOption($standardOptionId)
+    {
+        $standardOption = StandardOption::findOrFail($standardOptionId);
+
+        $option = $this->addOption($standardOption->name);
+
+        $standardOption->values->each(function($value) use ($option) {
+            $option->addValue($value->name);
+        });
+
+        return $option;
+    }
+
     public function customisations()
     {
         return $this->hasMany(Customisation::class, 'product_id');

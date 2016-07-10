@@ -100,6 +100,17 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
         Route::post('productoptions/{optionId}/values', 'ProductOptionValuesController@store');
         Route::delete('optionvalues/{valueId}', 'ProductOptionValuesController@delete');
 
+        Route::get('standard-options', 'StandardOptionsController@index');
+        Route::get('standard-options/app', 'StandardOptionsController@app');
+        Route::post('standard-options', 'StandardOptionsController@store');
+        Route::delete('standard-options/{id}', 'StandardOptionsController@delete');
+
+        Route::get('standard-options/{optionId}/values', 'StandardOptionValuesController@index');
+        Route::post('standard-options/{optionId}/values', 'StandardOptionValuesController@store');
+        Route::delete('standard-option-values/{valueId}', 'StandardOptionValuesController@delete');
+
+        Route::post('products/{productId}/standard-options/add', 'ProductStandardOptionsController@addToProduct');
+
         Route::get('products/{productId}/customisations', 'CustomisationsController@index');
         Route::post('products/{productId}/customisations', 'CustomisationsController@store');
         Route::delete('customisations/{customisationId}', 'CustomisationsController@delete');

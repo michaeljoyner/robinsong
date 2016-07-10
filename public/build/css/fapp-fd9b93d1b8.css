@@ -4370,8 +4370,9 @@ html.w-mod-js *[data-ix="logo-fade-in"] {
 
 @media only screen and (min-width: 426px) and (max-width: 767px) {
   .product-grid-view .hot-product {
-    width: 100%;
+    width: 50%;
     margin: 0;
+    padding: 5px;
   }
 }
 
@@ -4407,6 +4408,14 @@ html.w-mod-js *[data-ix="logo-fade-in"] {
 }
 
 @media only screen and (max-width: 425px) {
+  .product-grid-view .hot-product .product-info {
+    width: calc(100% - 10px);
+    left: 5px;
+    height: 50px;
+  }
+}
+
+@media only screen and (min-width: 426px) and (max-width: 767px) {
   .product-grid-view .hot-product .product-info {
     width: calc(100% - 10px);
     left: 5px;
@@ -4823,7 +4832,8 @@ html.w-mod-js *[data-ix="logo-fade-in"] {
 .faqs-section .user-text {
   font-family: 'Bitter', serif;
   color: #6d6d6d;
-  line-height: 1.4;
+  font-size: xx-large;
+  line-height: 1.6;
   width: 95%;
   max-width: 700px;
   margin: 0 auto;

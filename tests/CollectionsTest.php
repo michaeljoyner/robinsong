@@ -120,7 +120,7 @@ class CollectionsTest extends TestCase
         $this->assertNotNull($collection->deleted_at);
 
         $categories->each(function($category) {
-            $category = \App\Stock\Category::findOrFail($category->id);
+            $category = \App\Stock\Category::withTrashed()->findOrFail($category->id);
             $this->assertTrue($category->trashed());
         });
     }

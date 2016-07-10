@@ -16,12 +16,12 @@
       width: 50%;
       margin: 0;
       padding: 5px;
-
-      .product-info {
-
-      }
     }
-    @include respond-to(smalltablet) {width: 100%; margin: 0;}
+    @include respond-to(smalltablet) {
+      width: 50%;
+      margin: 0;
+      padding: 5px;
+    }
     @include respond-to(largetablet) {margin: 15px;}
 
     &:hover img {
@@ -48,6 +48,12 @@
       height: 75px;
 
       @include respond-to(phone) {
+        width: calc(100% - 10px);
+        left: 5px;
+        height: 50px;
+      }
+
+      @include respond-to(smalltablet) {
         width: calc(100% - 10px);
         left: 5px;
         height: 50px;

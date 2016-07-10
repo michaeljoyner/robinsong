@@ -10950,6 +10950,68 @@ if (module.hot) {(function () {  module.hot.accept()
   }
 })()}
 },{"vue":11,"vue-hot-reload-api":2,"vueify-insert-css":12}],18:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+    props: ['option-id', 'option-name'],
+
+    data: function data() {
+        return {
+            values: [],
+            newName: ''
+        };
+    },
+
+    ready: function ready() {
+        this.getValues();
+    },
+
+    methods: {
+        getValues: function getValues() {
+            this.$http.get('/admin/standard-options/' + this.optionId + '/values', function (res) {
+                this.$set('values', res);
+            }).error(function (res) {
+                console.log(res);
+            });
+        },
+
+        addValue: function addValue() {
+            if (this.newName === '') return;
+
+            this.$http.post('/admin/standard-options/' + this.optionId + '/values', { name: this.newName }, function (res) {
+                this.values.push(res);
+                this.newName = '';
+            }).error(function (res) {
+                console.log(res);
+            });
+        },
+
+        removeValue: function removeValue(value) {
+            this.$http['delete']('/admin/standard-option-values/' + value.id, function (res) {
+                this.values.$remove(value);
+            }).error(function (res) {
+                console.log(res);
+            });
+        },
+
+        removeOption: function removeOption() {
+            this.$dispatch('remove-option', this.optionId);
+        }
+    }
+};
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"standard-option\">\n        <header class=\"clearfix\">\n            <h1 class=\"pull-left\">{{ optionName }}</h1>\n            <form class=\"input-and-go-form pull-right\" v-on:submit.stop.prevent=\"addValue\">\n                <input type=\"text\" placeholder=\"Value name\" v-model=\"newName\">\n                <button v-on:click.stop.prevent=\"addValue\" type=\"button\" class=\"btn rs-btn btn-clear\">\n                    Create Option\n                </button>\n            </form>\n        </header>\n        <div class=\"standard-option-values\">\n            <ul>\n                <li v-for=\"value in values | orderBy 'name'\">\n                    <span>{{ value.name }}</span>\n                    <span class=\"close-button\" v-on:click=\"removeValue(value)\">×</span>\n                </li>\n            </ul>\n        </div>\n        <footer class=\"clearfix\">\n            <div class=\"actions pull-right\">\n                <button v-on:click.stop.prevent=\"removeOption\" type=\"button\" class=\"btn rs-btn btn-clear-danger\">\n                    Delete\n                </button>\n            </div>\n        </footer>\n    </div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/Users/mooz/work/robin-song/resources/assets/js/components/Standardoption.vue"
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, module.exports.template)
+  }
+})()}
+},{"vue":11,"vue-hot-reload-api":2}],19:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n\n")
 'use strict';
 
@@ -11034,7 +11096,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"vue":11,"vue-hot-reload-api":2,"vueify-insert-css":12}],19:[function(require,module,exports){
+},{"vue":11,"vue-hot-reload-api":2,"vueify-insert-css":12}],20:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n\n")
 'use strict';
 
@@ -11095,7 +11157,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"vue":11,"vue-hot-reload-api":2,"vueify-insert-css":12}],20:[function(require,module,exports){
+},{"vue":11,"vue-hot-reload-api":2,"vueify-insert-css":12}],21:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -11110,13 +11172,15 @@ module.exports = {
         data: {
             options: [],
             newoption: '',
-            product: ''
+            product: '',
+            standardOptions: []
         },
 
         ready: function ready() {
             var id = document.querySelector('#product-options-vue').getAttribute('data-product');
             this.$set('product', id);
             this.fetchOptions();
+            this.fetchStandardOptions();
         },
 
         methods: {
@@ -11132,6 +11196,24 @@ module.exports = {
             fetchOptions: function fetchOptions() {
                 this.$http.get('/admin/products/' + this.product + '/options', function (res) {
                     this.$set('options', res);
+                });
+            },
+
+            fetchStandardOptions: function fetchStandardOptions() {
+                this.$http.get('/admin/standard-options', function (res) {
+                    this.$set('standardOptions', res);
+                }).error(function () {
+                    console.log('unable to retrieve standard options from server');
+                });
+            },
+
+            addStandardOptionToProduct: function addStandardOptionToProduct(standardOption) {
+                this.$http.post('/admin/products/' + this.product + '/standard-options/add', {
+                    standard_option_id: standardOption.id
+                }, function (res) {
+                    this.options.push(res);
+                }).error(function (res) {
+                    console.log('unable to set standard option for product');
                 });
             },
 
@@ -11204,11 +11286,63 @@ module.exports = {
 
     toggleBtnVue: {
         el: '#toggle-available-app'
+    },
+
+    standardOptionsVue: {
+        el: 'body',
+
+        data: {
+            standardOptions: [],
+            newName: ''
+        },
+
+        ready: function ready() {
+            this.fetchOptions();
+        },
+
+        events: {
+            'remove-option': function removeOption(optionId) {
+                this.removeOptionById(optionId);
+            }
+        },
+
+        methods: {
+            makeOption: function makeOption() {
+                if (this.newName === '') return;
+
+                this.$http.post('/admin/standard-options', { name: this.newName }, function (res) {
+                    this.standardOptions.push(res);
+                }).error(function (res) {
+                    console.log('unable to make option on server');
+                });
+            },
+
+            removeOptionById: function removeOptionById(optionId) {
+                this.$http['delete']('/admin/standard-options/' + optionId, function (res) {
+                    var opt = this.standardOptions.filter(function (option) {
+                        return option.id === optionId;
+                    });
+                    if (opt.length > 0) {
+                        this.standardOptions.$remove(opt[0]);
+                    }
+                }).error(function (res) {
+                    console.log('unable to delete option on server');
+                });
+            },
+
+            fetchOptions: function fetchOptions() {
+                this.$http.get('/admin/standard-options', function (res) {
+                    this.$set('standardOptions', res);
+                }).error(function (res) {
+                    console.log('unable to retrieve options');
+                });
+            }
+        }
     }
 
 };
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 'use strict';
 
 var Vue = require('vue');
@@ -11229,9 +11363,10 @@ Vue.component('shipping-location', require('./components/ShippingLocation.vue'))
 Vue.component('toggle-button', require('./components/Togglebutton.vue'));
 Vue.component('tag-manager', require('./components/TagManager.vue'));
 Vue.component('product-option', require('./components/ProductOption.vue'));
+Vue.component('standard-option', require('./components/Standardoption.vue'));
 
 window.Vue = Vue;
 
-},{"./components/Dropzone.vue":13,"./components/Galleryshow.vue":14,"./components/ProductOption.vue":15,"./components/ShippingLocation.vue":16,"./components/Singleupload.vue":17,"./components/TagManager.vue":18,"./components/Togglebutton.vue":19,"./components/vueconstructorobjects.js":20,"vue":11,"vue-resource":4}]},{},[21]);
+},{"./components/Dropzone.vue":13,"./components/Galleryshow.vue":14,"./components/ProductOption.vue":15,"./components/ShippingLocation.vue":16,"./components/Singleupload.vue":17,"./components/Standardoption.vue":18,"./components/TagManager.vue":19,"./components/Togglebutton.vue":20,"./components/vueconstructorobjects.js":21,"vue":11,"vue-resource":4}]},{},[22]);
 
 //# sourceMappingURL=main.js.map

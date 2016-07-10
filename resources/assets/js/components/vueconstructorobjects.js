@@ -10,13 +10,15 @@ module.exports = {
         data: {
             options: [],
             newoption: '',
-            product: ''
+            product: '',
+            standardOptions: []
         },
 
         ready: function () {
             var id = document.querySelector('#product-options-vue').getAttribute('data-product');
             this.$set('product', id);
             this.fetchOptions();
+            this.fetchStandardOptions();
         },
 
         methods: {
@@ -33,6 +35,24 @@ module.exports = {
                 this.$http.get('/admin/products/' + this.product + '/options', function (res) {
                     this.$set('options', res);
                 })
+            },
+
+            fetchStandardOptions:function() {
+                this.$http.get('/admin/standard-options', function(res) {
+                    this.$set('standardOptions', res);
+                }).error(function() {
+                    console.log('unable to retrieve standard options from server');
+                })
+            },
+
+            addStandardOptionToProduct: function(standardOption) {
+                this.$http.post('/admin/products/' + this.product + '/standard-options/add', {
+                    standard_option_id: standardOption.id
+                }, function(res) {
+                    this.options.push(res);
+                }).error(function(res) {
+                   console.log('unable to set standard option for product');
+                });
             },
 
             removeOption: function (option) {
@@ -104,6 +124,59 @@ module.exports = {
 
     toggleBtnVue: {
         el: '#toggle-available-app',
+    },
+
+    standardOptionsVue: {
+        el: 'body',
+
+        data: {
+            standardOptions: [],
+            newName: ''
+        },
+
+        ready: function () {
+            this.fetchOptions();
+        },
+
+        events: {
+            'remove-option': function (optionId) {
+                this.removeOptionById(optionId);
+            }
+        },
+
+        methods: {
+            makeOption: function () {
+                if (this.newName === '') return;
+
+                this.$http.post('/admin/standard-options', {name: this.newName}, function (res) {
+                    this.standardOptions.push(res);
+                }).error(function (res) {
+                    console.log('unable to make option on server');
+                })
+            },
+
+            removeOptionById: function (optionId) {
+                this.$http.delete('/admin/standard-options/' + optionId, function(res) {
+                    var opt = this.standardOptions.filter(function (option) {
+                        return option.id === optionId;
+                    });
+                    if(opt.length > 0) {
+                        this.standardOptions.$remove(opt[0]);
+                    }
+                }).error(function(res) {
+                    console.log('unable to delete option on server');
+                });
+
+            },
+
+            fetchOptions: function () {
+                this.$http.get('/admin/standard-options', function (res) {
+                    this.$set('standardOptions', res);
+                }).error(function (res) {
+                    console.log('unable to retrieve options');
+                });
+            }
+        }
     }
 
 

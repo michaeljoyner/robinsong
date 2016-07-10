@@ -125,6 +125,6 @@ class UsersTest extends TestCase {
             ->type('joe@example.com', 'email')
             ->type('morris23', 'password')
             ->press('Login')
-            ->seePageIs('/admin');
+            ->seePageIs('/admin/products/index');
     }
 }

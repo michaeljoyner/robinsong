@@ -34,7 +34,7 @@ class AuthTest extends TestCase {
             ->type($user->email, 'email')
             ->type('password', 'password')
             ->press('Login')
-            ->seePageIs('/admin');
+            ->seePageIs('/admin/products/index');
     }
 
     /**

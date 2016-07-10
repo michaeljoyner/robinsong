@@ -59,6 +59,16 @@
                     >Add
                     </button>
                 </div>
+                <div class="standard-option-choices">
+                    <h4>Standard Option Choices</h4>
+                    <div class="small-instruction">Click on one of the choices below to add a pre-defined option</div>
+                    <div class="standard-option-choice-button"
+                         v-on:click="addStandardOptionToProduct(standardOption)"
+                         v-for="standardOption in standardOptions | orderBy 'name'"
+                    >
+                        @{{ standardOption.name }}
+                    </div>
+                </div>
             </div>
             <div id="product-customisations-vue" class="product-customisations-vue" data-product="{{ $product->id }}">
                 <h4 class="product-customisations-heading">Custom Text Fields</h4>

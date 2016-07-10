@@ -43,7 +43,7 @@
                 @endforeach
             </div>
             <a href="/collections/{{ $category->collection->slug }}">
-                <div class="purchase-btn narrow">Back to {{ $category->collection->slug }}</div>
+                <div class="purchase-btn narrow">Back to {{ $category->collection->name }}</div>
             </a>
         </div>
     </div>

@@ -1,0 +1,71 @@
+.input-and-go-form {
+
+  input {
+    height: 34px;
+    line-height: 34px;
+    padding: 0 0 0 8px;
+    color: $primary_blue;
+    border: 1px solid $primary_blue;
+    margin: 0 -3px 0 0;
+    vertical-align: top;
+
+    &:focus {
+      outline-color: $primary_blue;
+    }
+  }
+}
+
+.standard-option {
+  border: 1px solid $text_grey;
+  width: 90%;
+  margin: 2em auto;
+  padding: 0;
+
+  header {
+    padding: 10px 15px;
+    background: lighten($text_grey, 50);
+
+    h1 {
+      margin-top: 5px;
+    }
+
+    .input-and-go-form {
+      margin-top: 10px;
+    }
+  }
+
+  .standard-option-values {
+    padding: 15px;
+
+    ul {
+      list-style-type: none;
+
+      li {
+        display: inline-block;
+        text-transform: uppercase;
+        font-size: 80%;
+        border: 1px solid $primary_blue;
+        margin: 5px;
+        padding: 4px 8px;
+        white-space: nowrap;
+
+        .close-button {
+          color: $white;
+          background: lighten($danger, 20);
+          width: 15px;
+          height: 15px;
+          border-radius: 50%;
+          display: inline-block;
+          text-align: center;
+          line-height: 15px;
+          margin-left: 20px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  footer {
+    padding: 8px;
+  }
+}

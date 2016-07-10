@@ -114,3 +114,14 @@
     z-index: 500;
   }
 }
+
+.standard-option-choice-button {
+  display: inline-block;
+  white-space: nowrap;
+  margin: 5px;
+  padding: 3px 6px;
+  text-transform: uppercase;
+  background: $secondary_orange;
+  color: $white;
+  cursor: pointer;
+}

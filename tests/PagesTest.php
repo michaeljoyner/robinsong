@@ -29,7 +29,7 @@ class PagesTest extends TestCase
 
         $this->actingAs($currentUser)
             ->visit('/admin')
-            ->seePageIs('/admin');
+            ->seePageIs('/admin/products/index');
     }
 
 }

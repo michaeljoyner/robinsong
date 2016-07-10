@@ -24,7 +24,6 @@
             @foreach($categories->chunk(2) as $row)
             <div class="w-row product-type-row">
                 @foreach($row as $category)
-
                         <div class="w-col w-col-6 product-type-column">
                             <a href="/categories/{{ $category->slug }}">
                             <div class="product-type-wrapper">
@@ -37,7 +36,6 @@
                             </div>
                             </a>
                         </div>
-
                 @endforeach
             </div>
             @endforeach
