@@ -59,7 +59,7 @@
                     >Add
                     </button>
                 </div>
-                <div class="standard-option-choices">
+                <div class="standard-option-choices" v-show="standardOptions.length">
                     <h4>Standard Option Choices</h4>
                     <div class="small-instruction">Click on one of the choices below to add a pre-defined option</div>
                     <div class="standard-option-choice-button"

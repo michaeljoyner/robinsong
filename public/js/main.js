@@ -11312,6 +11312,7 @@ module.exports = {
 
                 this.$http.post('/admin/standard-options', { name: this.newName }, function (res) {
                     this.standardOptions.push(res);
+                    this.newName = '';
                 }).error(function (res) {
                     console.log('unable to make option on server');
                 });
