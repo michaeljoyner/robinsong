@@ -6,6 +6,7 @@
                 <h4 class="modal-title">Clone this Product</h4>
             </div>
             <div class="modal-body">
+                <p>This will make a copy of the "{{ $product->name }}" and put it into the same category. The product's pricing and customisation options will also be copied, but not the images or tags.</p>
                 {!! Form::open(['url' => '/admin/products/' . $product->id . '/clones', 'class' => 'rs-form']) !!}
                 <div class="form-group">
                     <label for="name">Name: </label>
