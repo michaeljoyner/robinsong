@@ -36,7 +36,7 @@
             </button>
         </div>
         <div class="item-container item-price-container">
-            <p class="item-price">&pound;{{ (price * quantity) / 100}}</p>
+            <p class="item-price">&pound;{{ ((price * quantity) / 100).toFixed(2)}}</p>
         </div>
     </div>
 </template>

@@ -23,7 +23,7 @@
             <li v-for="result in results">
                 <img :src="result.thumb" alt="thumbnail">
                 <a href="/admin/products/@{{ result.id }}" class="result-name">@{{ result.name }}</a>
-                <span class="result-price">&pound;@{{ result.price / 100 }}</span>
+                <span class="result-price">@{{ result.category }}</span>
             </li>
         </ul>
         <ul class="results-list" v-if="freshpage">
@@ -31,7 +31,7 @@
                 <li>
                     <img src="{{ $product->coverPic('thumb') }}" alt="thumbnail">
                     <a href="/admin/products/{{ $product->id }}" class="result-name">{{ $product->name }}</a>
-                    <span class="result-price">&pound;{{ $product->price / 100 }}</span>
+                    <span class="result-price">{{ $product->category->name }}</span>
                 </li>
             @endforeach
         </ul>

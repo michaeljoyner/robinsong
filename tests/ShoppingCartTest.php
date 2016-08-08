@@ -2,6 +2,7 @@
 use App\Shipping\ShippingLocation;
 use App\Shipping\WeightClass;
 use App\Stock\Product;
+use App\Stock\StockUnit;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -21,11 +22,11 @@ class ShoppingCartTest extends TestCase
      */
     public function an_item_can_be_added_to_the_cart_via_ajax_endpoint()
     {
-        $product = factory(Product::class)->create();
+        $product = factory(StockUnit::class)->create();
         $this->withoutMiddleware();
 
         $response = $this->call('POST', '/api/cart', [
-            'id' => $product->id,
+            'unit_id' => $product->id,
             'quantity' => 2,
             'options' => []
         ]);
@@ -33,6 +34,25 @@ class ShoppingCartTest extends TestCase
         $this->assertEquals(200, $response->status());
         $this->assertEquals(1, Cart::count(false), 'Cart should have one row');
         $this->assertEquals(2, Cart::count(), 'Cart should have two items');
+    }
+
+    /**
+     *@test
+     */
+    public function a_stock_unit_can_be_added_to_the_cart_via_endpoint()
+    {
+        $unit = factory(StockUnit::class)->create();
+        $this->withoutMiddleware();
+
+        $response = $this->call('POST', '/api/cart', [
+            'unit_id' => $unit->id,
+            'quantity' => 1,
+            'options' => []
+        ]);
+        $this->assertEquals(200, $response->status());
+        $this->assertEquals(1, Cart::count(false), 'Cart should have one row');
+        $this->assertEquals($unit->product->name . ' - ' . $unit->name, Cart::content()->first()->name);
+
     }
 
     /**
@@ -174,7 +194,7 @@ class ShoppingCartTest extends TestCase
 
     private function fillCartWithTwoItems()
     {
-        factory(Product::class, 2)->create(['weight' => 25]);
+        factory(StockUnit::class, 2)->create(['weight' => 25]);
         Cart::add(1, 'Wedding Book', 1, 25, [
             'choice options' => [
                 'ribbon colour' => 'silver',

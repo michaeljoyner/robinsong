@@ -24,7 +24,7 @@
     </tr>
     <tr>
         <td colspan="2">Total</td>
-        <td class="price">&pound;@{{ subtotal + (shipping / 100) }}</td>
+        <td class="price">&pound;@{{ (subtotal + (shipping / 100)).toFixed(2) }}</td>
     </tr>
     </tfoot>
 </table>

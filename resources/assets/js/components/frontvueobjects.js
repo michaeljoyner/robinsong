@@ -44,6 +44,7 @@ module.exports = {
                 this.$http.delete('/api/cart/' + item.rowid, {}, function(res) {
                     this.items.$remove(item);
                     this.fetchShippingPrices();
+                    rsApp.basket.fetchInfo();
                 });
             }
         }

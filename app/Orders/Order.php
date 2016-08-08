@@ -6,6 +6,7 @@ use App\Billing\ChargeResponse;
 use App\Events\OrderFulfilled;
 use App\Events\OrderPaidUp;
 use App\Stock\Product;
+use App\Stock\StockUnit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -34,13 +35,15 @@ class Order extends Model
         return $this->hasMany(OrderItem::class, 'order_id');
     }
 
-    public function addItem($productId, $quantity)
+    public function addItem($unit_id, $quantity)
     {
-        $product = Product::findOrFail($productId);
+        $unit = StockUnit::with('product')->findOrFail($unit_id);
         return $this->items()->create([
-            'description' => $product->name,
-            'price' => $product->price,
-            'product_id' => $productId,
+            'description' => $unit->product->name,
+            'price' => $unit->price->inCents() * $quantity,
+            'product_id' => $unit->product->id,
+            'unit_id' => $unit->id,
+            'package' => $unit->name,
             'quantity' => $quantity
         ]);
     }

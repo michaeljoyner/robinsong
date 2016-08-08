@@ -17,6 +17,10 @@ Vue.component('toggle-button', require('./components/Togglebutton.vue'));
 Vue.component('tag-manager', require('./components/TagManager.vue'));
 Vue.component('product-option', require('./components/ProductOption.vue'));
 Vue.component('standard-option', require('./components/Standardoption.vue'));
+Vue.component('toggle-switch', require('./components/Toggleswitch.vue'));
+Vue.component('stock-unit', require('./components/Stockunit.vue'));
+Vue.component('stockunits', require('./components/Stockunitsapp.vue'));
+
 
 window.Vue = Vue;
 

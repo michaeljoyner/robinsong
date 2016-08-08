@@ -12,7 +12,7 @@ class ProductsSearchController extends Controller
 {
     public function showSearchPage()
     {
-        $products = Product::orderBy('name')->get();
+        $products = Product::with('category')->orderBy('name')->get();
         return view('admin.products.search')->with(compact('products'));
     }
 
@@ -22,13 +22,14 @@ class ProductsSearchController extends Controller
             return null;
         }
 
-        $products = Product::where('name', 'LIKE', '%' . $term . '%')->get()->map(function ($product) {
+        $products = Product::with('category')->where('name', 'LIKE', '%' . $term . '%')->get()->map(function ($product) {
             return [
                 'id'    => $product->id,
                 'name'  => $product->name,
                 'slug'  => $product->slug,
                 'price' => $product->price,
-                'thumb' => $product->coverPic('thumb')
+                'thumb' => $product->coverPic('thumb'),
+                'category' => $product->category->name
             ];
         });
 

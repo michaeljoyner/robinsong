@@ -37,7 +37,7 @@
                                                                          class="product-type-image"></a>
                             <h4 class="product-item-heading">{{ $product->name }}</h4>
                             {{--<p class="p1">{{ $product->description }}</p>--}}
-                            <div class="product-item-price">&pound;{{ $product->priceInPounds() }}</div>
+                            <div class="product-item-price">&pound;{{ $product->lowestPriceString() }}</div>
                         </div>
                     </div>
                 @endforeach

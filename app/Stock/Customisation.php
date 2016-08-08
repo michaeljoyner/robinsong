@@ -12,4 +12,6 @@ class Customisation extends Model
         'name',
         'longform'
     ];
+
+    protected $casts = ['longform' => 'boolean'];
 }

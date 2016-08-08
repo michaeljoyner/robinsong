@@ -36,6 +36,7 @@ Route::get('process_paypal/{orderNumber}', 'PaypalController@processPaypalPaymen
 Route::get('cancel_paypal', 'PaypalController@handleCanceledPayment');
 
 Route::get('api/products/{id}/options', 'Admin\ProductOptionsController@getOptionsAndValuesForProduct');
+Route::get('api/products/{productId}/purchasing', 'ProductPurchasingOptionsController@show');
 
 Route::get('api/cart', 'CartController@getCartItems');
 Route::get('api/cart/summary', 'CartController@getCartSummary');
@@ -84,7 +85,16 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function() {
         Route::post('products/{productId}', 'ProductsController@update');
         Route::delete('products/{productId}', 'ProductsController@delete');
         Route::post('api/products/{productId}/availability', 'ProductsController@setAvailability');
-        
+
+        Route::post('products/{productId}/clones', 'ProductClonesController@store');
+
+        Route::get('products/{productId}/stockunits/app', 'StockUnitsController@showApp');
+        Route::get('products/{productId}/stockunits', 'StockUnitsController@index');
+        Route::post('products/{productId}/stockunits', 'StockUnitsController@store');
+        Route::post('stockunits/{unitId}', 'StockUnitsController@update');
+        Route::delete('stockunits/{unitId}', 'StockUnitsController@delete');
+        Route::post('stockunits/{unitId}/availability', 'StockUnitsController@setAvailability');
+
         Route::post('products/{productId}/writeup', 'ProductWriteupController@setWriteup');
 
         Route::post('products/{productId}/tags', 'ProductTagsController@syncTags');

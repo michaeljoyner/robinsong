@@ -6,6 +6,7 @@ use App\Cart\CartRepository;
 use App\Shipping\ShippingCalculatorFactory;
 use App\Shipping\ShippingService;
 use App\Stock\Product;
+use App\Stock\StockUnit;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -26,8 +27,9 @@ class CartController extends Controller
 
     public function addItem(Request $request)
     {
-        $product = Product::findOrFail($request->id);
-        $this->cartRepo->addProductToCart($product, $request->quantity, $request->options);
+        $this->validate($request, ['unit_id' => 'required|integer', 'quantity' => 'required|integer']);
+        $unit = StockUnit::with('product')->findOrFail($request->unit_id);
+        $this->cartRepo->addProductToCart($unit, $request->quantity, $request->options);
 
         return response()->json($this->cartRepo->itemCount());
     }

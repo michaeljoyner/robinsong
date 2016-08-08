@@ -8,6 +8,10 @@
   &.btn-wide {
     width: 100%;
   }
+
+  &.btn-small {
+    transform: scale(.7);
+  }
 }
 
 .rs-btn.btn-tiny {

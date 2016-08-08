@@ -14,12 +14,12 @@
   .product-detail-col {
 
     button.purchase-button {
-      display: block;
+      display: inline-block;
       margin: 10px 0;
       background: $white;
       color: $primary_red;
       border: 3px solid $primary_red;
-      padding: 15px 8px;
+      padding: 10px 8px;
       text-transform: uppercase;
       font-weight: 700;
       font-family: $serif_heading;
@@ -33,6 +33,14 @@
         outline: none;
       }
     }
+
+    .stock-unit-select {
+      @include respond-to(phone) {
+        width: calc(100vw - 80px);
+        max-width: 300px;
+      }
+    }
+
     .product-title {
       font-family: $serif_heading;
       color: $primary_red;
@@ -60,7 +68,18 @@
       font-weight: 700;
       font-family: $serif_heading;
       font-size: 2em;
-      margin: 1em 0;
+      margin: 5px 0 5px 0;
+    }
+
+    .stock-unit-price {
+      display: inline-block;
+      margin: 10px 25px 10px 0;
+      background: $eggshell;
+      padding: 5px 10px;
+
+      .unit-price {
+        display: block;
+      }
     }
 
     .customize {
@@ -81,8 +100,17 @@
         font-family: $serif_heading;
         color: $primary_dark;
         margin: 10px 0 5px;
+        text-transform: capitalize;
       }
     }
+  }
+
+  .product-quantity-box {
+    width: 3em;
+    border: 3px solid $primary_blue;
+    font-size: 16px;
+    padding: 10px 0 10px 5px;
+    color: $text_grey;
   }
 
   .quantity-input-box {

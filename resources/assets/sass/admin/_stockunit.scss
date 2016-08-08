@@ -1,0 +1,70 @@
+.stock-unit-column-headings {
+  padding-bottom: 15px;
+  span {
+    display: inline-block;
+    text-transform: uppercase;
+    color: $primary_dark;
+  }
+
+  .name-heading {
+    width: 15em;
+  }
+
+  .price-heading {
+    width: 5em;
+  }
+
+  .weight-heading {
+    width: 7em;
+  }
+
+  .button-heading {
+    width: 12em;
+    padding-left: 20px;
+  }
+
+  .toggle-heading {
+    width: 15em;
+    text-align: center;
+  }
+
+}
+
+.stock-unit {
+
+  input:disabled {
+    border: 0;
+
+  }
+
+  .name-input {
+    width: 15em;
+  }
+
+  .price-input {
+    width: 5em;
+  }
+
+  .weight-input {
+    width: 7em;
+  }
+
+  input {
+    border: 1px solid $primary_blue;
+    height: 32px;
+    line-height: 32px;
+    padding-left: 5px;
+    display: inline-block;
+  }
+
+  .toggle-btns {
+    display: inline-block;
+    width: 12em;
+  }
+
+  .switch-box {
+    display: inline-block;
+    transform: scale(.7);
+    width: 15em;
+  }
+}

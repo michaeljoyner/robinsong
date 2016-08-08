@@ -3,6 +3,7 @@
     <tr>
         <th style="padding: 10px; border: 1px solid #bbbbbb;">#</th>
         <th style="padding: 10px; border: 1px solid #bbbbbb;">Item</th>
+        <th style="padding: 10px; border: 1px solid #bbbbbb;">Package</th>
         <th style="padding: 10px; border: 1px solid #bbbbbb;">Quantity</th>
         <th style="padding: 10px; border: 1px solid #bbbbbb;">Price</th>
     </tr>
@@ -13,13 +14,13 @@
             <td style="padding: 10px; border: 1px solid #bbbbbb;">{{ $index + 1 }}</td>
             <td style="padding: 10px; border: 1px solid #bbbbbb;">
                 {{ $item['description'] }}
-                @if((array_key_exists('options', $item) && ! empty($item['options']))
-                     || (array_key_exists('customisations', $item) && ! empty($item['customisations'])))
+                @if($item['has_customisations'])
                     - with customisations
                 @endif
             </td>
+            <td style="padding: 10px; border: 1px solid #bbbbbb; text-align: right;">{{ $item['package'] }}</td>
             <td style="padding: 10px; border: 1px solid #bbbbbb; text-align: right;">{{ $item['quantity'] }}</td>
-            <td style="padding: 10px; border: 1px solid #bbbbbb; text-align: right;">£{{ number_format($item['quantity'] * ($item['price'] /100), 2) }}</td>
+            <td style="padding: 10px; border: 1px solid #bbbbbb; text-align: right;">£{{ number_format(($item['price'] /100), 2) }}</td>
         </tr>
     @endforeach
     <tr>

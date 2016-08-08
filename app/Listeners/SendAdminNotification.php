@@ -32,6 +32,6 @@ class SendAdminNotification
      */
     public function handle(OrderPaidUp $event)
     {
-
+        return $this->mailer->notifyOfNewOrder($event->order);
     }
 }

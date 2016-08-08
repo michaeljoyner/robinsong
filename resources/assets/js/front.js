@@ -11,6 +11,7 @@ if(document.querySelector('#x-token')) {
 
 Vue.component('cart-list-item', require('./components/CartListItem.vue'));
 Vue.component('modal', require('./components/Modal.vue'));
+Vue.component('purchasable', require('./components/Purchasable.vue'));
 
 if(document.querySelector('#basket')) {
     rsApp.basket = new Vue({

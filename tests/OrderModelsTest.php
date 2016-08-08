@@ -39,11 +39,12 @@ class OrderModelsTest extends TestCase
      */
     public function items_can_be_added_to_an_order()
     {
-        $products = factory(Product::class, 2)->create();
+        $product = factory(Product::class)->create();
+        $units = factory(\App\Stock\StockUnit::class, 2)->create(['product_id' => $product->id]);
         $order = factory(Order::class)->create();
 
-        $order->addItem($products[0]->id, 2);
-        $order->addItem($products[1]->id, 1);
+        $order->addItem($units[0]->id, 2);
+        $order->addItem($units[1]->id, 1);
 
         $this->assertCount(2, $order->items, 'Order should have two order items');
     }

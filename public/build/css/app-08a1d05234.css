@@ -8380,6 +8380,11 @@ form.rs-form.form-narrow {
   width: 100%;
 }
 
+.btn.rs-btn.btn-small {
+  -webkit-transform: scale(0.7);
+  transform: scale(0.7);
+}
+
 .rs-btn.btn-tiny {
   font-size: 70%;
   padding: 5px 3px;
@@ -8408,6 +8413,108 @@ form.rs-form.form-narrow {
   border: 1px solid #ff3049;
   color: #ffffff;
   background: #ff3049;
+}
+
+.spinner {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 70px;
+  text-align: center;
+}
+
+.spinner > div {
+  width: 25.714%;
+  background-color: #443c41;
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner > div:after {
+  content: '';
+  display: block;
+  padding-bottom: 100%;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+  0%, 80%, 100% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+
+  40% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+
+  40% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
+.toggle-switch {
+  padding-bottom: 20px;
+}
+
+.toggle-switch .switch-status-label {
+  text-transform: uppercase;
+  color: #e5e5e5;
+  vertical-align: top;
+  padding: 0 20px;
+}
+
+.toggle-switch .switch-status-label.chosen {
+  color: #443c41;
+}
+
+.toggle-switch-label {
+  width: 60px;
+  height: 10px;
+  border-radius: 5px;
+  display: inline-block;
+  background: #e5e5e5;
+  position: relative;
+  vertical-align: top;
+}
+
+.toggle-switch-label input[type=checkbox] {
+  display: none;
+}
+
+.toggle-switch-label input[type=checkbox]:checked + .switch-bulb {
+  -webkit-transform: translate3d(-60px, 0, 0);
+  transform: translate3d(-60px, 0, 0);
+  background: #5fbfad;
+}
+
+.toggle-switch-label .switch-bulb {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #6d6d6d;
+  position: absolute;
+  top: -10px;
+  right: -15px;
+  transition: .5s;
 }
 
 .rs-form-modal .modal-header {
@@ -9302,6 +9409,74 @@ form.rs-form.add-class-form {
 
 .standard-option footer {
   padding: 8px;
+}
+
+.stock-unit-column-headings {
+  padding-bottom: 15px;
+}
+
+.stock-unit-column-headings span {
+  display: inline-block;
+  text-transform: uppercase;
+  color: #443c41;
+}
+
+.stock-unit-column-headings .name-heading {
+  width: 15em;
+}
+
+.stock-unit-column-headings .price-heading {
+  width: 5em;
+}
+
+.stock-unit-column-headings .weight-heading {
+  width: 7em;
+}
+
+.stock-unit-column-headings .button-heading {
+  width: 12em;
+  padding-left: 20px;
+}
+
+.stock-unit-column-headings .toggle-heading {
+  width: 15em;
+  text-align: center;
+}
+
+.stock-unit input:disabled {
+  border: 0;
+}
+
+.stock-unit .name-input {
+  width: 15em;
+}
+
+.stock-unit .price-input {
+  width: 5em;
+}
+
+.stock-unit .weight-input {
+  width: 7em;
+}
+
+.stock-unit input {
+  border: 1px solid #5fbfad;
+  height: 32px;
+  line-height: 32px;
+  padding-left: 5px;
+  display: inline-block;
+}
+
+.stock-unit .toggle-btns {
+  display: inline-block;
+  width: 12em;
+}
+
+.stock-unit .switch-box {
+  display: inline-block;
+  -webkit-transform: scale(0.7);
+  transform: scale(0.7);
+  width: 15em;
 }
 
 html {

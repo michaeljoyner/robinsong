@@ -1,13 +1,45 @@
 .purchase-btn {
   display: block;
+  width: 9em;
   margin: 10px 0;
   background: $white;
   color: $primary_red;
   border: 3px solid $primary_red;
-  padding: 15px 8px;
+  padding: 10px 8px;
   text-transform: uppercase;
   font-weight: 700;
   font-family: $serif_heading;
+  position: relative;
+
+  &.inline-btn {
+    display: inline-block;
+  }
+
+  &.product-purchase:disabled:hover:after {
+    content: 'Select a package option';
+    position: absolute;
+    top: -20px;
+    left: 0;
+    width: 12em;
+    padding: 4px 8px;
+    border-radius: 5px;
+    background: $primary_dark;
+    color: $white;
+  }
+
+  &:disabled {
+    color: $text_grey;
+    border: 3px solid $text_grey;
+
+    &:hover {
+      background: $text_grey;
+      color: $white;
+
+      //&:after {
+      //
+      //}
+    }
+  }
 
   &:hover {
     background: $primary_red;

@@ -12,21 +12,17 @@ class ProductsTest extends TestCase
     /**
      * @test
      */
-    public function a_product_cab_be_added_to_a_category()
+    public function a_product_can_be_added_to_a_category()
     {
         $category = factory(Category::class)->create();
         $this->visit('/admin/categories/' . $category->id . '/products/create')
             ->submitForm('Add Product', [
                 'name'        => 'reception book',
                 'description' => 'a hand crafted book',
-                'price'       => 15,
-                'weight'      => 25
             ])->seeInDatabase('products', [
                 'name'        => 'reception book',
                 'category_id' => $category->id,
                 'description' => 'a hand crafted book',
-                'price'       => 1500,
-                'weight'      => 25
             ]);
     }
 
@@ -66,13 +62,11 @@ class ProductsTest extends TestCase
         $this->visit('/admin/products/' . $product->id . '/edit')
             ->type('book of mooz', 'name')
             ->type('a revered tome', 'description')
-            ->type('12', 'price')
             ->press('Save Changes')
             ->seeInDatabase('products', [
                 'id'          => $product->id,
                 'name'        => 'book of mooz',
                 'description' => 'a revered tome',
-                'price'       => 1200
             ]);
     }
 

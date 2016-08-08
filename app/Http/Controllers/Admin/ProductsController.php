@@ -31,10 +31,8 @@ class ProductsController extends Controller
         $this->validate($request, [
             'name' => 'required|max:255',
             'description' => 'required',
-            'price' => 'required|numeric|min:0',
-            'weight' => 'required|integer|min:0'
         ]);
-        Category::findOrFail($categoryId)->addProduct($request->only(['name', 'description', 'price', 'weight']));
+        Category::findOrFail($categoryId)->addProduct($request->only(['name', 'description']));
 
         return redirect('admin/categories/'.$categoryId);
     }
@@ -51,8 +49,6 @@ class ProductsController extends Controller
         $this->validate($request, [
             'name' => 'required|max:255',
             'description' => 'required',
-            'price' => 'required|numeric|min:0',
-            'weight' => 'required|integer|min:0'
         ]);
 
         $product = Product::findOrFail($productId);

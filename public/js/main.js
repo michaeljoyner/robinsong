@@ -11012,6 +11012,95 @@ if (module.hot) {(function () {  module.hot.accept()
   }
 })()}
 },{"vue":11,"vue-hot-reload-api":2}],19:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+    props: ['name', 'weight', 'price', 'available', 'unit-id'],
+
+    data: function data() {
+        return {
+            editing: false,
+            saving: false
+        };
+    },
+
+    methods: {
+
+        allowEdit: function allowEdit() {
+            this.editing = true;
+        },
+
+        saveInput: function saveInput() {
+            this.saving = true;
+            this.$http.post('/admin/stockunits/' + this.unitId, {
+                name: this.name,
+                price: this.price,
+                weight: this.weight
+            }, function (res) {
+                this.name = res.name;
+                this.price = res.price;
+                this.weight = res.weight;
+                this.editing = false;
+                this.saving = false;
+            }).error(function (res) {
+                console.log(res);
+                this.saving = false;
+            });
+        }
+    }
+};
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"stock-unit\">\n        <input class=\"name-input\" type=\"text\" v-model=\"name\" :disabled=\"!editing\">\n        <input class=\"price-input\" type=\"text\" v-model=\"price\" :disabled=\"!editing\">\n        <input class=\"weight-input\" type=\"text\" v-model=\"weight\" :disabled=\"!editing\">\n        <div class=\"toggle-btns\">\n            <button class=\"btn rs-btn btn-light btn-small\" v-show=\"! editing\" v-on:click=\"allowEdit\">edit</button>\n            <button class=\"btn rs-btn btn-small\" v-show=\"editing\" v-on:click=\"saveInput\">\n                <span v-show=\"!saving\">Save</span>\n                <div class=\"spinner\" v-show=\"saving\">\n                    <div class=\"bounce1\"></div>\n                    <div class=\"bounce2\"></div>\n                    <div class=\"bounce3\"></div>\n                </div>\n            </button>\n        </div>\n        <div class=\"switch-box\">\n            <toggle-switch :identifier=\"unitId\" true-label=\"yes\" false-label=\"no\" :initial-state=\"available\" :toggle-url=\"'/admin/stockunits/' + unitId + '/availability'\" toggle-attribute=\"available\"></toggle-switch>\n        </div>\n\n    </div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/Users/mooz/work/robin-song/resources/assets/js/components/Stockunit.vue"
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, module.exports.template)
+  }
+})()}
+},{"vue":11,"vue-hot-reload-api":2}],20:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+    props: ['product-id'],
+
+    data: function data() {
+        return {
+            units: []
+        };
+    },
+
+    ready: function ready() {
+        this.getStockUnits();
+    },
+
+    methods: {
+
+        getStockUnits: function getStockUnits() {
+            this.$http.get('/admin/products/' + this.productId + '/stockunits', function (res) {
+                this.$set('units', res);
+            }).error(function (res) {
+                console.log(res);
+            });
+        }
+    }
+};
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"stockunit-app\">\n        <div class=\"stock-unit-column-headings\">\n            <span class=\"name-heading\">Name</span>\n            <span class=\"price-heading\">Price (£)</span>\n            <span class=\"weight-heading\">Weight (g)</span>\n            <span class=\"button-heading\">Actions</span>\n            <span class=\"toggle-heading\">Available</span>\n        </div>\n        <stock-unit v-for=\"unit in units\" :unit-id=\"unit.id\" :price=\"unit.price\" :weight=\"unit.weight\" :name=\"unit.name\" :available=\"unit.available\"></stock-unit>\n    </div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/Users/mooz/work/robin-song/resources/assets/js/components/Stockunitsapp.vue"
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, module.exports.template)
+  }
+})()}
+},{"vue":11,"vue-hot-reload-api":2}],21:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n\n")
 'use strict';
 
@@ -11096,7 +11185,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"vue":11,"vue-hot-reload-api":2,"vueify-insert-css":12}],20:[function(require,module,exports){
+},{"vue":11,"vue-hot-reload-api":2,"vueify-insert-css":12}],22:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n\n")
 'use strict';
 
@@ -11157,7 +11246,56 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, module.exports.template)
   }
 })()}
-},{"vue":11,"vue-hot-reload-api":2,"vueify-insert-css":12}],21:[function(require,module,exports){
+},{"vue":11,"vue-hot-reload-api":2,"vueify-insert-css":12}],23:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+    props: ['identifier', 'true-label', 'false-label', 'initial-state', 'toggle-url', 'toggle-attribute'],
+
+    data: function data() {
+        return {
+            currentStatus: false
+        };
+    },
+
+    ready: function ready() {
+        this.currentStatus = this.initialState;
+    },
+
+    computed: {
+        currentLabel: function currentLabel() {
+            return this.currentStatus ? this.trueLabel : this.falseLabel;
+        }
+    },
+
+    methods: {
+        toggleState: function toggleState() {
+            var initialState = !this.currentStatus;
+            this.$http.post(this.toggleUrl, this.makePayloadFor(this.currentStatus), function (res) {
+                this.currentStatus = res.new_state;
+            }).error(function (res) {});
+        },
+
+        makePayloadFor: function makePayloadFor(attributeState) {
+            var body = {};
+            body[this.toggleAttribute] = attributeState;
+            return body;
+        }
+    }
+};
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"toggle-switch\">\n        <span class=\"switch-status-label\" :class=\"{'chosen': currentStatus}\">{{ trueLabel }}</span>\n        <label class=\"toggle-switch-label\" :for=\"'toggle-switch-' + identifier\">\n            <input type=\"checkbox\" :id=\"'toggle-switch-' + identifier\" v-on:change=\"toggleState\" v-model=\"currentStatus\">\n            <div class=\"switch-bulb\"></div>\n        </label>\n        <span class=\"switch-status-label\" :class=\"{'chosen': ! currentStatus}\">{{ falseLabel }}</span>\n    </div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/Users/mooz/work/robin-song/resources/assets/js/components/Toggleswitch.vue"
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, module.exports.template)
+  }
+})()}
+},{"vue":11,"vue-hot-reload-api":2}],24:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -11343,7 +11481,7 @@ module.exports = {
 
 };
 
-},{}],22:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 'use strict';
 
 var Vue = require('vue');
@@ -11365,9 +11503,12 @@ Vue.component('toggle-button', require('./components/Togglebutton.vue'));
 Vue.component('tag-manager', require('./components/TagManager.vue'));
 Vue.component('product-option', require('./components/ProductOption.vue'));
 Vue.component('standard-option', require('./components/Standardoption.vue'));
+Vue.component('toggle-switch', require('./components/Toggleswitch.vue'));
+Vue.component('stock-unit', require('./components/Stockunit.vue'));
+Vue.component('stockunits', require('./components/Stockunitsapp.vue'));
 
 window.Vue = Vue;
 
-},{"./components/Dropzone.vue":13,"./components/Galleryshow.vue":14,"./components/ProductOption.vue":15,"./components/ShippingLocation.vue":16,"./components/Singleupload.vue":17,"./components/Standardoption.vue":18,"./components/TagManager.vue":19,"./components/Togglebutton.vue":20,"./components/vueconstructorobjects.js":21,"vue":11,"vue-resource":4}]},{},[22]);
+},{"./components/Dropzone.vue":13,"./components/Galleryshow.vue":14,"./components/ProductOption.vue":15,"./components/ShippingLocation.vue":16,"./components/Singleupload.vue":17,"./components/Standardoption.vue":18,"./components/Stockunit.vue":19,"./components/Stockunitsapp.vue":20,"./components/TagManager.vue":21,"./components/Togglebutton.vue":22,"./components/Toggleswitch.vue":23,"./components/vueconstructorobjects.js":24,"vue":11,"vue-resource":4}]},{},[25]);
 
 //# sourceMappingURL=main.js.map

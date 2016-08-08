@@ -14,8 +14,8 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         'App\Events\OrderPaidUp' => [
-            'App\Listeners\SendCustomerInvoice',
-            'App\Listeners\SendAdminNotification'
+            'App\Listeners\SendAdminNotification',
+            'App\Listeners\SendCustomerInvoice'
         ],
         'App\Events\OrderFulfilled' => [
             'App\Listeners\NotifyCustomerOfShipping'

@@ -24,8 +24,6 @@ class Product extends Model implements SluggableInterface, HasMediaConversions, 
         'name',
         'description',
         'writeup',
-        'price',
-        'weight',
         'available'
     ];
 
@@ -67,15 +65,27 @@ class Product extends Model implements SluggableInterface, HasMediaConversions, 
             ->performOnCollections('default');
     }
 
-    public function setPriceAttribute($price)
+    public function stockUnits()
     {
-        $this->attributes['price'] = $price * 100;
+        return $this->hasMany(StockUnit::class, 'product_id');
     }
 
-    public function priceInPounds()
+    public function addStockUnit($attributes)
     {
-        return number_format($this->price / 100, 2);
+        return $this->stockUnits()->create($attributes);
     }
+
+    public function lowestPriceString()
+    {
+        $price = $this->stockUnits->filter(function ($unit) {
+            return $unit->available;
+        })->sortBy(function ($unit) {
+            return $unit->price->inCents();
+        })->first();
+
+        return $price ? $price->price->asCurrencyString() : '';
+    }
+
 
     public function category()
     {
@@ -138,13 +148,14 @@ class Product extends Model implements SluggableInterface, HasMediaConversions, 
         return $this->options()->create(['name' => $name]);
     }
 
+
     public function useStandardOption($standardOptionId)
     {
         $standardOption = StandardOption::findOrFail($standardOptionId);
 
         $option = $this->addOption($standardOption->name);
 
-        $standardOption->values->each(function($value) use ($option) {
+        $standardOption->values->each(function ($value) use ($option) {
             $option->addValue($value->name);
         });
 
@@ -171,12 +182,44 @@ class Product extends Model implements SluggableInterface, HasMediaConversions, 
     public function setWriteup($writeup)
     {
         $this->writeup = $writeup;
+
         return $this->save();
     }
 
     public function hasWriteup()
     {
-        return !! $this->writeup;
+        return !!$this->writeup;
+    }
+
+    public function cloneAs($cloneName)
+    {
+        $clone = $this->category->addProduct([
+            'name'        => $cloneName,
+            'description' => $this->description,
+            'writeup'     => $this->writeup,
+            'available'   => 0
+        ]);
+
+        $this->stockUnits->each(function ($unit) use ($clone) {
+            $clone->addStockUnit([
+                'name'   => $unit->name,
+                'price'  => $unit->price->inCents(),
+                'weight' => $unit->weight
+            ]);
+        });
+
+        $this->options->each(function ($option) use ($clone) {
+            $new_option = $clone->addOption($option->name);
+            $option->values->each(function($value) use ($new_option) {
+                $new_option->addValue($value->name);
+            });
+        });
+
+        $this->customisations->each(function($customisation) use ($clone) {
+           $clone->addCustomisation($customisation->name, $customisation->longform);
+        });
+
+        return $clone;
     }
 
 

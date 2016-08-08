@@ -67,6 +67,7 @@
                     <tr>
                         <th>Quantity</th>
                         <th>Item</th>
+                        <th>Package</th>
                         <th>Price</th>
                         <th>Customisations</th>
                     </tr>
@@ -76,6 +77,7 @@
                     <tr>
                         <td>{{ $item->quantity }}</td>
                         <td>{{ $item->description }}</td>
+                        <td>{{ $item->package }}</td>
                         <td>&pound;{{ $item->price / 100 }}</td>
                         <td>@if($item->isCustomised()) <a href="/admin/orders/items/{{ $item->id }}">
                                 <svg fill="#5fbfad" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">

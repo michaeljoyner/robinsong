@@ -35,7 +35,7 @@
         </ul>
         <h2 v-if="! items.length">Your basket is currently empty</h2>
         <section class="cart-summary">
-            <p class="cart-total-price">Sub-Total: &pound;@{{ total/100 }}</p>
+            <p class="cart-total-price">Sub-Total: &pound;@{{ (total/100).toFixed(2) }}</p>
             <h4 class="shipping-price-heading">Shipping:</h4>
             <ul class="shipping-price-list">
                 <li v-for="area in shipping">

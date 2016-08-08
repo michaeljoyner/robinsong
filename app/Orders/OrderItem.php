@@ -11,8 +11,10 @@ class OrderItem extends Model
 
     protected $fillable = [
         'product_id',
+        'unit_id',
         'quantity',
         'description',
+        'package',
         'price'
     ];
 
@@ -49,5 +51,17 @@ class OrderItem extends Model
     public function isCustomised()
     {
         return $this->options->count() > 0 || $this->customisations->count() > 0;
+    }
+
+    public function hasCustomisations()
+    {
+        $options = $this->options->filter(function($option) {
+            return $option->value;
+        });
+        $customisations = $this->customisations->filter(function($customisation) {
+            return $customisation->value;
+        });
+
+        return !! ($options->count() > 0 || $customisations->count() > 0);
     }
 }

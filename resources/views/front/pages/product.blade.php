@@ -53,52 +53,17 @@
                     {!! nl2br($product->description) !!}
                     @endif
                 </div>
-                <div class="price-and-button-box">
-                    <span class="product-price">&pound;{{ $product->price / 100 }}</span>
-                    <button class="purchase-button btn" v-on:click="addToCart">Add to basket</button>
-                </div>
-
-                <div class="customize">
-                    <h3 class="customize-heading">Customise your purchase</h3>
-                    <div class="product-options">
-                        @foreach($product->options as $index => $option)
-                            <div class="product-option-select-box">
-                                <label>{{ $option->name }}: </label>
-                                <div class="select-container">
-                                    <span class="select-arrow"></span>
-                                    <select name="" v-model="choice{{ $index + 1 }}">
-                                        <option value="">Select an option</option>
-                                        @foreach($option->values as $value)
-                                            <option value="{{ $option->name }}::{{ $value->name }}">{{ $value->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-
-                    @foreach($product->customisations as $index => $customisation)
-                        <label for="product_cusomisations[{{ $customisation->name }}]">{{ $customisation->name }}</label>
-                        @if($customisation->longform)
-                            <input type="hidden" v-model="text{{ $index + 1 }}['name']"
-                                   value="{{ $customisation->name }}">
-                            <textarea class="product-custom-text-input"
-                                      name="product_customisations[{{ $customisation->name }}]"
-                                      v-model="text{{ $index + 1 }}['value']"></textarea>
-                        @else
-                            <input type="hidden" v-model="text{{ $index + 1 }}['name']"
-                                   value="{{ $customisation->name }}">
-                            <input class="product-custom-text-input" type="text" name=""
-                                   v-model="text{{ $index + 1 }}['value']">
+                <div class="product-pricing">
+                    @foreach($product->stockUnits as $unit)
+                        @if($unit->available)
+                        <div class="stock-unit-price">
+                            <span class="unit-price product-price">&pound; {{ $unit->price->asCurrencyString() }}</span>
+                            <span class="unit-name">{{ $unit->name }}</span>
+                        </div>
                         @endif
                     @endforeach
-
-                    <div class="quantity-input-box">
-                        <label>Quantity: </label>
-                        <input class="product-custom-text-input" type="number" v-model="quantity" number>
-                    </div>
                 </div>
-
+                <purchasable product-id="{{ $product->id }}"></purchasable>
             </div>
         </div>
     </section>
@@ -110,75 +75,6 @@
     <script>
         var productVue = new Vue({
             el: '#product-purchase-app',
-
-            data: {
-                productid: null,
-                incart: false,
-                quantity: 1,
-                choice1: '',
-                choice2: '',
-                choice3: '',
-                choice4: '',
-                choice5: '',
-                choice6: '',
-                choice7: '',
-                choice8: '',
-                choice9: '',
-                choice10: '',
-                text1: {name: '', value: ''},
-                text2: {name: '', value: ''},
-                text3: {name: '', value: ''},
-                text4: {name: '', value: ''},
-                text5: {name: '', value: ''},
-                text6: {name: '', value: ''},
-                text7: {name: '', value: ''},
-                text8: {name: '', value: ''},
-                text9: {name: '', value: ''},
-                text10: {name: '', value: ''},
-            },
-
-            ready: function () {
-                this.$set('productid', $('.product-show-section').data('productid'));
-            },
-
-            methods: {
-
-                addToCart: function () {
-                    this.$http.post('/api/cart?q=' + Math.random(), {
-                        id: this.productid,
-                        options: this.prepareOptionsForPost(),
-                        quantity: this.quantity,
-                    }, function (res) {
-                        this.$set('incart', true);
-                        rsApp.basket.fetchInfo(true);
-                    });
-                },
-
-                prepareOptionsForPost: function () {
-                    var optionsArray = [], textArray = [];
-                    var i = 0, j = 0;
-                    for (i; i < 10; i++) {
-                        if (this['choice' + (i + 1)] !== '') {
-                            var input = this['choice' + (i + 1)].split('::');
-                            var valueObj = {};
-                            valueObj[input[0]] = input[1];
-                            optionsArray.push(valueObj);
-                        }
-                    }
-                    for (j; j < 10; j++) {
-                        if (this['text' + (1 + j)].value !== '') {
-                            var textinput = this['text' + (1 + j)];
-                            var textObj = {};
-                            textObj[textinput.name] = textinput.value;
-                            textArray.push(textObj);
-                        }
-                    }
-                    return {
-                        options: optionsArray,
-                        customisations: textArray
-                    };
-                }
-            }
         });
 
         var gal = new Vue({

@@ -23,7 +23,7 @@ class CustomerMailer extends AbstractMailer
             'order_number' => $order->order_number,
             'customer_name' => $order->customer_name,
             'shipping_fee' => $order->shipping_amount,
-            'items'         => $order->items()->with('product', 'options', 'customisations')->get()->toArray()
+            'items'         => $this->getOrderItemsAsArray($order)
         ];
         $view = 'emails.customer.invoice';
 
@@ -42,5 +42,18 @@ class CustomerMailer extends AbstractMailer
         $view = 'emails.customer.shipped';
 
         $this->sendTo($to, $from, $subject, $view, compact('data'));
+    }
+
+    protected function getOrderItemsAsArray($order)
+    {
+        return $order->items->map(function($item) {
+            return [
+                'description' => $item->description,
+                'package' => $item->package,
+                'price' => $item['price'],
+                'quantity' => $item->quantity,
+                'has_customisations' => $item->hasCustomisations()
+            ];
+        })->toArray();
     }
 }

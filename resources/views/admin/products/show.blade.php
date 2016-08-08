@@ -8,17 +8,7 @@
     <div class="rs-page-header">
         <h1 class="pull-left">{{ $product->name }}</h1>
 
-        <div id="toggle-available-app" class="rs-header-actions pull-right">
-            <button type="button" class="btn rs-btn btn-clear" data-toggle="modal" data-target="#writeup-modal">
-                Write up
-            </button>
-            <toggle-button url="/admin/api/products/{{ $product->id }}/availability"
-                           initial="{{ $product->available ? 1 : 0 }}"
-                           toggleprop="available"
-                           onclass=""
-                           offclass="btn-danger"
-                           offtext="Make Available"
-                           ontext="Mark as Unavailable"></toggle-button>
+        <div class="rs-header-actions pull-right">
             <a href="/admin/products/{{ $product->id }}/edit">
                 <div class="btn rs-btn">Edit</div>
             </a>
@@ -26,14 +16,29 @@
                 'objectName' => $product->name,
                 'deleteFormAction' => '/admin/products/'.$product->id
             ])
+            <button type="button" class="btn rs-btn btn-clear" data-toggle="modal" data-target="#product-clone-modal">
+                Duplicate
+            </button>
         </div>
         <hr>
     </div>
     <div class="product-summary-section row">
         <div class="col-md-6 product-details">
             <p class="lead">{{ $product->description }}</p>
-            <p class="lead product-price"><strong>Price: </strong>&pound;{{ $product->priceInPounds() }}</p>
-            <p class="lead product-price"><strong>Weight: </strong>{{ $product->weight }}g</p>
+            <div id="toggle-available-app">
+                <a href="/admin/products/{{ $product->id }}/stockunits/app" class="btn rs-btn btn-light">Pricing</a>
+                <button type="button" class="btn rs-btn btn-clear" data-toggle="modal" data-target="#writeup-modal">
+                    Write up
+                </button>
+                <toggle-button url="/admin/api/products/{{ $product->id }}/availability"
+                               initial="{{ $product->available ? 1 : 0 }}"
+                               toggleprop="available"
+                               onclass=""
+                               offclass="btn-danger"
+                               offtext="Make Available"
+                               ontext="Mark as Unavailable"
+                ></toggle-button>
+            </div>
             <div id="tag-app">
                 <tag-manager productid="{{ $product->id }}"
                              taglist="{{ implode(',' , $product->getTagsList()) }}"></tag-manager>
@@ -133,6 +138,7 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+@include('admin.forms.cloneproductmodal')
 @include('admin.partials.deletemodal')
 
 @section('bodyscripts')

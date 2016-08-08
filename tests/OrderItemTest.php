@@ -16,15 +16,17 @@ class OrderItemTest extends TestCase
      */
     public function an_order_item_has_a_description_and_price_taken_from_its_associated_model()
     {
-        $product = factory(\App\Stock\Product::class)->create(['name' => 'Super Gru', 'price' => 10]);
+        $product = factory(\App\Stock\Product::class)->create(['name' => 'Super Gru']);
+        $unit = factory(\App\Stock\StockUnit::class)->create(['product_id' => $product->id]);
         $order = factory(\App\Orders\Order::class)->create();
 
-        $orderItem = $order->addItem($product->id, 2);
+        $orderItem = $order->addItem($unit->id, 2);
 
         $this->seeInDatabase('order_items', [
             'id' => $orderItem->id,
             'description' => 'Super Gru',
-            'price' => 1000
+            'package' => $unit->name,
+            'price' => $unit->price->inCents() * 2
         ]);
     }
 
@@ -49,5 +51,33 @@ class OrderItemTest extends TestCase
         $this->assertTrue($justOption->isCustomised(), 'having at least one option is customised');
         $this->assertTrue($justCustomisation->isCustomised(), 'having at least one customisation is customised');
         $this->assertTrue($both->isCustomised(), 'both options and customisations is customised');
+    }
+
+    /**
+     *@test
+     */
+    public function an_order_item_knows_if_its_options_and_customisations_are_empty()
+    {
+        $orderItem = factory(\App\Orders\OrderItem::class)->create();
+        $orderItem->addOption('ribbon color', '');
+        $orderItem->addOption('paper', '');
+        $orderItem->addCustomisation('names', '');
+        $orderItem->addCustomisation('dates', '');
+
+        $this->assertFalse($orderItem->hasCustomisations());
+    }
+
+    /**
+     * @test
+     */
+    public function an_order_item_knows_if_its_options_and_customisations_are_not_empty()
+    {
+        $orderItem = factory(\App\Orders\OrderItem::class)->create();
+        $orderItem->addOption('ribbon color', '');
+        $orderItem->addOption('paper', '');
+        $orderItem->addCustomisation('names', 'bob and bill');
+        $orderItem->addCustomisation('dates', '');
+
+        $this->assertTrue($orderItem->hasCustomisations());
     }
 }

@@ -64,7 +64,7 @@ class OrdersServiceTest extends TestCase
 
     private function fillCartWithTwoItems()
     {
-        factory(Product::class, 2)->create(['weight' => 25]);
+        factory(\App\Stock\StockUnit::class, 2)->create(['weight' => 25]);
         Cart::add(1, 'Wedding Book', 1, 25, [
             'choice options' => [
                 'ribbon colour' => 'silver',

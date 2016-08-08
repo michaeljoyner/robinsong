@@ -21506,7 +21506,7 @@ module.exports = {
         }
     }
 };
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"cart-list-item\">\n        <div class=\"item-container item-image-container\">\n            <img v-bind:src=\"thumbnail\" alt=\"image thumbnail\">\n        </div>\n        <div class=\"item-container item-name-container\">\n            <h3 class=\"item-name\">{{ itemname }}</h3>\n                <span v-if=\"hasCustomisations\" v-on:click=\"showModal = true\">\n                    <img src=\"/images/assets/info_icon.png\" alt=\"tap to review your info\" width=\"20px\" height=\"20px\"></span>\n            <modal :show.sync=\"showModal\">\n                <h3 slot=\"header\">Your Choices and Customisations</h3>\n                <div slot=\"body\">\n                    <h4>Choices</h4>\n                    <p v-for=\"option in options.options\">{{ this.showOptions(option) }}</p>\n                    <h4>Customisations</h4>\n                    <p v-for=\"customisation in options.customisations\">{{ this.showCustomisations(customisation) }}</p>\n                </div>\n            </modal>\n        </div>\n        <div class=\"item-container item-details-container\">\n\n        </div>\n        <div class=\"item-container item-qty-container\">\n            <input type=\"number\" v-model=\"quantity\" v-if=\"canEdit\" class=\"item-quantity\">\n            <p v-else=\"\" class=\"item-quantity\">{{ quantity }}</p>\n            <button v-on:click=\"handleEditButtonClick\">\n                {{ buttonTxt }}\n            </button>\n        </div>\n        <div class=\"item-container item-price-container\">\n            <p class=\"item-price\">£{{ (price * quantity) / 100}}</p>\n        </div>\n    </div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"cart-list-item\">\n        <div class=\"item-container item-image-container\">\n            <img v-bind:src=\"thumbnail\" alt=\"image thumbnail\">\n        </div>\n        <div class=\"item-container item-name-container\">\n            <h3 class=\"item-name\">{{ itemname }}</h3>\n                <span v-if=\"hasCustomisations\" v-on:click=\"showModal = true\">\n                    <img src=\"/images/assets/info_icon.png\" alt=\"tap to review your info\" width=\"20px\" height=\"20px\"></span>\n            <modal :show.sync=\"showModal\">\n                <h3 slot=\"header\">Your Choices and Customisations</h3>\n                <div slot=\"body\">\n                    <h4>Choices</h4>\n                    <p v-for=\"option in options.options\">{{ this.showOptions(option) }}</p>\n                    <h4>Customisations</h4>\n                    <p v-for=\"customisation in options.customisations\">{{ this.showCustomisations(customisation) }}</p>\n                </div>\n            </modal>\n        </div>\n        <div class=\"item-container item-details-container\">\n\n        </div>\n        <div class=\"item-container item-qty-container\">\n            <input type=\"number\" v-model=\"quantity\" v-if=\"canEdit\" class=\"item-quantity\">\n            <p v-else=\"\" class=\"item-quantity\">{{ quantity }}</p>\n            <button v-on:click=\"handleEditButtonClick\">\n                {{ buttonTxt }}\n            </button>\n        </div>\n        <div class=\"item-container item-price-container\">\n            <p class=\"item-price\">£{{ ((price * quantity) / 100).toFixed(2)}}</p>\n        </div>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -21552,6 +21552,94 @@ if (module.hot) {(function () {  module.hot.accept()
   }
 })()}
 },{"vue":13,"vue-hot-reload-api":4,"vueify-insert-css":14}],17:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+    props: ['product-id'],
+
+    data: function data() {
+        return {
+            waiting: false,
+            quantity: 1,
+            stockunits: [],
+            selected_unit: '',
+            productOptions: [],
+            selectedOptions: {},
+            setCustomisations: {},
+            productCustomisations: [],
+            customisations: {},
+            options: {}
+        };
+    },
+
+    ready: function ready() {
+        this.fetchProductPurchaseOptions();
+    },
+
+    methods: {
+        addToCart: function addToCart() {
+            this.waiting = true;
+            this.$http.post('/api/cart', {
+                unit_id: this.selected_unit,
+                quantity: this.quantity,
+                options: {
+                    options: this.packIntoArray(this.options),
+                    customisations: this.packIntoArray(this.customisations)
+                }
+            }, function (res) {
+                rsApp.basket.fetchInfo();
+                this.waiting = false;
+            }).error(function (res) {
+                this.waiting = false;
+            });
+        },
+
+        packIntoArray: function packIntoArray(collection) {
+            var choices = [],
+                valueObj;
+            for (var key in collection) {
+                if (collection.hasOwnProperty(key)) {
+                    valueObj = {};
+                    valueObj[key] = collection[key];
+                    choices.push(valueObj);
+                }
+            }
+            return choices;
+        },
+
+        fetchProductPurchaseOptions: function fetchProductPurchaseOptions() {
+            this.$http.get('/api/products/' + this.productId + '/purchasing', function (res) {
+                var customisations = res.productCustomisations.reduce(function (acc, cust) {
+                    acc[cust.name] = '';
+                    return acc;
+                }, {});
+                var options = res.productOptions.reduce(function (acc2, opt) {
+                    acc2[opt.name] = '';
+                    return acc2;
+                }, {});
+
+                this.$set('stockunits', res.stockUnits);
+                this.$set('productOptions', res.productOptions);
+                this.$set('productCustomisations', res.productCustomisations);
+                this.$set('customisations', customisations);
+                this.$set('options', options);
+            }).error(function (res) {});
+        }
+    }
+};
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"product-purchasable\">\n        <div class=\"add-to-cart\">\n            <input type=\"number\" v-model=\"quantity\" class=\"product-quantity-box\" min=\"1\">\n            <div class=\"select-container\">\n                <span class=\"select-arrow\"></span>\n                <select name=\"\" id=\"\" v-model=\"selected_unit\" class=\"stock-unit-select\">\n                    <option value=\"\">Select a package</option>\n                    <option v-for=\"unit in stockunits\" :value=\"unit.id\">{{ unit.name }}</option>\n                </select>\n            </div>\n            <button v-on:click=\"addToCart\" class=\"btn purchase-btn inline-btn product-purchase\" :disabled=\"selected_unit == ''\">\n                <span v-show=\"!waiting\">Add to Cart</span>\n                <div class=\"spinner\" v-show=\"waiting\">\n                    <div class=\"bounce1\"></div>\n                    <div class=\"bounce2\"></div>\n                    <div class=\"bounce3\"></div>\n                </div>\n            </button>\n        </div>\n        <div class=\"customisations-and-options customize\">\n            <div class=\"product-options\">\n                <div v-for=\"option in productOptions\" class=\"product-option-select-box\">\n                    <label>{{ option.name }}: </label>\n                    <div class=\"select-container\">\n                        <span class=\"select-arrow\"></span>\n                        <select name=\"\" v-model=\"options[option.name]\">\n                            <option value=\"\">Select an option</option>\n                            <option v-for=\"value in option.values\" value=\"{{ value.name }}\">{{ value.name }}</option>\n                        </select>\n                    </div>\n                </div>\n            </div>\n            <div class=\"product-customisations\">\n                <div class=\"customisation\" v-for=\"customisation in productCustomisations\">\n                    <label for=\"\">{{ customisation.name }}</label>\n                    <input class=\"product-custom-text-input\" v-if=\"! customisation.longform\" type=\"text\" v-model=\"customisations[customisation.name]\">\n                    <textarea class=\"product-custom-text-input\" v-if=\"customisation.longform\" v-model=\"customisations[customisation.name]\"></textarea>\n                </div>\n            </div>\n        </div>\n    </div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  var id = "/Users/mooz/work/robin-song/resources/assets/js/components/Purchasable.vue"
+  if (!module.hot.data) {
+    hotAPI.createRecord(id, module.exports)
+  } else {
+    hotAPI.update(id, module.exports, module.exports.template)
+  }
+})()}
+},{"vue":13,"vue-hot-reload-api":4}],18:[function(require,module,exports){
 'use strict';
 
 var AjaxContactForm = function AjaxContactForm(formEl) {
@@ -21635,7 +21723,7 @@ AjaxContactForm.prototype = {
 
 module.exports = AjaxContactForm;
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -21684,13 +21772,14 @@ module.exports = {
                 this.$http['delete']('/api/cart/' + item.rowid, {}, function (res) {
                     this.items.$remove(item);
                     this.fetchShippingPrices();
+                    rsApp.basket.fetchInfo();
                 });
             }
         }
     }
 };
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 'use strict';
 
 window.Shuffle = require('shufflejs');
@@ -21706,6 +21795,7 @@ if (document.querySelector('#x-token')) {
 
 Vue.component('cart-list-item', require('./components/CartListItem.vue'));
 Vue.component('modal', require('./components/Modal.vue'));
+Vue.component('purchasable', require('./components/Purchasable.vue'));
 
 if (document.querySelector('#basket')) {
     rsApp.basket = new Vue({
@@ -21773,6 +21863,6 @@ $('#back-to-top-container').click(function () {
     $('body, html').animate({ 'scrollTop': 0 }, "slow");
 });
 
-},{"./components/CartListItem.vue":15,"./components/Modal.vue":16,"./components/contactform.js":17,"./components/frontvueobjects":18,"shufflejs":3,"vue":13,"vue-resource":6}]},{},[19]);
+},{"./components/CartListItem.vue":15,"./components/Modal.vue":16,"./components/Purchasable.vue":17,"./components/contactform.js":18,"./components/frontvueobjects":19,"shufflejs":3,"vue":13,"vue-resource":6}]},{},[20]);
 
 //# sourceMappingURL=front.js.map

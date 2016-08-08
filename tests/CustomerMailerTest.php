@@ -2,6 +2,7 @@
 use App\Billing\ChargeResponse;
 use App\Orders\Order;
 use App\Stock\Product;
+use App\Stock\StockUnit;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Spinen\MailAssertions\MailTracking;
 
@@ -32,17 +33,17 @@ class CustomerMailerTest extends TestCase
     public function the_invoice_email_includes_all_items_and_total_price()
     {
         $product1 = factory(Product::class)->create();
-        $product2 = factory(Product::class)->create();
+        $unit1 = factory(StockUnit::class)->create(['product_id' => $product1->id]);
+        $unit2 = factory(StockUnit::class)->create(['product_id' => $product1->id]);
         $order = factory(Order::class)->create(['customer_email' => 'joyner.michael@gmail.com']);
-        $orderItem = $order->addItem($product1->id, 1);
-        $order->addItem($product2->id, 1);
+        $orderItem = $order->addItem($unit1->id, 1);
+        $order->addItem($unit2->id, 1);
         $orderItem->addOption('colour', 'silver');
         $orderItem->addCustomisation('intro', 'we the people');
         $charge = new ChargeResponse('stripe', true, 'success', 1000, '12345');
         $order->setChargeResult($charge);
 
         $this->seeEmailContains($product1->name);
-        $this->seeEmailContains($product2->name);
         $this->seeEmailContains('£10.00');
         $this->seeEmailContains('with customisations');
     }

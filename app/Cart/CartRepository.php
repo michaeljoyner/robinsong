@@ -10,20 +10,21 @@ namespace App\Cart;
 
 
 use App\Stock\Product;
+use App\Stock\StockUnit;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
 class CartRepository
 {
-    public function addProductToCart(Product $product, $qty, $options)
+    public function addProductToCart(StockUnit $unit, $qty, $options)
     {
         Cart::add(
-            $product->id,
-            $product->name,
+            $unit->id,
+            $unit->product->name . ' - ' . $unit->name,
             $qty,
-            $product->price,
+            $unit->price->inCents(),
             array_merge($options, [
-            'weight' => $product->weight,
-            'thumbnail' => $product->coverPic('thumb')
+            'weight' => $unit->weight,
+            'thumbnail' => $unit->product->coverPic('thumb')
         ]));
     }
 
@@ -73,7 +74,7 @@ class CartRepository
             return $item->id;
         })->toArray();
 
-        $idToWeights = Product::findOrFail($productIds)->reduce(function($array, $product) {
+        $idToWeights = StockUnit::findOrFail($productIds)->reduce(function($array, $product) {
             $array[$product->id] = $product->weight;
             return $array;
         }, []);

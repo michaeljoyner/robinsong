@@ -41,6 +41,15 @@ $factory->define(App\Stock\Product::class, function (Faker\Generator $faker) {
         'name'        => $faker->name,
         'description' => $faker->paragraph(),
         'writeup'     => $faker->paragraphs(3, true),
+        'available'   => 0
+    ];
+});
+
+$factory->define(App\Stock\StockUnit::class, function (Faker\Generator $faker, $attributes) {
+    $id = isset($attributes['product_id']) ? $attributes['product_id'] : factory(\App\Stock\Product::class)->create()->id;
+    return [
+        'product_id' => $id,
+        'name'        => $faker->name,
         'price'       => $faker->numberBetween(500, 5000),
         'weight'      => $faker->numberBetween(20, 5000),
         'available'   => 0
@@ -97,9 +106,11 @@ $factory->define(App\Orders\Order::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(App\Orders\OrderItem::class, function (Faker\Generator $faker) {
+    $unit = factory(\App\Stock\StockUnit::class)->create();
     return [
         'order_id'    => factory(App\Orders\Order::class)->create()->id,
-        'product_id'  => factory(\App\Stock\Product::class)->create()->id,
+        'product_id'  => $unit->product->id,
+        'unit_id'     => $unit->id,
         'description' => $faker->sentence,
         'quantity'    => 1,
         'price'       => 100
