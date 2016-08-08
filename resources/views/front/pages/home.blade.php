@@ -46,7 +46,7 @@
                         <a href="/product/{{ $product->slug }}"><img src="{{ $product->coverPic('thumb') }}" alt=""></a>
                         <div class="product-info">
                             <h5 class="product-title">{{ $product->name }}</h5>
-                            <p class="price">&pound;{{ $product->priceInPounds() }}</p>
+                            <p class="price">&pound;{{ $product->lowestPriceString() }}</p>
                         </div>
                     </div>
                 @endforeach
