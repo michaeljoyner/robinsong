@@ -32,6 +32,14 @@
 
 .stock-unit {
 
+  &.deleting {
+    opacity: .6;
+  }
+
+  &.deleted {
+    display: none;
+  }
+
   input:disabled {
     border: 0;
 
@@ -60,6 +68,12 @@
   .toggle-btns {
     display: inline-block;
     width: 12em;
+
+    .delete-btn {
+      border: 0;
+      background: $white;
+      vertical-align: bottom;
+    }
   }
 
   .switch-box {

@@ -9443,6 +9443,14 @@ form.rs-form.add-class-form {
   text-align: center;
 }
 
+.stock-unit.deleting {
+  opacity: .6;
+}
+
+.stock-unit.deleted {
+  display: none;
+}
+
 .stock-unit input:disabled {
   border: 0;
 }
@@ -9470,6 +9478,12 @@ form.rs-form.add-class-form {
 .stock-unit .toggle-btns {
   display: inline-block;
   width: 12em;
+}
+
+.stock-unit .toggle-btns .delete-btn {
+  border: 0;
+  background: #ffffff;
+  vertical-align: bottom;
 }
 
 .stock-unit .switch-box {

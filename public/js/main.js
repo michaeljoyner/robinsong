@@ -11020,7 +11020,9 @@ module.exports = {
     data: function data() {
         return {
             editing: false,
-            saving: false
+            saving: false,
+            deleting: false,
+            deleted: false
         };
     },
 
@@ -11046,10 +11048,21 @@ module.exports = {
                 console.log(res);
                 this.saving = false;
             });
+        },
+
+        deleteItem: function deleteItem() {
+            this.deleting = true;
+            this.$http['delete']('/admin/stockunits/' + this.unitId, function () {
+                this.$dispatch('remove-stockunit', { unitId: this.unitId });
+                this.deleted = true;
+            }).error(function (res) {
+                console.log('error deleting item');
+                this.deleting = false;
+            });
         }
     }
 };
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"stock-unit\">\n        <input class=\"name-input\" type=\"text\" v-model=\"name\" :disabled=\"!editing\">\n        <input class=\"price-input\" type=\"text\" v-model=\"price\" :disabled=\"!editing\">\n        <input class=\"weight-input\" type=\"text\" v-model=\"weight\" :disabled=\"!editing\">\n        <div class=\"toggle-btns\">\n            <button class=\"btn rs-btn btn-light btn-small\" v-show=\"! editing\" v-on:click=\"allowEdit\">edit</button>\n            <button class=\"btn rs-btn btn-small\" v-show=\"editing\" v-on:click=\"saveInput\">\n                <span v-show=\"!saving\">Save</span>\n                <div class=\"spinner\" v-show=\"saving\">\n                    <div class=\"bounce1\"></div>\n                    <div class=\"bounce2\"></div>\n                    <div class=\"bounce3\"></div>\n                </div>\n            </button>\n        </div>\n        <div class=\"switch-box\">\n            <toggle-switch :identifier=\"unitId\" true-label=\"yes\" false-label=\"no\" :initial-state=\"available\" :toggle-url=\"'/admin/stockunits/' + unitId + '/availability'\" toggle-attribute=\"available\"></toggle-switch>\n        </div>\n\n    </div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"stock-unit\" :class=\"{'deleting': deleting, 'deleted': deleted}\">\n        <input class=\"name-input\" type=\"text\" v-model=\"name\" :disabled=\"!editing\">\n        <input class=\"price-input\" type=\"text\" v-model=\"price\" :disabled=\"!editing\">\n        <input class=\"weight-input\" type=\"text\" v-model=\"weight\" :disabled=\"!editing\">\n        <div class=\"toggle-btns\">\n            <button class=\"btn rs-btn btn-light btn-small\" v-show=\"! editing\" v-on:click=\"allowEdit\">edit</button>\n            <button class=\"btn rs-btn btn-small\" v-show=\"editing\" v-on:click=\"saveInput\">\n                <span v-show=\"!saving\">Save</span>\n                <div class=\"spinner\" v-show=\"saving\">\n                    <div class=\"bounce1\"></div>\n                    <div class=\"bounce2\"></div>\n                    <div class=\"bounce3\"></div>\n                </div>\n            </button>\n            <button v-on:click=\"deleteItem\" class=\"delete-btn\">\n                <svg fill=\"#FF0000\" height=\"18\" viewBox=\"0 0 24 24\" width=\"18\" xmlns=\"http://www.w3.org/2000/svg\">\n                    <path d=\"M0 0h24v24H0V0z\" fill=\"none\"></path>\n                    <path d=\"M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z\"></path>\n                    <path d=\"M0 0h24v24H0z\" fill=\"none\"></path>\n                </svg>\n            </button>\n        </div>\n        <div class=\"switch-box\">\n            <toggle-switch :identifier=\"unitId\" true-label=\"yes\" false-label=\"no\" :initial-state=\"available\" :toggle-url=\"'/admin/stockunits/' + unitId + '/availability'\" toggle-attribute=\"available\"></toggle-switch>\n        </div>\n\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -11077,6 +11090,12 @@ module.exports = {
         this.getStockUnits();
     },
 
+    events: {
+        'remove-stockunit': function removeStockunit(unit) {
+            this.removeUnit(unit);
+        }
+    },
+
     methods: {
 
         getStockUnits: function getStockUnits() {
@@ -11085,10 +11104,17 @@ module.exports = {
             }).error(function (res) {
                 console.log(res);
             });
+        },
+
+        removeUnit: function removeUnit(unit) {
+            var item = this.units.filter(function (stockunit) {
+                return unit.unitId === stockunit.id;
+            }).pop();
+            this.units.$remove(item);
         }
     }
 };
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"stockunit-app\">\n        <div class=\"stock-unit-column-headings\">\n            <span class=\"name-heading\">Name</span>\n            <span class=\"price-heading\">Price (£)</span>\n            <span class=\"weight-heading\">Weight (g)</span>\n            <span class=\"button-heading\">Actions</span>\n            <span class=\"toggle-heading\">Available</span>\n        </div>\n        <stock-unit v-for=\"unit in units\" :unit-id=\"unit.id\" :price=\"unit.price\" :weight=\"unit.weight\" :name=\"unit.name\" :available=\"unit.available\"></stock-unit>\n    </div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"stockunit-app\">\n        <div class=\"stock-unit-column-headings\">\n            <span class=\"name-heading\">Name</span>\n            <span class=\"price-heading\">Price (£)</span>\n            <span class=\"weight-heading\">Weight (g)</span>\n            <span class=\"button-heading\">Actions</span>\n            <span class=\"toggle-heading\">Available</span>\n        </div>\n        <stock-unit v-for=\"unit in units | orderBy 'price'\" :unit-id=\"unit.id\" :price=\"unit.price\" :weight=\"unit.weight\" :name=\"unit.name\" :available=\"unit.available\"></stock-unit>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
